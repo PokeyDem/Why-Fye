@@ -18,5 +18,6 @@ public class PlaceableDeviceData : ScriptableObject
 public enum DeviceType
 {
     Router,
-    Extender
+    Extender,
+    Receiver
 }

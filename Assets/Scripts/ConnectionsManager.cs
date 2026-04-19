@@ -7,10 +7,12 @@ using UnityEngine;
 public class ConnectionsManager : MonoBehaviour
 {
     [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
+    [SerializeField] private float sensorHeightOffset;
 
     public void LinkNewDevice(GameObject newDevice, DeviceType deviceType)
     {
         PlacedDeviceData newDeviceData = new PlacedDeviceData(newDevice);
+        newDeviceData.deviceType = deviceType;
 
         if (deviceType == DeviceType.Router)
         {
@@ -67,22 +69,26 @@ public class ConnectionsManager : MonoBehaviour
     {
         List<PlacedDeviceData> validConnections = new  List<PlacedDeviceData>();
 
+        Vector3 originPoint = originDevice.position + (originDevice.up * sensorHeightOffset);
         foreach (var placedDeviceData in allPlacedDevices)
         {
             Transform targetTransform = placedDeviceData.deviceObject.transform;
 
             if (targetTransform == originDevice) continue;
+            
+            Vector3 targetPoint = targetTransform.position + (targetTransform.up * sensorHeightOffset);
 
-            Vector3 directionToTarget = targetTransform.position - originDevice.position;
+            Vector3 directionToTarget = targetPoint - originPoint;
             float distanceToTarget = directionToTarget.magnitude;
 
-            RaycastHit[] hits = Physics.RaycastAll(originDevice.position, directionToTarget, distanceToTarget);
-            Debug.DrawRay(originDevice.position, directionToTarget.normalized * distanceToTarget, Color.red, 2f);
+            RaycastHit[] hits = Physics.RaycastAll(originPoint, directionToTarget, distanceToTarget);
+            Debug.DrawRay(originDevice.position, directionToTarget.normalized * distanceToTarget, Color.red, 200f);
 
             bool isViewBlocked = false;
 
             foreach (RaycastHit hit in hits)
             {
+                Debug.Log("Collider hit: " +  hit.collider.gameObject.name);
                 if (hit.collider.transform != targetTransform && hit.collider.transform != originDevice)
                 {
                     isViewBlocked = true;
@@ -108,12 +114,21 @@ public class ConnectionsManager : MonoBehaviour
         receiver.isReceiving = true;
         receiver.receivingFrom = sender;
         
-        sender.deviceObject.GetComponent<ConnectionStream>().ConnectToReceiver(receiver.deviceObject.transform);
+        sender.deviceObject.GetComponentInChildren<ConnectionStream>().ConnectToReceiver(receiver.deviceObject.transform);
+        Debug.Log("Connection assigned");
     }
 
-    private void AddFinalReceiver(GameObject receiver)
+    private bool AreAllReceiversConnected()
     {
-        
+        foreach (var connection in allPlacedDevices)
+        {
+            if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private float IsDeviceVisible(GameObject device, GameObject target)

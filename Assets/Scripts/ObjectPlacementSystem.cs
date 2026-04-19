@@ -7,7 +7,7 @@ using UnityEngine;
 public class ObjectPlacementSystem : MonoBehaviour
 {
     [SerializeField] private LayerMask placementLayer;
-    [SerializeField] private float maxSlopeAngle = 5f;
+    [SerializeField] private float slopeAngle = 0f;
     [SerializeField] private bool placementModeEnabled;
 
     [SerializeField] private DeviceCatalog prefabCatalog;
@@ -20,6 +20,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private bool _validPos;
     private Vector3 _currentPreviewPos;
+    private Vector3 _currentSurfaceNormal;
     
     //TODO Add material preview handler
 
@@ -59,7 +60,7 @@ public class ObjectPlacementSystem : MonoBehaviour
             {
                 float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
 
-                if (surfaceAngle > maxSlopeAngle)
+                if (!Mathf.Approximately(surfaceAngle, slopeAngle))
                 {
                     _validPos = false;
                     return;
@@ -68,6 +69,7 @@ public class ObjectPlacementSystem : MonoBehaviour
                 _previewObjects[selectedPrefabIndex].position = hit.point;
                 _validPos = true;
                 _currentPreviewPos = hit.point;
+                _currentSurfaceNormal = hit.normal;
             }
             else
             {
@@ -93,7 +95,8 @@ public class ObjectPlacementSystem : MonoBehaviour
     {
         if (_validPos)
         {
-            GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos,  Quaternion.identity);
+            Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
+            GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
         }
     }
@@ -102,6 +105,12 @@ public class ObjectPlacementSystem : MonoBehaviour
     {
         _previewObjects[selectedPrefabIndex].position = previewPrefabsIdlePos;
         selectedPrefabIndex = newIndex;
+
+        if (prefabCatalog.allAvailableDevices[selectedPrefabIndex].onlyOnWalls)
+            slopeAngle = 90;
+        else
+            slopeAngle = 0;
+
     }
 
     private void DisablePlacement()

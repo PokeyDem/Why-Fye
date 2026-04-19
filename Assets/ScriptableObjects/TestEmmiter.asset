@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55c57d0189d8114c92a93547a2f6062, type: 3}
   m_Name: TestEmmiter
   m_EditorClassIdentifier: 
-  devicePrefab: {fileID: 4567403209944866447, guid: 01c205030982bdb4880ab247bdfa3f75,
+  devicePrefab: {fileID: 1682959331291218895, guid: 915b0bdf319a6824ca3bd8ee87c64259,
     type: 3}
   previewPrefab: {fileID: 4567403209944866447, guid: 2f2c877ded3ac3d4e8ef6ae3be8a1b54,
     type: 3}

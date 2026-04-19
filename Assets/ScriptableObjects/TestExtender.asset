@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55c57d0189d8114c92a93547a2f6062, type: 3}
   m_Name: TestExtender
   m_EditorClassIdentifier: 
-  devicePrefab: {fileID: 4567403209944866447, guid: 547e4f13cf34fbe44a9fff64702a4813,
+  devicePrefab: {fileID: 1884847372090165193, guid: be5ea75b5a6196f44ae3d2a83c5adb73,
     type: 3}
   previewPrefab: {fileID: 4567403209944866447, guid: 2be0720c72e0d2b49a9009e2db5f2c24,
     type: 3}
   deviceType: 1
-  onlyOnWalls: 0
+  onlyOnWalls: 1

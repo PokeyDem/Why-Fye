@@ -9,6 +9,7 @@ public class PlacedDeviceData
     public bool isRouter;
     public PlacedDeviceData receivingFrom;
     public PlacedDeviceData sendingTo;
+    public DeviceType deviceType;
 
     public PlacedDeviceData(GameObject obj)
     {
