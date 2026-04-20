@@ -8,11 +8,13 @@ public class ObjectPlacementSystem : MonoBehaviour
 {
     [SerializeField] private LayerMask placementLayer;
     [SerializeField] private float slopeAngle = 0f;
-    [SerializeField] private bool placementModeEnabled;
+    [SerializeField] private bool placementModeEnabled = false;
 
+    [SerializeField] private LevelData currentLevelData;
     [SerializeField] private DeviceCatalog prefabCatalog;
+    
     [SerializeField] private Vector3 previewPrefabsIdlePos;
-    [SerializeField] private int selectedPrefabIndex; //For dev purposes
+    [SerializeField] private int selectedPrefabIndex = 0; //For dev purposes
     [SerializeField] private ConnectionsManager connectionsManager;
     
     private List<Transform> _previewObjects = new List<Transform>();
@@ -21,8 +23,26 @@ public class ObjectPlacementSystem : MonoBehaviour
     private bool _validPos;
     private Vector3 _currentPreviewPos;
     private Vector3 _currentSurfaceNormal;
+    private Dictionary<int, int> _amountOfDevices =  new Dictionary<int,int>();
     
-    //TODO Add material preview handler
+    public static event Action<Dictionary<int, int>> OnInitialization;
+    public static event Action OnObjectPlaced;
+
+    private void OnEnable()
+    {
+        PlayerControl.OnObjectPlaced += PlaceObject;
+        PlayerControl.OnSlotSelected += SwitchIndex;
+        PauseMenuManager.OnPause += StopPlacement;
+        PauseMenuManager.OnResume += ResumePlacement;
+    }
+
+    private void OnDisable()
+    {
+        PlayerControl.OnObjectPlaced -= PlaceObject;
+        PlayerControl.OnSlotSelected -= SwitchIndex;
+        PauseMenuManager.OnPause -= StopPlacement;
+        PauseMenuManager.OnResume -= ResumePlacement;
+    }
 
     private void Start()
     {
@@ -30,20 +50,28 @@ public class ObjectPlacementSystem : MonoBehaviour
         InstantiatePreviewObjects();
     }
 
+    public void Initialize(LevelData levelData)
+    {
+        currentLevelData = levelData;
+        ResetDevicesAmount();
+        placementModeEnabled = true;
+    }
+
+    public void ResetDevicesAmount()
+    {
+        _amountOfDevices.Clear();
+        foreach (var deviceOnLevel in currentLevelData.devicesData)
+        {
+            _amountOfDevices.Add((int)deviceOnLevel.deviceType, deviceOnLevel.deviceAmount);
+        }
+        OnInitialization?.Invoke(_amountOfDevices);
+    }
+
     private void Update()
     {
         if (placementModeEnabled)
         {
             ShowObjectPreview();
-            
-            if (Input.GetMouseButtonDown(0))
-                PlaceObject();
-
-            if (Input.GetKeyDown(KeyCode.Q))
-                SwitchIndex(0);
-
-            if (Input.GetKeyDown(KeyCode.E))
-                SwitchIndex(1);
         }
     }
 
@@ -59,7 +87,10 @@ public class ObjectPlacementSystem : MonoBehaviour
             if (((1 << hit.collider.gameObject.layer) & placementLayer) != 0)
             {
                 float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
-
+                _currentSurfaceNormal = hit.normal;
+                Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
+                _previewObjects[selectedPrefabIndex].rotation = surfaceRotation;
+                
                 if (!Mathf.Approximately(surfaceAngle, slopeAngle))
                 {
                     _validPos = false;
@@ -69,7 +100,6 @@ public class ObjectPlacementSystem : MonoBehaviour
                 _previewObjects[selectedPrefabIndex].position = hit.point;
                 _validPos = true;
                 _currentPreviewPos = hit.point;
-                _currentSurfaceNormal = hit.normal;
             }
             else
             {
@@ -91,13 +121,18 @@ public class ObjectPlacementSystem : MonoBehaviour
         }
     }
 
-    private void PlaceObject()
+    public void PlaceObject()
     {
-        if (_validPos)
+        if (placementModeEnabled && _validPos)
         {
+            if (_amountOfDevices[selectedPrefabIndex] == 0)
+                return;
+            
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
+            _amountOfDevices[selectedPrefabIndex]--;
+            OnObjectPlaced?.Invoke();
         }
     }
 
@@ -119,5 +154,15 @@ public class ObjectPlacementSystem : MonoBehaviour
         {
            previewObject.position = previewPrefabsIdlePos;
         }
+    }
+
+    public void StopPlacement()
+    {
+        placementModeEnabled = false;
+    }
+
+    public void ResumePlacement()
+    {
+        placementModeEnabled = true;
     }
 }

@@ -6,8 +6,8 @@ using UnityEngine;
 public class CameraOrbit : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float minVerticalAngle = 10f;
-    [SerializeField] private float maxVerticalAngle = 80f;
+    [SerializeField] private float minVerticalAngle = -20f;
+    [SerializeField] private float maxVerticalAngle = 40f;
 
     private float _currentYaw;
     private float _currentPitch;
@@ -34,10 +34,10 @@ public class CameraOrbit : MonoBehaviour
         
         _currentYaw += mouseX;
      
-        // _currentPitch -= mouseY; 
+        _currentPitch -= mouseY; 
         
-        // _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);
+        _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);
         
-        transform.rotation = Quaternion.Euler(_currentPitch, _currentYaw, 0f);
+        transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
     }
 }

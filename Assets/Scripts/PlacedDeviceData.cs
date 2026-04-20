@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -5,19 +6,34 @@ public class PlacedDeviceData
 {
     public GameObject deviceObject;
     public bool isReceiving;
-    public bool isSending;
-    public bool isRouter;
+    
+    public bool isSending => sendingTo.Count > 0;
+    
     public PlacedDeviceData receivingFrom;
-    public PlacedDeviceData sendingTo;
+    
+    public List<PlacedDeviceData> sendingTo;
+    public int maxOutgoingConnections;
+    
     public DeviceType deviceType;
 
-    public PlacedDeviceData(GameObject obj)
+    public PlacedDeviceData(GameObject obj, DeviceType type)
     {
         deviceObject = obj;
+        deviceType = type;
         isReceiving = false;
-        isSending = false;
-        isRouter = false;
         receivingFrom = null;
-        sendingTo = null;
+        sendingTo = new  List<PlacedDeviceData>();
+
+        if (deviceType == DeviceType.Splitter)
+        {
+            maxOutgoingConnections = 2;
+        }else if (deviceType == DeviceType.Receiver)
+        {
+            maxOutgoingConnections = 0;
+        }
+        else
+        {
+            maxOutgoingConnections = 1;
+        }
     }
 }

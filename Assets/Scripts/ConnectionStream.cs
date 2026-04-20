@@ -11,6 +11,8 @@ public class ConnectionStream : MonoBehaviour
     [SerializeField] private Transform _receiverTarget;
  
     private LineRenderer _lineRenderer;
+    private Transform _mountPoint;
+    private Transform _targetMountPoint;
     private Material _lineMaterial;
     private float _currentOffset;
 
@@ -19,6 +21,7 @@ public class ConnectionStream : MonoBehaviour
         _lineRenderer = GetComponent<LineRenderer>();
         _lineMaterial = _lineRenderer.material;
         _lineRenderer.positionCount = 2;
+        _mountPoint = gameObject.transform.GetChild(0).transform;
     }
 
     private void Update()
@@ -38,8 +41,8 @@ public class ConnectionStream : MonoBehaviour
     {
         _lineRenderer.enabled = true;
         
-        _lineRenderer.SetPosition(0, transform.position);
-        _lineRenderer.SetPosition(1, _receiverTarget.position);
+        _lineRenderer.SetPosition(0, _mountPoint.position);
+        _lineRenderer.SetPosition(1, _targetMountPoint.position);
         
         float distance = Vector3.Distance(transform.position, _receiverTarget.position);
         
@@ -55,11 +58,17 @@ public class ConnectionStream : MonoBehaviour
     public void ConnectToReceiver(Transform receiver)
     {
         _receiverTarget = receiver;
+        _targetMountPoint = receiver.gameObject.transform.GetChild(0).transform;
     }
 
     public void CloseConnection()
     {
         _receiverTarget = null;
         _lineRenderer.enabled = false;
+    }
+
+    public bool IsConnected()
+    {
+        return _receiverTarget != null;
     }
 }

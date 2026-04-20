@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: DeviceCatalog
   m_EditorClassIdentifier: 
   allAvailableDevices:
-  - {fileID: 11400000, guid: 4c109758556de574fa9c0e15e7aa4929, type: 2}
-  - {fileID: 11400000, guid: 151cc8f73c7dd7a41831f0a71a0d2819, type: 2}
+  - {fileID: 11400000, guid: 8ba44b81e9fde4643aefc8ff7d52a323, type: 2}
+  - {fileID: 11400000, guid: fbf2ba8093941b347a4813d19a25e15d, type: 2}
+  - {fileID: 11400000, guid: 67e8a69c333425d4787d381180135cff, type: 2}

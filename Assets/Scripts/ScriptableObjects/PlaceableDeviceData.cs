@@ -19,5 +19,6 @@ public enum DeviceType
 {
     Router,
     Extender,
+    Splitter,
     Receiver
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,14 @@ public class ConnectionsManager : MonoBehaviour
     [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
     [SerializeField] private float sensorHeightOffset;
 
+    public static Action OnCompletion;
     public void LinkNewDevice(GameObject newDevice, DeviceType deviceType)
     {
-        PlacedDeviceData newDeviceData = new PlacedDeviceData(newDevice);
+        PlacedDeviceData newDeviceData = new PlacedDeviceData(newDevice, deviceType);
         newDeviceData.deviceType = deviceType;
 
         if (deviceType == DeviceType.Router)
         {
-            newDeviceData.isRouter = true;
             newDeviceData.isReceiving = true;
         }
         
@@ -26,13 +27,14 @@ public class ConnectionsManager : MonoBehaviour
 
         validConnections = validConnections.OrderBy(d => Vector3.Distance(newDevice.transform.position, d.deviceObject.transform.position)).ToList();
 
-        PlacedDeviceData closestSender = validConnections.FirstOrDefault(d => d.isReceiving && !d.isSending);
+        PlacedDeviceData closestSender = validConnections.FirstOrDefault(d => 
+            d.isReceiving && d.sendingTo.Count < d.maxOutgoingConnections);
         if (closestSender != null)
         {
             AssignConnection(closestSender, newDeviceData);
         }
     
-        if (newDeviceData.isReceiving || newDeviceData.isRouter) 
+        if (newDeviceData.isReceiving || newDeviceData.deviceType == DeviceType.Router) 
         {
          
             PlacedDeviceData closestReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
@@ -47,10 +49,13 @@ public class ConnectionsManager : MonoBehaviour
 
     private void PropagateSignal(PlacedDeviceData newDeviceData)
     {
-        if (newDeviceData.isSending && newDeviceData.sendingTo != null)
+        foreach (var receiver in newDeviceData.sendingTo.ToList())
         {
-            PropagateSignal(newDeviceData.sendingTo);
+            PropagateSignal(receiver);
         }
+        
+        int availableSlots = newDeviceData.maxOutgoingConnections - newDeviceData.sendingTo.Count;
+        if (availableSlots <= 0) return;
         
         List<PlacedDeviceData> validConnections = FindValidConnections(newDeviceData.deviceObject.transform);
         validConnections = validConnections.OrderBy(d => 
@@ -88,7 +93,6 @@ public class ConnectionsManager : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                Debug.Log("Collider hit: " +  hit.collider.gameObject.name);
                 if (hit.collider.transform != targetTransform && hit.collider.transform != originDevice)
                 {
                     isViewBlocked = true;
@@ -105,30 +109,51 @@ public class ConnectionsManager : MonoBehaviour
     
     private void AssignConnection(PlacedDeviceData sender, PlacedDeviceData receiver)
     {
-        if (sender.sendingTo != null) sender.sendingTo.receivingFrom = null;
-        if (receiver.receivingFrom != null) receiver.receivingFrom.sendingTo = null;
-
-        sender.isSending = true;
-        sender.sendingTo = receiver;
-
+        if (sender.sendingTo.Count >= sender.maxOutgoingConnections)
+        {
+            var oldestConnection = sender.sendingTo[0];
+            oldestConnection.receivingFrom = null;
+            oldestConnection.isReceiving = false;
+            sender.sendingTo.RemoveAt(0);
+        }
+        
+        if (receiver.receivingFrom != null) 
+        {
+            receiver.receivingFrom.sendingTo.Remove(receiver);
+        }
+        
+        sender.sendingTo.Add(receiver);
         receiver.isReceiving = true;
         receiver.receivingFrom = sender;
+
+        if (receiver.deviceType == DeviceType.Receiver)
+        {
+            receiver.deviceObject.GetComponent<ReceiverController>().DeviceConnected();
+        }
         
-        sender.deviceObject.GetComponentInChildren<ConnectionStream>().ConnectToReceiver(receiver.deviceObject.transform);
-        Debug.Log("Connection assigned");
+        ConnectionStream[] streams = sender.deviceObject.GetComponentsInChildren<ConnectionStream>();
+        foreach (var stream in streams)
+        {
+            if (!stream.IsConnected())
+            {
+                stream.ConnectToReceiver(receiver.deviceObject.transform);
+                break;
+            }
+        }
+        
+        AreAllReceiversConnected();
     }
 
-    private bool AreAllReceiversConnected()
+    private void AreAllReceiversConnected()
     {
         foreach (var connection in allPlacedDevices)
         {
             if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
             {
-                return false;
+                return;
             }
         }
-
-        return true;
+        OnCompletion?.Invoke();
     }
 
     private float IsDeviceVisible(GameObject device, GameObject target)
@@ -145,5 +170,29 @@ public class ConnectionsManager : MonoBehaviour
         }
         
         return -1f;
+    }
+
+    public void ResetDevices()
+    {
+        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        {
+            if (placedDeviceData.deviceType == DeviceType.Receiver)
+            {
+                placedDeviceData.isReceiving = false;
+                placedDeviceData.receivingFrom = null;
+                placedDeviceData.deviceObject.GetComponent<ReceiverController>().DeviceDisconnected();
+            }
+            else
+            {
+                LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
+                foreach (var lr in renderers)
+                {
+                    lr.enabled = false;
+                }
+                
+                Destroy(placedDeviceData.deviceObject);
+                allPlacedDevices.Remove(placedDeviceData);
+            }
+        }
     }
 }
