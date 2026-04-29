@@ -29,6 +29,7 @@ public class ConnectionsManager : MonoBehaviour
 
         PlacedDeviceData closestSender = validConnections.FirstOrDefault(d => 
             d.isReceiving && d.sendingTo.Count < d.maxOutgoingConnections);
+        
         if (closestSender != null)
         {
             AssignConnection(closestSender, newDeviceData);
@@ -87,6 +88,7 @@ public class ConnectionsManager : MonoBehaviour
             float distanceToTarget = directionToTarget.magnitude;
 
             RaycastHit[] hits = Physics.RaycastAll(originPoint, directionToTarget, distanceToTarget);
+            
             Debug.DrawRay(originDevice.position, directionToTarget.normalized * distanceToTarget, Color.red, 200f);
 
             bool isViewBlocked = false;

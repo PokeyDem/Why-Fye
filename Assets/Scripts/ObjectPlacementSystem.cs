@@ -14,7 +14,7 @@ public class ObjectPlacementSystem : MonoBehaviour
     [SerializeField] private DeviceCatalog prefabCatalog;
     
     [SerializeField] private Vector3 previewPrefabsIdlePos;
-    [SerializeField] private int selectedPrefabIndex = 0; //For dev purposes
+    [SerializeField] private int selectedPrefabIndex = 0; 
     [SerializeField] private ConnectionsManager connectionsManager;
     
     private List<Transform> _previewObjects = new List<Transform>();
@@ -121,7 +121,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         }
     }
 
-    public void PlaceObject()
+    private void PlaceObject()
     {
         if (placementModeEnabled && _validPos)
         {
