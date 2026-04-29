@@ -11,7 +11,7 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
     public static event Action<int> OnSlotSelected;
     public static event Action OnObjectPlaced;
 
-    private int currentSlot = 0;
+    private int _currentSlot = 0;
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
     public void SelectSlot(int slot)
     {
         OnSlotSelected?.Invoke(slot);
-        currentSlot = slot;
+        _currentSlot = slot;
     }
 
     public void OnSelectFirstSlot(InputAction.CallbackContext context)
@@ -60,7 +60,7 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
         if (context.performed)
         {
             OnSlotSelected?.Invoke(0);
-            currentSlot = 0;
+            _currentSlot = 0;
         }
     }
 
@@ -69,7 +69,7 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
         if (context.performed)
         {
             OnSlotSelected?.Invoke(1);
-            currentSlot = 1;
+            _currentSlot = 1;
         }
     }
 
@@ -78,25 +78,25 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
         if (context.performed)
         {
             OnSlotSelected?.Invoke(2);
-            currentSlot = 2;
+            _currentSlot = 2;
         }
     }
 
     public void OnIncreaseSlotIndex(InputAction.CallbackContext context)
     {
-        if (context.performed && currentSlot < 2)
+        if (context.performed && _currentSlot < 2)
         {
-            currentSlot++;
-            OnSlotSelected?.Invoke(currentSlot);
+            _currentSlot++;
+            OnSlotSelected?.Invoke(_currentSlot);
         }
     }
 
     public void OnDecreseSlotIndex(InputAction.CallbackContext context)
     {
-        if (context.performed && currentSlot > 0)
+        if (context.performed && _currentSlot > 0)
         {
-            currentSlot--;
-            OnSlotSelected?.Invoke(currentSlot);
+            _currentSlot--;
+            OnSlotSelected?.Invoke(_currentSlot);
         }
     }
 }

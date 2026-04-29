@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ReceiverController : MonoBehaviour
 {
-    [SerializeField] private ScreenVisualsController screenVisualsController;
+    [SerializeField] private PhoneScreenVisualsController phoneScreenVisualsController;
     [SerializeField] private NPCBehaviour npcBehaviour;
 
     public void DeviceConnected()
     {
-        screenVisualsController.ConnectDevice();
+        phoneScreenVisualsController.ConnectDevice();
         npcBehaviour.ConnectDevice();
     }
 
     public void DeviceDisconnected()
     {
-        screenVisualsController.DisconnectDevice();
+        phoneScreenVisualsController.DisconnectDevice();
         npcBehaviour.DisconnectDevice();
     }
 }

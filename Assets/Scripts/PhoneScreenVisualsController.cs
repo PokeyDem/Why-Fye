@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenVisualsController : MonoBehaviour
+public class PhoneScreenVisualsController : MonoBehaviour
 {
     [SerializeField] private Color connectedColor;
     [SerializeField] private Color disconnectedColor;
