@@ -99,4 +99,12 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
             OnSlotSelected?.Invoke(_currentSlot);
         }
     }
+
+    public void OnRotation(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

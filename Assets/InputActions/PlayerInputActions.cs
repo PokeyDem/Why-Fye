@@ -145,6 +145,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""Value"",
+                    ""id"": ""902151d8-33b9-4ede-92a7-61d1ccc645b4"",
+                    ""expectedControlType"": ""Delta"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -153,6 +162,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""4b57b605-e1dd-474c-9490-a435f4b4079e"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b45fbbf6-0876-4d0e-bb40-ab7b25e2668f"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PlaceObject"",
@@ -213,6 +233,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""DecreseSlotIndex"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87efce84-e18b-416a-a091-a61ea35ecabd"",
+                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +258,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerControl_SelectThirdSlot = m_PlayerControl.FindAction("SelectThirdSlot", throwIfNotFound: true);
         m_PlayerControl_IncreaseSlotIndex = m_PlayerControl.FindAction("IncreaseSlotIndex", throwIfNotFound: true);
         m_PlayerControl_DecreseSlotIndex = m_PlayerControl.FindAction("DecreseSlotIndex", throwIfNotFound: true);
+        m_PlayerControl_Rotation = m_PlayerControl.FindAction("Rotation", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -313,6 +345,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_SelectThirdSlot;
     private readonly InputAction m_PlayerControl_IncreaseSlotIndex;
     private readonly InputAction m_PlayerControl_DecreseSlotIndex;
+    private readonly InputAction m_PlayerControl_Rotation;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerControl".
     /// </summary>
@@ -348,6 +381,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerControl/DecreseSlotIndex".
         /// </summary>
         public InputAction @DecreseSlotIndex => m_Wrapper.m_PlayerControl_DecreseSlotIndex;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/Rotation".
+        /// </summary>
+        public InputAction @Rotation => m_Wrapper.m_PlayerControl_Rotation;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -392,6 +429,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DecreseSlotIndex.started += instance.OnDecreseSlotIndex;
             @DecreseSlotIndex.performed += instance.OnDecreseSlotIndex;
             @DecreseSlotIndex.canceled += instance.OnDecreseSlotIndex;
+            @Rotation.started += instance.OnRotation;
+            @Rotation.performed += instance.OnRotation;
+            @Rotation.canceled += instance.OnRotation;
         }
 
         /// <summary>
@@ -421,6 +461,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DecreseSlotIndex.started -= instance.OnDecreseSlotIndex;
             @DecreseSlotIndex.performed -= instance.OnDecreseSlotIndex;
             @DecreseSlotIndex.canceled -= instance.OnDecreseSlotIndex;
+            @Rotation.started -= instance.OnRotation;
+            @Rotation.performed -= instance.OnRotation;
+            @Rotation.canceled -= instance.OnRotation;
         }
 
         /// <summary>
@@ -503,5 +546,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDecreseSlotIndex(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Rotation" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotation(InputAction.CallbackContext context);
     }
 }

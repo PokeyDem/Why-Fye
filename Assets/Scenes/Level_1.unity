@@ -2429,6 +2429,7 @@ GameObject:
   - component: {fileID: 801146940}
   - component: {fileID: 801146939}
   - component: {fileID: 801146938}
+  - component: {fileID: 801146941}
   m_Layer: 0
   m_Name: HUDCanvas
   m_TagString: Untagged
@@ -2525,6 +2526,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &801146941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801146936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520e9ae193c7ca84f999fa9dc2502364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasScaler: {fileID: 0}
+  referenceResolution: {x: 2560, y: 1440}
 --- !u!1 &812036629
 GameObject:
   m_ObjectHideFlags: 0
@@ -5245,6 +5260,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4716007357197679064}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2079816850 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8767449847239224309, guid: ce42a8b42d6a48f43877fc88727c8fbb,
+    type: 3}
+  m_PrefabInstance: {fileID: 4716007357197679064}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079816848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29046666f14350b48b2de6befedc997c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2139140943
 GameObject:
   m_ObjectHideFlags: 0
@@ -5328,6 +5355,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 636264896234259354, guid: ce42a8b42d6a48f43877fc88727c8fbb,
+        type: 3}
+      propertyPath: phoneScreenVisualsController
+      value: 
+      objectReference: {fileID: 2079816850}
     - target: {fileID: 2167348427133751417, guid: ce42a8b42d6a48f43877fc88727c8fbb,
         type: 3}
       propertyPath: m_Camera

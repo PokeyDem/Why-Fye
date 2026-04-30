@@ -59,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Rotation",
+                    "type": "Value",
+                    "id": "902151d8-33b9-4ede-92a7-61d1ccc645b4",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -67,6 +76,17 @@
                     "id": "4b57b605-e1dd-474c-9490-a435f4b4079e",
                     "path": "<Mouse>/leftButton",
                     "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b45fbbf6-0876-4d0e-bb40-ab7b25e2668f",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "PlaceObject",
@@ -125,6 +145,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DecreseSlotIndex",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87efce84-e18b-416a-a091-a61ea35ecabd",
+                    "path": "<Touchscreen>/primaryTouch/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
