@@ -154,6 +154,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraOrbitContact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a2840e3d-912f-46bf-9290-b33675992220"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PointerPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""fd03af6b-42b5-4704-b00f-2ab39143808d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -244,6 +262,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1bea815d-053d-428e-91f1-7c07fb783f3e"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraOrbitContact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e667caf8-0c13-4cfd-bf02-f6e53a44aba9"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -259,6 +299,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerControl_IncreaseSlotIndex = m_PlayerControl.FindAction("IncreaseSlotIndex", throwIfNotFound: true);
         m_PlayerControl_DecreseSlotIndex = m_PlayerControl.FindAction("DecreseSlotIndex", throwIfNotFound: true);
         m_PlayerControl_Rotation = m_PlayerControl.FindAction("Rotation", throwIfNotFound: true);
+        m_PlayerControl_CameraOrbitContact = m_PlayerControl.FindAction("CameraOrbitContact", throwIfNotFound: true);
+        m_PlayerControl_PointerPosition = m_PlayerControl.FindAction("PointerPosition", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -346,6 +388,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_IncreaseSlotIndex;
     private readonly InputAction m_PlayerControl_DecreseSlotIndex;
     private readonly InputAction m_PlayerControl_Rotation;
+    private readonly InputAction m_PlayerControl_CameraOrbitContact;
+    private readonly InputAction m_PlayerControl_PointerPosition;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerControl".
     /// </summary>
@@ -385,6 +429,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerControl/Rotation".
         /// </summary>
         public InputAction @Rotation => m_Wrapper.m_PlayerControl_Rotation;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/CameraOrbitContact".
+        /// </summary>
+        public InputAction @CameraOrbitContact => m_Wrapper.m_PlayerControl_CameraOrbitContact;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/PointerPosition".
+        /// </summary>
+        public InputAction @PointerPosition => m_Wrapper.m_PlayerControl_PointerPosition;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -432,6 +484,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Rotation.started += instance.OnRotation;
             @Rotation.performed += instance.OnRotation;
             @Rotation.canceled += instance.OnRotation;
+            @CameraOrbitContact.started += instance.OnCameraOrbitContact;
+            @CameraOrbitContact.performed += instance.OnCameraOrbitContact;
+            @CameraOrbitContact.canceled += instance.OnCameraOrbitContact;
+            @PointerPosition.started += instance.OnPointerPosition;
+            @PointerPosition.performed += instance.OnPointerPosition;
+            @PointerPosition.canceled += instance.OnPointerPosition;
         }
 
         /// <summary>
@@ -464,6 +522,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Rotation.started -= instance.OnRotation;
             @Rotation.performed -= instance.OnRotation;
             @Rotation.canceled -= instance.OnRotation;
+            @CameraOrbitContact.started -= instance.OnCameraOrbitContact;
+            @CameraOrbitContact.performed -= instance.OnCameraOrbitContact;
+            @CameraOrbitContact.canceled -= instance.OnCameraOrbitContact;
+            @PointerPosition.started -= instance.OnPointerPosition;
+            @PointerPosition.performed -= instance.OnPointerPosition;
+            @PointerPosition.canceled -= instance.OnPointerPosition;
         }
 
         /// <summary>
@@ -553,5 +617,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotation(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CameraOrbitContact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCameraOrbitContact(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PointerPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPointerPosition(InputAction.CallbackContext context);
     }
 }

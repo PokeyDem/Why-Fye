@@ -8,6 +8,7 @@ public class CameraOrbit : MonoBehaviour
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float minVerticalAngle = -20f;
     [SerializeField] private float maxVerticalAngle = 40f;
+    [SerializeField] private PlayerControls playerControls;
 
     private float _currentYaw;
     private float _currentPitch;
@@ -21,9 +22,9 @@ public class CameraOrbit : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(2))
+        if (playerControls.IsOrbiting)
         {
-            RotateCamera();
+            RotateCameraNew();
         }
     }
     
@@ -34,6 +35,20 @@ public class CameraOrbit : MonoBehaviour
         
         _currentYaw += mouseX;
      
+        _currentPitch -= mouseY; 
+        
+        _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);
+        
+        transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
+    }
+
+    private void RotateCameraNew()
+    {
+        float mouseX = playerControls.LookDelta.x * rotationSpeed * Time.deltaTime;
+        float mouseY = playerControls.LookDelta.y * rotationSpeed * Time.deltaTime;
+        
+        _currentYaw += mouseX;
+        
         _currentPitch -= mouseY; 
         
         _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);

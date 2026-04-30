@@ -8,19 +8,20 @@ public class HotbarSlotsManager : MonoBehaviour
     [SerializeField] private List<HotbarSlot> slots =  new List<HotbarSlot>();
     [SerializeField] private Color selectionColor;
     [SerializeField] private Color defaultColor;
+    [SerializeField] private PlayerControls playerControls;
     
     private int _selectedSlotIndex;
     
     private void OnEnable()
     {
-        PlayerControl.OnSlotSelected += SelectSlot;
+        playerControls.OnSlotSelected += SelectSlot;
         ObjectPlacementSystem.OnObjectPlaced += HandleDecrease;
         ObjectPlacementSystem.OnInitialization += SetAmountOfDevices;
     }
 
     private void OnDisable()
     {
-        PlayerControl.OnSlotSelected -= SelectSlot;
+        playerControls.OnSlotSelected -= SelectSlot;
         ObjectPlacementSystem.OnObjectPlaced -= HandleDecrease;
         ObjectPlacementSystem.OnInitialization -= SetAmountOfDevices;
     }

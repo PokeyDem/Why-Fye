@@ -4,27 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlActions
+[CreateAssetMenu(fileName = "Player Control", menuName = "Player Control/Player Control")]
+public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerControlActions
 {
+    [NonSerialized] public Vector2 LookDelta;
+    [NonSerialized] public bool IsOrbiting;
+    [NonSerialized] public Vector2 OnScreenPosition;
+    
     private PlayerInputActions _playerInput;
     
-    public static event Action<int> OnSlotSelected;
-    public static event Action OnObjectPlaced;
+    public event Action<int> OnSlotSelected;
+    
+    public event Action OnObjectPlaced;
 
     private int _currentSlot = 0;
-
-    private void Awake()
+    
+    private void OnEnable()
     {
         PrepareInputSystem();
     }
     
-    private void OnEnable()
-    {
-        _playerInput.PlayerControl.Enable();
-    }
-    
     private void OnDisable()
     {
+        IsOrbiting = false;
         _playerInput.PlayerControl.Disable();
     }
     
@@ -101,10 +103,22 @@ public class PlayerControl : MonoBehaviour, PlayerInputActions.IPlayerControlAct
     }
 
     public void OnRotation(InputAction.CallbackContext context)
+    { 
+        LookDelta = context.ReadValue<Vector2>();
+    }
+
+    public void OnCameraOrbitContact(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            throw new NotImplementedException();
-        }
+        if (context.started)
+            IsOrbiting = true;
+        
+        if (context.canceled)
+            IsOrbiting = false;
+    }
+
+    public void OnPointerPosition(InputAction.CallbackContext context)
+    {
+        if (context.canceled)
+            OnScreenPosition = context.ReadValue<Vector2>();
     }
 }

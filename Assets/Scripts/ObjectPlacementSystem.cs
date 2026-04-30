@@ -16,6 +16,7 @@ public class ObjectPlacementSystem : MonoBehaviour
     [SerializeField] private Vector3 previewPrefabsIdlePos;
     [SerializeField] private int selectedPrefabIndex = 0; 
     [SerializeField] private ConnectionsManager connectionsManager;
+    [SerializeField] private PlayerControls playerControls;
     
     private List<Transform> _previewObjects = new List<Transform>();
     private Camera _camera;
@@ -30,16 +31,16 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerControl.OnObjectPlaced += PlaceObject;
-        PlayerControl.OnSlotSelected += SwitchIndex;
+        playerControls.OnObjectPlaced += PlaceObject;
+        playerControls.OnSlotSelected += SwitchIndex;
         PauseMenuManager.OnPause += StopPlacement;
         PauseMenuManager.OnResume += ResumePlacement;
     }
 
     private void OnDisable()
     {
-        PlayerControl.OnObjectPlaced -= PlaceObject;
-        PlayerControl.OnSlotSelected -= SwitchIndex;
+        playerControls.OnObjectPlaced -= PlaceObject;
+        playerControls.OnSlotSelected -= SwitchIndex;
         PauseMenuManager.OnPause -= StopPlacement;
         PauseMenuManager.OnResume -= ResumePlacement;
     }
@@ -77,7 +78,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void ShowObjectPreview()
     {
-        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
             
         RaycastHit hit;
 
