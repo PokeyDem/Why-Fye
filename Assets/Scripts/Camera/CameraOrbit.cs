@@ -24,25 +24,11 @@ public class CameraOrbit : MonoBehaviour
     {
         if (playerControls.IsOrbiting)
         {
-            RotateCameraNew();
+            RotateCamera();
         }
     }
-    
-    private void RotateCamera()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
-        
-        _currentYaw += mouseX;
-     
-        _currentPitch -= mouseY; 
-        
-        _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);
-        
-        transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
-    }
 
-    private void RotateCameraNew()
+    private void RotateCamera()
     {
         float mouseX = playerControls.LookDelta.x * rotationSpeed * Time.deltaTime;
         float mouseY = playerControls.LookDelta.y * rotationSpeed * Time.deltaTime;

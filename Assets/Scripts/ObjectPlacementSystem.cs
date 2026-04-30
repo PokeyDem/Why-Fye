@@ -70,7 +70,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void Update()
     {
-        if (placementModeEnabled)
+        if (playerControls.IsPositioning)
         {
             ShowObjectPreview();
         }
@@ -109,6 +109,12 @@ public class ObjectPlacementSystem : MonoBehaviour
         }
     }
 
+    private void ClearPreview()
+    {
+        _previewObjects[selectedPrefabIndex].position = previewPrefabsIdlePos;
+        _validPos = false;
+    }
+
     private void InstantiatePreviewObjects()
     {
         if (prefabCatalog.allAvailableDevices.Count > 0)
@@ -133,6 +139,7 @@ public class ObjectPlacementSystem : MonoBehaviour
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
             _amountOfDevices[selectedPrefabIndex]--;
+            ClearPreview();
             OnObjectPlaced?.Invoke();
         }
     }
@@ -146,7 +153,6 @@ public class ObjectPlacementSystem : MonoBehaviour
             slopeAngle = 90;
         else
             slopeAngle = 0;
-
     }
 
     private void DisablePlacement()

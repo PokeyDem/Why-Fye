@@ -179,7 +179,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4b57b605-e1dd-474c-9490-a435f4b4079e"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PlaceObject"",

@@ -10,6 +10,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     [NonSerialized] public Vector2 LookDelta;
     [NonSerialized] public bool IsOrbiting;
     [NonSerialized] public Vector2 OnScreenPosition;
+    [NonSerialized] public bool IsPositioning;
     
     private PlayerInputActions _playerInput;
     
@@ -27,6 +28,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     private void OnDisable()
     {
         IsOrbiting = false;
+        IsPositioning = false;
         _playerInput.PlayerControl.Disable();
     }
     
@@ -44,10 +46,15 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
         {
+            IsPositioning = true;
+        }
+
+        if (context.canceled)
+        {
+            IsPositioning = false;
             OnObjectPlaced?.Invoke();
-            Debug.Log("OnPlaceObject called");
         }
     }
 
@@ -118,7 +125,6 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnPointerPosition(InputAction.CallbackContext context)
     {
-        if (context.canceled)
-            OnScreenPosition = context.ReadValue<Vector2>();
+        OnScreenPosition = context.ReadValue<Vector2>();
     }
 }

@@ -14,9 +14,9 @@ public class PauseMenuManager : MonoBehaviour{
     public static event Action OnResume;
     
     private void Update(){
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            EscPressed();
-        } 
+        // if (Input.GetKeyDown(KeyCode.Escape)){
+        //     EscPressed();
+        // } 
     }
 
     public void EscPressed(){

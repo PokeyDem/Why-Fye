@@ -9,12 +9,6 @@ public class UIMobileDeviceCanvasScaler : MonoBehaviour
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private Vector2 referenceResolution = new Vector2(2560f, 1440f);
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-            AdjustScale();
-    }
-
     private void Start()
     {
         canvasScaler = GetComponent<CanvasScaler>();
