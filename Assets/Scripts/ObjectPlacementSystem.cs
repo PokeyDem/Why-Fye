@@ -31,7 +31,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        playerControls.OnObjectPlaced += PlaceObject;
+        playerControls.OnObjectPlaced += PlaceObjectNew;
         playerControls.OnSlotSelected += SwitchIndex;
         PauseMenuManager.OnPause += StopPlacement;
         PauseMenuManager.OnResume += ResumePlacement;
@@ -39,7 +39,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        playerControls.OnObjectPlaced -= PlaceObject;
+        playerControls.OnObjectPlaced -= PlaceObjectNew;
         playerControls.OnSlotSelected -= SwitchIndex;
         PauseMenuManager.OnPause -= StopPlacement;
         PauseMenuManager.OnResume -= ResumePlacement;
@@ -141,6 +141,62 @@ public class ObjectPlacementSystem : MonoBehaviour
             _amountOfDevices[selectedPrefabIndex]--;
             ClearPreview();
             OnObjectPlaced?.Invoke();
+        }
+    }
+
+    private void PlaceObjectNew()
+    {
+        Debug.Log("PlaceObjectNew entered");
+        CheckThePosition();
+        if (placementModeEnabled && _validPos)
+        {
+            if (_amountOfDevices[selectedPrefabIndex] == 0)
+                return;
+            
+            Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
+            GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
+            connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
+            _amountOfDevices[selectedPrefabIndex]--;
+            ClearPreview();
+            OnObjectPlaced?.Invoke();
+        }
+    }
+
+    private void CheckThePosition()
+    {
+        Debug.Log("CheckThePosition entered");
+        Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red, 10000);
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, math.INFINITY))
+        {
+
+            if (((1 << hit.collider.gameObject.layer) & placementLayer) != 0)
+            {
+                float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
+                _currentSurfaceNormal = hit.normal;
+                
+                if (!Mathf.Approximately(surfaceAngle, slopeAngle))
+                {
+                    Debug.Log("IncorrectAngle");
+                    _validPos = false;
+                    return;
+                }
+
+                Debug.Log("ValidPosition");
+                _validPos = true;
+                _currentPreviewPos = hit.point;
+            }
+            else
+            {
+                Debug.Log("InvalidPosition");
+                _validPos = false;
+            }
+        }
+        else
+        {
+            Debug.Log("No hit");
         }
     }
 

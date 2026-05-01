@@ -46,14 +46,8 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            IsPositioning = true;
-        }
-
         if (context.canceled)
         {
-            IsPositioning = false;
             OnObjectPlaced?.Invoke();
         }
     }
@@ -122,7 +116,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
         if (context.canceled)
             IsOrbiting = false;
     }
-
+    
     public void OnPointerPosition(InputAction.CallbackContext context)
     {
         OnScreenPosition = context.ReadValue<Vector2>();
