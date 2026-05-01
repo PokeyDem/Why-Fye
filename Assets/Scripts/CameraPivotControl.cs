@@ -9,9 +9,7 @@ public class CameraPivotControl : MonoBehaviour
     [SerializeField] private PlayerControls playerControls;
     [SerializeField] private float transitionSpeed;
     private Camera _camera;
-    private Vector3 _startPosition;
     private Vector3 _newPos;
-    private float _t;
     private bool _isTransitioning;
 
     private void Start()
@@ -33,16 +31,13 @@ public class CameraPivotControl : MonoBehaviour
     {
         if (_isTransitioning)
         {
-            transform.position = Vector3.Lerp(_startPosition, _newPos, _t);
-            _t += transitionSpeed * Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, _newPos, transitionSpeed * Time.deltaTime);
         }
 
-        if (Mathf.Approximately(transform.position.x, _newPos.x) && 
-            Mathf.Approximately(transform.position.y, _newPos.y) &&
-            Mathf.Approximately(transform.position.z, _newPos.z))
+        if (Vector3.SqrMagnitude(_newPos - transform.position) < 0.0001f)
         {
+            transform.position = _newPos;
             _isTransitioning = false;
-            _t = 0;
         }
     }
 
@@ -56,7 +51,6 @@ public class CameraPivotControl : MonoBehaviour
         {
             _newPos = hit.point;
             _isTransitioning = true;
-            _startPosition = transform.position;
         }
     }
 }
