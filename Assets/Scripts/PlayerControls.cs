@@ -18,6 +18,8 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     
     public event Action OnObjectPlaced;
 
+    public event Action OnCameraPivotChanged;
+
     private int _currentSlot = 0;
     
     private void OnEnable()
@@ -120,5 +122,11 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     public void OnPointerPosition(InputAction.CallbackContext context)
     {
         OnScreenPosition = context.ReadValue<Vector2>();
+    }
+
+    public void OnDoubleTap(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            OnCameraPivotChanged?.Invoke();
     }
 }

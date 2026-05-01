@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "DoubleTap",
+                    "type": "Button",
+                    "id": "22a20539-efcb-4f77-858f-72f88c22a2c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -196,6 +205,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "831b79b7-fe0d-4de4-9f7f-03cba9ce1a85",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "MultiTap(tapDelay=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DoubleTap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc4c6162-9660-41e0-92d2-f5e88c48714d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "MultiTap(tapDelay=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DoubleTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

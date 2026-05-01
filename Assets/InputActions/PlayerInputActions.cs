@@ -172,6 +172,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DoubleTap"",
+                    ""type"": ""Button"",
+                    ""id"": ""22a20539-efcb-4f77-858f-72f88c22a2c3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -284,6 +293,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PointerPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""831b79b7-fe0d-4de4-9f7f-03cba9ce1a85"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": ""MultiTap(tapDelay=0.1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleTap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc4c6162-9660-41e0-92d2-f5e88c48714d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""MultiTap(tapDelay=0.1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleTap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -301,6 +332,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerControl_Rotation = m_PlayerControl.FindAction("Rotation", throwIfNotFound: true);
         m_PlayerControl_CameraOrbitContact = m_PlayerControl.FindAction("CameraOrbitContact", throwIfNotFound: true);
         m_PlayerControl_PointerPosition = m_PlayerControl.FindAction("PointerPosition", throwIfNotFound: true);
+        m_PlayerControl_DoubleTap = m_PlayerControl.FindAction("DoubleTap", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -390,6 +422,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_Rotation;
     private readonly InputAction m_PlayerControl_CameraOrbitContact;
     private readonly InputAction m_PlayerControl_PointerPosition;
+    private readonly InputAction m_PlayerControl_DoubleTap;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerControl".
     /// </summary>
@@ -437,6 +470,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerControl/PointerPosition".
         /// </summary>
         public InputAction @PointerPosition => m_Wrapper.m_PlayerControl_PointerPosition;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerControl/DoubleTap".
+        /// </summary>
+        public InputAction @DoubleTap => m_Wrapper.m_PlayerControl_DoubleTap;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -490,6 +527,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PointerPosition.started += instance.OnPointerPosition;
             @PointerPosition.performed += instance.OnPointerPosition;
             @PointerPosition.canceled += instance.OnPointerPosition;
+            @DoubleTap.started += instance.OnDoubleTap;
+            @DoubleTap.performed += instance.OnDoubleTap;
+            @DoubleTap.canceled += instance.OnDoubleTap;
         }
 
         /// <summary>
@@ -528,6 +568,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PointerPosition.started -= instance.OnPointerPosition;
             @PointerPosition.performed -= instance.OnPointerPosition;
             @PointerPosition.canceled -= instance.OnPointerPosition;
+            @DoubleTap.started -= instance.OnDoubleTap;
+            @DoubleTap.performed -= instance.OnDoubleTap;
+            @DoubleTap.canceled -= instance.OnDoubleTap;
         }
 
         /// <summary>
@@ -631,5 +674,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPointerPosition(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DoubleTap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDoubleTap(InputAction.CallbackContext context);
     }
 }
