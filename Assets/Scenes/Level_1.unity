@@ -4180,6 +4180,7 @@ GameObject:
   - component: {fileID: 1498223409}
   - component: {fileID: 1498223410}
   - component: {fileID: 1498223411}
+  - component: {fileID: 1498223412}
   m_Layer: 0
   m_Name: CameraPivot
   m_TagString: Untagged
@@ -4215,7 +4216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3877e5bf159b7894c8badf71dddff0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 10
+  rotationSpeed: 7
   minVerticalAngle: -20
   maxVerticalAngle: 40
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
@@ -4233,6 +4234,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
   transitionSpeed: 10
+--- !u!114 &1498223412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498223408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e1b043027b5004f8b39b1f99f186b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoomSpeed: 0.006
+  minZoom: 1.15
+  maxZoom: 2.4
 --- !u!1 &1513350108
 GameObject:
   m_ObjectHideFlags: 0
