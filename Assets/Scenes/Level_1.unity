@@ -980,7 +980,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -1.14
+  near clip plane: -5.5
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -4215,7 +4215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3877e5bf159b7894c8badf71dddff0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 20
+  rotationSpeed: 10
   minVerticalAngle: -20
   maxVerticalAngle: 40
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
