@@ -7,10 +7,16 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(fileName = "Player Control", menuName = "Player Control/Player Control")]
 public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerControlActions
 {
+    [SerializeField] private float doubleTapTimeWindow = 0.5f;
+    [SerializeField] private float doubleTapDistanceTolerance = 0.05f;
+    
     [NonSerialized] public Vector2 LookDelta;
     [NonSerialized] public bool IsOrbiting;
     [NonSerialized] public Vector2 OnScreenPosition;
     [NonSerialized] public bool IsPositioning;
+    
+    [NonSerialized] private float _lastTapTime;
+    [NonSerialized] private Vector2 _lastTapPosition;
     
     private PlayerInputActions _playerInput;
     
@@ -126,7 +132,26 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnDoubleTap(InputAction.CallbackContext context)
     {
-        if (context.performed)
-            OnCameraPivotChanged?.Invoke();
+        if (context.started)
+        {
+            Debug.Log("Context started");
+            float maxDistancePixels = Screen.width * doubleTapDistanceTolerance;
+            
+            float timeSinceLastTap = Time.time - _lastTapTime;
+            float distance = Vector2.Distance(OnScreenPosition, _lastTapPosition);
+
+            if (timeSinceLastTap <= doubleTapTimeWindow && distance <= maxDistancePixels)
+            {
+                Debug.Log("Double tapped");
+                OnCameraPivotChanged?.Invoke();
+                _lastTapTime = 0f;
+            }
+            else
+            {
+                Debug.Log("Doublen't tapped: " + timeSinceLastTap + " | " + doubleTapTimeWindow);
+                _lastTapTime =  Time.time;
+                _lastTapPosition = OnScreenPosition;
+            }
+        }
     }
 }

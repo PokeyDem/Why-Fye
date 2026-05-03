@@ -146,7 +146,6 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void PlaceObjectNew()
     {
-        Debug.Log("PlaceObjectNew entered");
         CheckThePosition();
         if (placementModeEnabled && _validPos)
         {
@@ -164,7 +163,6 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void CheckThePosition()
     {
-        Debug.Log("CheckThePosition entered");
         Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
         Debug.DrawRay(ray.origin, ray.direction, Color.red, 10000);
         RaycastHit hit;
@@ -179,18 +177,15 @@ public class ObjectPlacementSystem : MonoBehaviour
                 
                 if (!Mathf.Approximately(surfaceAngle, slopeAngle))
                 {
-                    Debug.Log("IncorrectAngle");
                     _validPos = false;
                     return;
                 }
-
-                Debug.Log("ValidPosition");
+                
                 _validPos = true;
                 _currentPreviewPos = hit.point;
             }
             else
             {
-                Debug.Log("InvalidPosition");
                 _validPos = false;
             }
         }

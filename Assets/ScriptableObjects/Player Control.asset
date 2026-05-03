@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d5e54a301455f448fe062100f09ee4, type: 3}
   m_Name: Player Control
   m_EditorClassIdentifier: 
+  doubleTapTimeWindow: 0.2
+  doubleTapDistanceTolerance: 0.05
