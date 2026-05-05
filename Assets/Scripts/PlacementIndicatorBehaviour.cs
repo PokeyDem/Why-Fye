@@ -9,15 +9,13 @@ public class PlacementIndicatorBehaviour : MonoBehaviour
    [SerializeField] private float fillDuration;
    [SerializeField] private float fillStepAmount;
    [SerializeField] private Image indicator;
-   [SerializeField] private float indicatorShiftX;
-   [SerializeField] private float indicatorShiftY; 
 
    private float _fillAmount;
    private bool _isProgressing;
 
    public void StartFilling(Action onFinish, Vector2 position)
    {
-      indicator.transform.position = new Vector3(position.x + indicatorShiftX, position.y + indicatorShiftY);
+      indicator.transform.position = position;
       _isProgressing = true;
       StartCoroutine(Fill(onFinish));
    }
