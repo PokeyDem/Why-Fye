@@ -18,6 +18,8 @@ public class ObjectPlacementSystem : MonoBehaviour
     [SerializeField] private ConnectionsManager connectionsManager;
     [SerializeField] private PlayerControls playerControls;
     
+    [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
+    
     private List<Transform> _previewObjects = new List<Transform>();
     private Camera _camera;
 
@@ -31,7 +33,8 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        playerControls.OnObjectPlaced += PlaceObjectNew;
+        playerControls.OnStartPlacement += StartPlacingObject;
+        playerControls.OnStopPlacement += StopPlacingObject;
         playerControls.OnSlotSelected += SwitchIndex;
         PauseMenuManager.OnPause += StopPlacement;
         PauseMenuManager.OnResume += ResumePlacement;
@@ -39,7 +42,8 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        playerControls.OnObjectPlaced -= PlaceObjectNew;
+        playerControls.OnStartPlacement -= StartPlacingObject;
+        playerControls.OnStopPlacement -= StopPlacingObject;
         playerControls.OnSlotSelected -= SwitchIndex;
         PauseMenuManager.OnPause -= StopPlacement;
         PauseMenuManager.OnResume -= ResumePlacement;
@@ -66,14 +70,6 @@ public class ObjectPlacementSystem : MonoBehaviour
             _amountOfDevices.Add((int)deviceOnLevel.deviceType, deviceOnLevel.deviceAmount);
         }
         OnInitialization?.Invoke(_amountOfDevices);
-    }
-
-    private void Update()
-    {
-        if (playerControls.IsPositioning)
-        {
-            ShowObjectPreview();
-        }
     }
 
     private void ShowObjectPreview()
@@ -144,14 +140,24 @@ public class ObjectPlacementSystem : MonoBehaviour
         }
     }
 
-    private void PlaceObjectNew()
+    private void StartPlacingObject()
     {
         CheckThePosition();
+        if (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos)
+            return;
+        placementIndicator.StartFilling(PlaceObjectNew, playerControls.OnScreenPosition);
+    }
+
+    private void StopPlacingObject()
+    {
+        placementIndicator.StopFilling();
+    }
+
+    private void PlaceObjectNew()
+    {
+        
         if (placementModeEnabled && _validPos)
         {
-            if (_amountOfDevices[selectedPrefabIndex] == 0)
-                return;
-            
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);

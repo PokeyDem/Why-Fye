@@ -18,6 +18,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        tutorialGameObject.SetActive(true);
         objectPlacementSystem.StopPlacement();
         tutorialText.text = tutorialSteps[_currentStep].tutorialText;
         tutorialImage.sprite = tutorialSteps[_currentStep].tutorialSprite;

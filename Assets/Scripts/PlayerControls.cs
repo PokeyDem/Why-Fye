@@ -9,20 +9,24 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 {
     [SerializeField] private float doubleTapTimeWindow = 0.5f;
     [SerializeField] private float doubleTapDistanceTolerance = 0.05f;
+    [SerializeField] private float PlacementTapIndicationDelay = 0.2f;
+    [SerializeField] private float CancelPlacementOnMovementTreshold = 0.2f;
     
     [NonSerialized] public Vector2 LookDelta;
+    [NonSerialized] public Vector2 PreviousDelta;
     [NonSerialized] public bool IsOrbiting;
     [NonSerialized] public Vector2 OnScreenPosition;
-    [NonSerialized] public bool IsPositioning;
     
     [NonSerialized] private float _lastTapTime;
     [NonSerialized] private Vector2 _lastTapPosition;
+    [NonSerialized] private bool IsHolding;
     
     private PlayerInputActions _playerInput;
     
     public event Action<int> OnSlotSelected;
     
-    public event Action OnObjectPlaced;
+    public event Action OnStartPlacement;
+    public event Action OnStopPlacement;
 
     public event Action OnCameraPivotChanged;
 
@@ -36,7 +40,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     private void OnDisable()
     {
         IsOrbiting = false;
-        IsPositioning = false;
+        IsHolding = false;
         _playerInput.PlayerControl.Disable();
     }
     
@@ -54,9 +58,18 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
+        if (context.performed)
+        {
+            IsHolding = true;
+            Debug.Log("OnPlaced performed");
+            OnStartPlacement?.Invoke();
+        }
+
         if (context.canceled)
         {
-            OnObjectPlaced?.Invoke();
+            IsHolding = false;
+            Debug.Log("OnPlaced canceled");
+            OnStopPlacement?.Invoke();
         }
     }
 
@@ -112,14 +125,21 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     }
 
     public void OnRotation(InputAction.CallbackContext context)
-    { 
+    {
+        PreviousDelta = LookDelta;
         LookDelta = context.ReadValue<Vector2>();
+        Debug.Log(PreviousDelta + " | " + LookDelta + " | " + Vector2.SqrMagnitude(LookDelta - PreviousDelta));
+        
+        if (context.started && Vector2.SqrMagnitude(LookDelta - PreviousDelta) > CancelPlacementOnMovementTreshold)
+            OnStopPlacement?.Invoke();
     }
 
     public void OnCameraOrbitContact(InputAction.CallbackContext context)
     {
         if (context.started)
+        {
             IsOrbiting = true;
+        }
         
         if (context.canceled)
             IsOrbiting = false;
@@ -134,7 +154,6 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     {
         if (context.started)
         {
-            Debug.Log("Context started");
             float maxDistancePixels = Screen.width * doubleTapDistanceTolerance;
             
             float timeSinceLastTap = Time.time - _lastTapTime;
@@ -142,13 +161,11 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
             if (timeSinceLastTap <= doubleTapTimeWindow && distance <= maxDistancePixels)
             {
-                Debug.Log("Double tapped");
                 OnCameraPivotChanged?.Invoke();
                 _lastTapTime = 0f;
             }
             else
             {
-                Debug.Log("Doublen't tapped: " + timeSinceLastTap + " | " + doubleTapTimeWindow);
                 _lastTapTime =  Time.time;
                 _lastTapPosition = OnScreenPosition;
             }

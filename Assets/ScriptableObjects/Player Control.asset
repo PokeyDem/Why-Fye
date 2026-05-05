@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doubleTapTimeWindow: 0.2
   doubleTapDistanceTolerance: 0.05
+  PlacementTapIndicationDelay: 0.2
+  CancelPlacementOnMovementTreshold: 3.2
