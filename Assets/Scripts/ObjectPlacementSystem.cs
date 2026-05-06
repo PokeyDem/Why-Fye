@@ -72,39 +72,6 @@ public class ObjectPlacementSystem : MonoBehaviour
         OnInitialization?.Invoke(_amountOfDevices);
     }
 
-    private void ShowObjectPreview()
-    {
-        Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
-            
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, math.INFINITY))
-        {
-
-            if (((1 << hit.collider.gameObject.layer) & placementLayer) != 0)
-            {
-                float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
-                _currentSurfaceNormal = hit.normal;
-                Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
-                _previewObjects[selectedPrefabIndex].rotation = surfaceRotation;
-                
-                if (!Mathf.Approximately(surfaceAngle, slopeAngle))
-                {
-                    _validPos = false;
-                    return;
-                }
-            
-                _previewObjects[selectedPrefabIndex].position = hit.point;
-                _validPos = true;
-                _currentPreviewPos = hit.point;
-            }
-            else
-            {
-                _validPos = false;
-            }
-        }
-    }
-
     private void ClearPreview()
     {
         _previewObjects[selectedPrefabIndex].position = previewPrefabsIdlePos;
@@ -124,28 +91,12 @@ public class ObjectPlacementSystem : MonoBehaviour
         }
     }
 
-    private void PlaceObject()
-    {
-        if (placementModeEnabled && _validPos)
-        {
-            if (_amountOfDevices[selectedPrefabIndex] == 0)
-                return;
-            
-            Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
-            GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
-            connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
-            _amountOfDevices[selectedPrefabIndex]--;
-            ClearPreview();
-            OnObjectPlaced?.Invoke();
-        }
-    }
-
     private void StartPlacingObject()
     {
         CheckThePosition();
         if (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos)
             return;
-        placementIndicator.StartFilling(PlaceObjectNew, playerControls.OnScreenPosition);
+        placementIndicator.StartFilling(PlaceObject, playerControls.OnScreenPosition);
     }
 
     private void StopPlacingObject()
@@ -153,7 +104,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         placementIndicator.StopFilling();
     }
 
-    private void PlaceObjectNew()
+    private void PlaceObject()
     {
         
         if (placementModeEnabled && _validPos)
@@ -210,14 +161,6 @@ public class ObjectPlacementSystem : MonoBehaviour
             slopeAngle = 90;
         else
             slopeAngle = 0;
-    }
-
-    private void DisablePlacement()
-    {
-        foreach (var previewObject in _previewObjects)
-        {
-           previewObject.position = previewPrefabsIdlePos;
-        }
     }
 
     public void StopPlacement()
