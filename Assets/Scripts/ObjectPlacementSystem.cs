@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class ObjectPlacementSystem : MonoBehaviour
 {
@@ -20,13 +22,12 @@ public class ObjectPlacementSystem : MonoBehaviour
     
     [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
     
-    private List<Transform> _previewObjects = new List<Transform>();
     private Camera _camera;
 
     private bool _validPos;
     private Vector3 _currentPreviewPos;
     private Vector3 _currentSurfaceNormal;
-    private Dictionary<int, int> _amountOfDevices =  new Dictionary<int,int>();
+    private Dictionary<int, int> _amountOfDevices = new Dictionary<int,int>();
     
     public static event Action<Dictionary<int, int>> OnInitialization;
     public static event Action OnObjectPlaced;
@@ -52,7 +53,6 @@ public class ObjectPlacementSystem : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
-        InstantiatePreviewObjects();
     }
 
     public void Initialize(LevelData levelData)
@@ -72,30 +72,16 @@ public class ObjectPlacementSystem : MonoBehaviour
         OnInitialization?.Invoke(_amountOfDevices);
     }
 
-    private void ClearPreview()
-    {
-        _previewObjects[selectedPrefabIndex].position = previewPrefabsIdlePos;
-        _validPos = false;
-    }
-
-    private void InstantiatePreviewObjects()
-    {
-        if (prefabCatalog.allAvailableDevices.Count > 0)
-        {
-            foreach (var prefab in prefabCatalog.allAvailableDevices)
-            {
-                GameObject previewPrefab =  Instantiate(prefab.previewPrefab);
-                previewPrefab.transform.position = previewPrefabsIdlePos;
-                _previewObjects.Add(previewPrefab.transform);
-            }
-        }
-    }
-
     private void StartPlacingObject()
     {
+        if (IsPointerOverUI())
+            return;
+        
         CheckThePosition();
+        
         if (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos)
             return;
+        
         placementIndicator.StartFilling(PlaceObject, playerControls.OnScreenPosition);
     }
 
@@ -113,7 +99,6 @@ public class ObjectPlacementSystem : MonoBehaviour
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
             _amountOfDevices[selectedPrefabIndex]--;
-            ClearPreview();
             OnObjectPlaced?.Invoke();
         }
     }
@@ -146,15 +131,29 @@ public class ObjectPlacementSystem : MonoBehaviour
                 _validPos = false;
             }
         }
-        else
+    }
+    
+    private bool IsPointerOverUI()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return true;
+        
+        if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
         {
-            Debug.Log("No hit");
+            foreach (var touch in Touchscreen.current.touches)
+            {
+                if (touch.isInProgress && EventSystem.current.IsPointerOverGameObject(touch.touchId.ReadValue()))
+                {
+                    return true;
+                }
+            }
         }
+
+        return false;
     }
 
     private void SwitchIndex(int newIndex)
     {
-        _previewObjects[selectedPrefabIndex].position = previewPrefabsIdlePos;
         selectedPrefabIndex = newIndex;
 
         if (prefabCatalog.allAvailableDevices[selectedPrefabIndex].onlyOnWalls)
