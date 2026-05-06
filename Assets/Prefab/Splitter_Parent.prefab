@@ -87,7 +87,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.113773346
+        value: 0.07167435
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -95,8 +95,8 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.95053697
-        value: 0.046107493
+        time: 1
+        value: 0.15838826
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -140,7 +140,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 1
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 3, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
@@ -161,8 +161,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   tileResolution: 1
-  maxTilingDistance: 5
-  _receiverTarget: {fileID: 0}
+  receiverTarget: {fileID: 0}
+  debugLogField: 
 --- !u!1 &1923322704836487623
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +337,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.113773346
+        value: 0.07167435
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -345,8 +345,8 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.95053697
-        value: 0.046107493
+        time: 1
+        value: 0.15838826
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -390,7 +390,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 1
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 3, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
@@ -411,8 +411,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   tileResolution: 1
-  maxTilingDistance: 5
-  _receiverTarget: {fileID: 0}
+  receiverTarget: {fileID: 0}
+  debugLogField: 
 --- !u!1 &7056105790714365846
 GameObject:
   m_ObjectHideFlags: 0

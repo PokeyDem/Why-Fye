@@ -7,8 +7,8 @@ public class ConnectionStream : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
     [SerializeField] private float tileResolution = 1f;
-    [SerializeField] private float maxTilingDistance = 5f;
-    [SerializeField] private Transform _receiverTarget;
+    [SerializeField] private Transform receiverTarget;
+    [SerializeField, TextArea] private string debugLogField;
  
     private LineRenderer _lineRenderer;
     private Transform _mountPoint;
@@ -26,7 +26,7 @@ public class ConnectionStream : MonoBehaviour
 
     private void Update()
     {
-        if (_receiverTarget != null)
+        if (receiverTarget != null)
         {
             UpdateLinePositions();
             AnimateStripes();
@@ -44,9 +44,11 @@ public class ConnectionStream : MonoBehaviour
         _lineRenderer.SetPosition(0, _mountPoint.position);
         _lineRenderer.SetPosition(1, _targetMountPoint.position);
         
-        float distance = Vector3.Distance(transform.position, _receiverTarget.position);
+        float distance = Vector3.Distance(transform.position, receiverTarget.position);
         
-        _lineMaterial.mainTextureScale = new Vector2((maxTilingDistance - distance) * tileResolution, 1f);
+        // _lineMaterial.mainTextureScale = new Vector2((maxTilingDistance - distance) * tileResolution, 1f);
+        
+        debugLogField = $"Distance: {distance}";
     }
 
     private void AnimateStripes()
@@ -57,18 +59,18 @@ public class ConnectionStream : MonoBehaviour
 
     public void ConnectToReceiver(Transform receiver)
     {
-        _receiverTarget = receiver;
+        receiverTarget = receiver;
         _targetMountPoint = receiver.gameObject.transform.GetChild(0).transform;
     }
 
     public void CloseConnection()
     {
-        _receiverTarget = null;
+        receiverTarget = null;
         _lineRenderer.enabled = false;
     }
 
     public bool IsConnected()
     {
-        return _receiverTarget != null;
+        return receiverTarget != null;
     }
 }

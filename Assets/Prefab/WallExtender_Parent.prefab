@@ -254,7 +254,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.113773346
+        value: 0.07167435
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -262,8 +262,8 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.95053697
-        value: 0.046107493
+        time: 1
+        value: 0.15838826
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -307,7 +307,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 1
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 3, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
@@ -326,10 +326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e123aafd40fbd184b9bab913dedf0922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1.5
   tileResolution: 1
-  maxTilingDistance: 5
-  _receiverTarget: {fileID: 0}
+  receiverTarget: {fileID: 0}
+  debugLogField: 
 --- !u!4 &8870487724049919392 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 59658b85d3695aa47ac53630aea99c55,
