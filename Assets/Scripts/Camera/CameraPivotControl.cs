@@ -43,6 +43,9 @@ public class CameraPivotControl : MonoBehaviour
 
     private void ChangePivotPosition()
     {
+        if (PointerOverUIDetector.Instance.IsPointerOverUI()) 
+            return;
+        
         Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
             
         RaycastHit hit;

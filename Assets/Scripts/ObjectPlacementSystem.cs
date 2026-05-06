@@ -74,7 +74,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void StartPlacingObject()
     {
-        if (IsPointerOverUI())
+        if (PointerOverUIDetector.Instance.IsPointerOverUI())
             return;
         
         CheckThePosition();
@@ -131,25 +131,6 @@ public class ObjectPlacementSystem : MonoBehaviour
                 _validPos = false;
             }
         }
-    }
-    
-    private bool IsPointerOverUI()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return true;
-        
-        if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
-        {
-            foreach (var touch in Touchscreen.current.touches)
-            {
-                if (touch.isInProgress && EventSystem.current.IsPointerOverGameObject(touch.touchId.ReadValue()))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     private void SwitchIndex(int newIndex)

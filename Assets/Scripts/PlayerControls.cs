@@ -128,7 +128,6 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     {
         PreviousDelta = LookDelta;
         LookDelta = context.ReadValue<Vector2>();
-        Debug.Log(PreviousDelta + " | " + LookDelta + " | " + Vector2.SqrMagnitude(LookDelta - PreviousDelta));
         
         if (context.started && Vector2.SqrMagnitude(LookDelta - PreviousDelta) > CancelPlacementOnMovementTreshold)
             OnStopPlacement?.Invoke();
