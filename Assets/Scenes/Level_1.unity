@@ -4873,18 +4873,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9310833
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: -0.008
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.1793
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
@@ -5134,8 +5139,6 @@ MonoBehaviour:
   fillDuration: 0.5
   fillStepAmount: 0.01
   indicator: {fileID: 1154227423}
-  indicatorShiftX: -60
-  indicatorShiftY: 60
 --- !u!1 &1821121689
 GameObject:
   m_ObjectHideFlags: 0
