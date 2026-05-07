@@ -61,14 +61,12 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
         if (context.performed)
         {
             IsHolding = true;
-            Debug.Log("OnPlaced performed");
             OnStartPlacement?.Invoke();
         }
 
         if (context.canceled)
         {
             IsHolding = false;
-            Debug.Log("OnPlaced canceled");
             OnStopPlacement?.Invoke();
         }
     }

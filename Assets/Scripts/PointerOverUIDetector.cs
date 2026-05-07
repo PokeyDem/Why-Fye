@@ -28,7 +28,6 @@ public class PointerOverUIDetector : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("Over UI - PC");
             return true;
         }
         
@@ -38,12 +37,10 @@ public class PointerOverUIDetector : MonoBehaviour
             {
                 if (touch.isInProgress && EventSystem.current.IsPointerOverGameObject(touch.touchId.ReadValue()))
                 {
-                    Debug.Log("Over UI - Mobile");
                     return true;
                 }
             }
         }
-        Debug.Log("!Over UI");
         return false;
     }
 }
