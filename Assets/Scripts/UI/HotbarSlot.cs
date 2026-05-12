@@ -28,7 +28,6 @@ public class HotbarSlot : MonoBehaviour
         if (counter == 0)
             return;
         
-        Debug.Log("DecreaseCounter (Hud) called");
         counter--;
         counterTextField.text = "x" + counter;
     }

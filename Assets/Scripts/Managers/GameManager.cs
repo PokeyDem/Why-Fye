@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour
 
     private bool _allLevelsCompleted = false;
 
+    private int _levelIndex;
+
+    private bool _levelLoaded;
+
+    private int _targetLevelToLoad;
+
     private void Awake()
     {
         if (Instance == null)
@@ -93,5 +99,15 @@ public class GameManager : MonoBehaviour
     public bool GetLoadedFromLevel()
     {
         return _loadedFromLevel;
+    }
+
+    public void SetTargetLevel(int index)
+    {
+        _targetLevelToLoad = index;
+    }
+
+    public int GetTargetLevel()
+    {
+        return _targetLevelToLoad;
     }
 }

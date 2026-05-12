@@ -9,6 +9,7 @@ public class ConnectionsManager : MonoBehaviour
 {
     [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
     [SerializeField] private float sensorHeightOffset;
+    [SerializeField] private string receiverTagName; 
 
     public static Action OnCompletion;
     public void LinkNewDevice(GameObject newDevice, DeviceType deviceType)
@@ -45,6 +46,29 @@ public class ConnectionsManager : MonoBehaviour
             }
             
             PropagateSignal(newDeviceData);
+        }
+    }
+
+    public void FindNewReceivers()
+    {
+        ClearReceivers();
+        
+        GameObject[] receivers = GameObject.FindGameObjectsWithTag(receiverTagName);
+        
+        Debug.Log("Found " + receivers.Length + " receivers");
+
+        foreach (GameObject receiver in receivers)
+        {
+            allPlacedDevices.Add(new PlacedDeviceData(receiver, DeviceType.Receiver));
+        }
+    }
+
+    private void ClearReceivers()
+    {
+        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        {
+            if (placedDeviceData.deviceType == DeviceType.Receiver)
+                allPlacedDevices.Remove(placedDeviceData);
         }
     }
 
@@ -156,22 +180,6 @@ public class ConnectionsManager : MonoBehaviour
             }
         }
         OnCompletion?.Invoke();
-    }
-
-    private float IsDeviceVisible(GameObject device, GameObject target)
-    {
-        Ray ray = new Ray(device.transform.position, target.transform.position - device.transform.position);
-        RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider.gameObject == target)
-                return hit.distance;
-            else
-                return -1f;
-        }
-        
-        return -1f;
     }
 
     public void ResetDevices()

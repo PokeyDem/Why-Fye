@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
@@ -11,18 +12,34 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject creditsMenuElements;
     [SerializeField] private GameObject controlsMenuElements;
     [SerializeField] private List<Button> levelButtons = new List<Button>();
+    [SerializeField] private string baseLevelSceneName;
+    [SerializeField] private SceneTransitionManager sceneTransitionManager;
 
     private void Start()
     {
-        GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gameManager.InitButtons(levelButtons);
-        gameManager.ValidateLevelButtons();
-        if (gameManager.GetLoadedFromLevel())
+        GameManager.Instance.InitButtons(levelButtons);
+        GameManager.Instance.ValidateLevelButtons();
+        if (GameManager.Instance.GetLoadedFromLevel())
         {
             SwitchToLevelMenu();
         }
     }
+    
+    public void OnLevelButtonClick(int levelIndex)
+    {
+        GameManager.Instance.SetTargetLevel(levelIndex);
+        StartCoroutine(sceneTransitionManager.PlayFadeOut());
+        //TODO Add TransitionManager and fade in / fade out
+        //TODO Then assign to the buttons *Eventually create a script for that
+        StartCoroutine(LoadLevel());
+    }
 
+    private IEnumerator LoadLevel()
+    {
+        yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
+        SceneManager.LoadSceneAsync(baseLevelSceneName);
+    }
+    
     private void SwitchToMainMenu()
     {
         levelMenuElements.SetActive(false);

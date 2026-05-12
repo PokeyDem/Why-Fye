@@ -12,34 +12,16 @@ public class SceneTransitionManager : MonoBehaviour
 
     private bool _isTransitioning;
 
-    private void Start()
+    public IEnumerator PlayFadeIn()
     {
-        StartCoroutine(PlayFadeOutAndSwitch());
-    }
-
-    public void MakeTransition(Action switchScene)
-    {
-        StartCoroutine(PlayFadeInAndSwitch(switchScene));
-    }
-    public IEnumerator PlayFadeInAndSwitch(Action switchScene)
-    {
-        _isTransitioning = true;
-        
-        yield return StartCoroutine(ScaleRoutine(maxScale, minScale));
-        switchScene.Invoke();
-        
-        _isTransitioning = false;
-    }
-    
-    public IEnumerator PlayFadeOutAndSwitch()
-    {
-        _isTransitioning = true;
-        
+        mask.gameObject.SetActive(true);
         yield return StartCoroutine(ScaleRoutine(minScale, maxScale));
-
-        _isTransitioning = false;
     }
-    
+
+    public IEnumerator PlayFadeOut()
+    {
+        yield return StartCoroutine(ScaleRoutine(maxScale, minScale));
+    }
 
     private IEnumerator ScaleRoutine(Vector3 start, Vector3 end)
     {

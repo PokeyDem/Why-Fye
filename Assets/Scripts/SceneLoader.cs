@@ -6,14 +6,43 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField] SceneTransitionManager sceneTransitionManager;
-    public void LoadLevel(int index)
+    [SerializeField] private SceneTransitionManager sceneTransitionManager;
+    [SerializeField] private String baseLevelName;
+    [SerializeField] private String levelName;
+    [SerializeField] private String mainMenuLevelName;
+
+    private int _currentSceneIndex;
+    public void SwitchLevelEnv(int index, Action onCleanUp, Action onInitialization, bool isInitialBoot)
     {
-        sceneTransitionManager.MakeTransition(() => { SceneManager.LoadSceneAsync("Level_" + index);});
+        StartCoroutine(LoadSequenceCoroutine(index, onCleanUp, onInitialization, isInitialBoot));
     }
 
-    public void LoadMainMenu()
+    private IEnumerator LoadSequenceCoroutine(int index, Action onCleanUp, Action onInitialization, bool isInitialBoot)
     {
-        sceneTransitionManager.MakeTransition(() => { SceneManager.LoadSceneAsync("MainMenu");});
+        if (!isInitialBoot)
+        {
+            yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
+        }
+
+        if (index-1 > 0)
+        {
+            onCleanUp?.Invoke();
+            string sceneToUnload = levelName + (index-1) + "_Env";
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneToUnload);
+            yield return unloadOp;
+        }
+        
+        string sceneToLoad = levelName + index + "_Env";
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+
+        while (!loadOp.isDone)
+        {
+            yield return null;
+        }
+        
+        onInitialization?.Invoke();
+        
+        yield return StartCoroutine(sceneTransitionManager.PlayFadeIn());
     }
+  
 }

@@ -12,8 +12,7 @@ public class LevelManager : MonoBehaviour
     private ConnectionsManager _connectionsManager;
     private HUDManager _hudManager;
     private SceneLoader _sceneLoader;
-    private GameManager _gameManager;
-    
+   
     private void OnEnable()
     {
         ConnectionsManager.OnCompletion += ReceiversConnected;
@@ -30,8 +29,7 @@ public class LevelManager : MonoBehaviour
         _connectionsManager = FindObjectOfType<ConnectionsManager>();
         _hudManager = FindObjectOfType<HUDManager>();
         _sceneLoader = FindObjectOfType<SceneLoader>();
-        _objectPlacementSystem.Initialize(levelsData.levelsData[level]);
-        _gameManager = FindObjectOfType<GameManager>();
+        _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, true);
     }
 
     private void ReceiversConnected()
@@ -39,11 +37,23 @@ public class LevelManager : MonoBehaviour
         _hudManager.ShowCompleteButton();
     }
 
-    public void OnCompleteLevel()
+    public void OnCompleteLevelClick()
     {
-        _gameManager.MarkAsCompleted(level);
-        _gameManager.SetLoadedFromLevel(true);
-        GoToMainMenu();
+        GameManager.Instance.MarkAsCompleted(level);
+        level++;
+        _sceneLoader.SwitchLevelEnv(level+1, CleanUpLevel, InitializeNewLevel, false);
+    }
+
+    private void InitializeNewLevel()
+    {
+        _connectionsManager.FindNewReceivers();
+        _objectPlacementSystem.Initialize(levelsData.levelsData[level]);
+    }
+
+    private void CleanUpLevel()
+    {
+        _connectionsManager.ResetDevices();
+        _hudManager.HideCompleteButton();
     }
 
     public void ResetLevel()
@@ -52,9 +62,5 @@ public class LevelManager : MonoBehaviour
         _objectPlacementSystem.ResetDevicesAmount();
         _hudManager.HideCompleteButton();
     }
-
-    public void GoToMainMenu()
-    {
-        _sceneLoader.LoadMainMenu();
-    }
+    
 }
