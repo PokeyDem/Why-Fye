@@ -12,12 +12,6 @@ public class PauseMenuManager : MonoBehaviour{
 
     public static event Action OnPause;
     public static event Action OnResume;
-    
-    private void Update(){
-        // if (Input.GetKeyDown(KeyCode.Escape)){
-        //     EscPressed();
-        // } 
-    }
 
     public void EscPressed(){
         if (_isPaused)
@@ -43,7 +37,7 @@ public class PauseMenuManager : MonoBehaviour{
 
     public void OnExitToMenuButtonClick(){
         Resume();
-        // _levelManager.OnExitToMainMenuClick();
+        _levelManager.OnExitToMainMenuClick();
     }
  
 }

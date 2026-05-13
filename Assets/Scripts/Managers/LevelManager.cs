@@ -62,5 +62,10 @@ public class LevelManager : MonoBehaviour
         _objectPlacementSystem.ResetDevicesAmount();
         _hudManager.HideCompleteButton();
     }
+
+    public void OnExitToMainMenuClick()
+    {
+        _sceneLoader.LoadMainMenuLevel();
+    }
     
 }

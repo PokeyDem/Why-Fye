@@ -17,6 +17,11 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadSequenceCoroutine(index, onCleanUp, onInitialization, isInitialBoot));
     }
 
+    public void LoadMainMenuLevel()
+    {
+        StartCoroutine(LoadMainMenuSequence());
+    }
+
     private IEnumerator LoadSequenceCoroutine(int index, Action onCleanUp, Action onInitialization, bool isInitialBoot)
     {
         if (!isInitialBoot)
@@ -41,6 +46,20 @@ public class SceneLoader : MonoBehaviour
         }
         
         onInitialization?.Invoke();
+        
+        yield return StartCoroutine(sceneTransitionManager.PlayFadeIn());
+    }
+
+    private IEnumerator LoadMainMenuSequence()
+    {
+        yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
+        
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(mainMenuLevelName, LoadSceneMode.Single);
+
+        while (!loadOp.isDone)
+        {
+            yield return null;
+        }
         
         yield return StartCoroutine(sceneTransitionManager.PlayFadeIn());
     }

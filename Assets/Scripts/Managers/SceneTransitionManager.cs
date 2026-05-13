@@ -15,6 +15,7 @@ public class SceneTransitionManager : MonoBehaviour
     public IEnumerator PlayFadeIn()
     {
         mask.gameObject.SetActive(true);
+        mask.rectTransform.localScale = minScale;
         yield return StartCoroutine(ScaleRoutine(minScale, maxScale));
     }
 

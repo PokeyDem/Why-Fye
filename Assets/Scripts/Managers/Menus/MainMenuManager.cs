@@ -17,6 +17,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(sceneTransitionManager.PlayFadeIn());
         GameManager.Instance.InitButtons(levelButtons);
         GameManager.Instance.ValidateLevelButtons();
         if (GameManager.Instance.GetLoadedFromLevel())
@@ -29,8 +30,6 @@ public class MainMenuManager : MonoBehaviour
     {
         GameManager.Instance.SetTargetLevel(levelIndex);
         StartCoroutine(sceneTransitionManager.PlayFadeOut());
-        //TODO Add TransitionManager and fade in / fade out
-        //TODO Then assign to the buttons *Eventually create a script for that
         StartCoroutine(LoadLevel());
     }
 
