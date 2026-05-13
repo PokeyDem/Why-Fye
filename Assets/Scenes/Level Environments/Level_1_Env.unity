@@ -96,9 +96,9 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 63c4800bb0288214cbccf3fb29810ece,
+  m_LightingDataAsset: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 98c593bd7f254dd4db8f3da083e7c76a,
     type: 2}
-  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -191,6 +191,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level_1_OuterWall
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8eb47a1e045c0fb44862da2b5ed812fd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -274,6 +279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ff781c11fab9744418129a181712cf80,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -381,6 +391,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shelf (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: efcffa89c81736b468cbbdd01c45a7d9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -448,6 +463,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Plant
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 071af55a3902f5648b9c900e7f7e005f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -558,6 +578,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 071af55a3902f5648b9c900e7f7e005f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -626,6 +651,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shelf
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: efcffa89c81736b468cbbdd01c45a7d9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -647,7 +677,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4175f5eb714a0994e829541a519af401,
         type: 3}
@@ -703,6 +733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4175f5eb714a0994e829541a519af401,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -809,6 +844,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_1_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87d5804aa946fac41a3cfe422d9550fc,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
