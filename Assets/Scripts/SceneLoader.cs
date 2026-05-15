@@ -29,7 +29,7 @@ public class SceneLoader : MonoBehaviour
             yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
         }
 
-        if (index-1 > 0)
+        if (index-1 > 0 && !isInitialBoot)
         {
             onCleanUp?.Invoke();
             string sceneToUnload = levelName + (index-1) + "_Env";

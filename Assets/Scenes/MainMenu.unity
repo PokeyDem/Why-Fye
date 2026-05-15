@@ -703,6 +703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 306728013}
   - component: {fileID: 306728014}
+  - component: {fileID: 306728015}
   m_Layer: 0
   m_Name: MainMenuManager
   m_TagString: Untagged
@@ -737,6 +738,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9205b2df1745149a777af22c3fb407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseLevelSceneName: Level_Base
+  sceneTransitionManager: {fileID: 705482944}
+  mainMenuUIManager: {fileID: 306728015}
+--- !u!114 &306728015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306728012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 783bf5c42b0b38941a47b2d59c224afa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   levelMenuElements: {fileID: 1475561180}
   mainManuElements: {fileID: 205501182}
   creditsMenuElements: {fileID: 1670120471}
@@ -748,8 +764,6 @@ MonoBehaviour:
   - {fileID: 1644323819}
   - {fileID: 1895693679}
   - {fileID: 2097929322}
-  baseLevelSceneName: Level_Base
-  sceneTransitionManager: {fileID: 705482944}
 --- !u!1 &327811055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1391,6 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fa4767acd9abe42a74b2a947a85d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  completedLevels: 
   levelButtons:
   - {fileID: 967165229}
   - {fileID: 1309323499}
@@ -2463,9 +2478,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadLevel
+      - m_Target: {fileID: 306728014}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: OnLevelButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3969,9 +3984,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadLevel
+      - m_Target: {fileID: 306728014}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: OnLevelButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4625,9 +4640,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadLevel
+      - m_Target: {fileID: 306728014}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: OnLevelButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5510,9 +5525,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadLevel
+      - m_Target: {fileID: 306728014}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: OnLevelButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6221,9 +6236,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadLevel
+      - m_Target: {fileID: 306728014}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: OnLevelButtonClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

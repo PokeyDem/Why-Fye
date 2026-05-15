@@ -7,18 +7,14 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private GameObject levelMenuElements;
-    [SerializeField] private GameObject mainManuElements;
-    [SerializeField] private GameObject creditsMenuElements;
-    [SerializeField] private GameObject controlsMenuElements;
-    [SerializeField] private List<Button> levelButtons = new List<Button>();
     [SerializeField] private string baseLevelSceneName;
     [SerializeField] private SceneTransitionManager sceneTransitionManager;
+    [SerializeField] private MainMenuUIManager mainMenuUIManager;
 
     private void Start()
     {
         StartCoroutine(sceneTransitionManager.PlayFadeIn());
-        GameManager.Instance.InitButtons(levelButtons);
+        GameManager.Instance.InitButtons(mainMenuUIManager.GetLevelButtons());
         GameManager.Instance.ValidateLevelButtons();
         if (GameManager.Instance.GetLoadedFromLevel())
         {
@@ -41,28 +37,26 @@ public class MainMenuManager : MonoBehaviour
     
     private void SwitchToMainMenu()
     {
-        levelMenuElements.SetActive(false);
-        creditsMenuElements.SetActive(false);
-        controlsMenuElements.SetActive(false);
-        mainManuElements.SetActive(true);
+        mainMenuUIManager.DisableAllSubMenus();
+        mainMenuUIManager.EnableMainMenuElements();
     }
 
     public void SwitchToLevelMenu()
     {
-        mainManuElements.SetActive(false);
-        levelMenuElements.SetActive(true);
+        mainMenuUIManager.DisableMainMenuElements();
+        mainMenuUIManager.EnableLevelMenuElements();
     }
 
     public void SwitchToCreditsMenu()
     {
-        mainManuElements.SetActive(false);
-        creditsMenuElements.SetActive(true);
+        mainMenuUIManager.DisableMainMenuElements();
+        mainMenuUIManager.EnableCreditsMenuElements();
     }
 
     public void SwitchToControlsMenu()
     {
-        mainManuElements.SetActive(false);
-        controlsMenuElements.SetActive(true);
+        mainMenuUIManager.DisableMainMenuElements();
+        mainMenuUIManager.EnableControlsMenuElements();
     }
 
     public void OnStartButtonClick()

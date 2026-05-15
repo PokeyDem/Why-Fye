@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void InitButtons(List<Button> buttons)
     {
-        levelButtons =  buttons;
+        levelButtons = buttons;
     }
 
     public void SetLoadedFromLevel(bool loaded)
