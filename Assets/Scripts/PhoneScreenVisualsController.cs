@@ -16,6 +16,7 @@ public class PhoneScreenVisualsController : MonoBehaviour
 
     private int _customFloatID;
     private int _customColorID;
+    private bool _isConnected;
 
     private void Start()
     {
@@ -30,8 +31,9 @@ public class PhoneScreenVisualsController : MonoBehaviour
         Material[] allMaterials = _renderer.materials;
         
         allMaterials[screenMaterialIndex].SetColor(_customColorID, connectedColor);
-        
-        StopCoroutine(FlashNoConnectionImage());
+
+        _isConnected = true;
+        noConnectionImage.SetActive(false);
     }
 
     public void DisconnectDevice()
@@ -41,11 +43,12 @@ public class PhoneScreenVisualsController : MonoBehaviour
         allMaterials[screenMaterialIndex].SetColor(_customColorID, disconnectedColor);
 
         StartCoroutine(FlashNoConnectionImage());
+        _isConnected = false;
     }
 
     private IEnumerator FlashNoConnectionImage()
     {
-        while (true)
+        while (!_isConnected)
         {
             yield return new WaitForSeconds(nextFlashDelay);
             noConnectionImage.SetActive(!noConnectionImage.activeSelf);
