@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Dictionary<int, bool> completedLevels = new Dictionary<int, bool>();
+    [SerializeField] private List<bool> completedLevels;
     [SerializeField] private List<Button> levelButtons = new List<Button>();
     [SerializeField] private Color activeColor;
     [SerializeField] private Color lockedColor;
@@ -41,9 +41,9 @@ public class GameManager : MonoBehaviour
     
     private void Initialize()
     {
-        for (int i = 0; i < levelButtons.Count; i++)
+        foreach (Button button in levelButtons)
         {
-            completedLevels.Add(i, false);
+            completedLevels.Add(false);
         }
 
         _isInitialized = true;
