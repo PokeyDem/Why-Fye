@@ -81,17 +81,21 @@ public class ConnectionsManager : MonoBehaviour
         
         int availableSlots = newDeviceData.maxOutgoingConnections - newDeviceData.sendingTo.Count;
         if (availableSlots <= 0) return;
-        
-        List<PlacedDeviceData> validConnections = FindValidConnections(newDeviceData.deviceObject.transform);
-        validConnections = validConnections.OrderBy(d => 
-            Vector3.Distance(newDeviceData.deviceObject.transform.position, d.deviceObject.transform.position)).ToList();
-        
-        PlacedDeviceData nextReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
 
-        if (nextReceiver != null)
+        while (availableSlots > 0)
         {
-            AssignConnection(newDeviceData, nextReceiver);
-            PropagateSignal(nextReceiver);
+            List<PlacedDeviceData> validConnections = FindValidConnections(newDeviceData.deviceObject.transform);
+            validConnections = validConnections.OrderBy(d => 
+                Vector3.Distance(newDeviceData.deviceObject.transform.position, d.deviceObject.transform.position)).ToList();
+        
+            PlacedDeviceData nextReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
+
+            if (nextReceiver != null)
+            {
+                AssignConnection(newDeviceData, nextReceiver);
+                PropagateSignal(nextReceiver);
+            }
+            availableSlots--;
         }
         
     }
