@@ -33,7 +33,6 @@ public class PhoneScreenVisualsController : MonoBehaviour
         allMaterials[screenMaterialIndex].SetColor(_customColorID, connectedColor);
 
         _isConnected = true;
-        noConnectionImage.SetActive(false);
     }
 
     public void DisconnectDevice()
@@ -53,5 +52,6 @@ public class PhoneScreenVisualsController : MonoBehaviour
             yield return new WaitForSeconds(nextFlashDelay);
             noConnectionImage.SetActive(!noConnectionImage.activeSelf);
         }
+        noConnectionImage.SetActive(false);
     }
 }

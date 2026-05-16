@@ -54,8 +54,6 @@ public class ConnectionsManager : MonoBehaviour
         ClearReceivers();
         
         GameObject[] receivers = GameObject.FindGameObjectsWithTag(receiverTagName);
-        
-        Debug.Log("Found " + receivers.Length + " receivers");
 
         foreach (GameObject receiver in receivers)
         {

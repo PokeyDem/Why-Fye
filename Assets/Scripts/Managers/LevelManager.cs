@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private LevelDataCatalog levelsData;
-    [SerializeField] private int level;
+    [SerializeField] private int level = -1;
     [SerializeField] private HUDManager hudManager;
     private ObjectPlacementSystem _objectPlacementSystem;
     private ConnectionsManager _connectionsManager;
@@ -29,6 +29,8 @@ public class LevelManager : MonoBehaviour
         _connectionsManager = FindObjectOfType<ConnectionsManager>();
         _hudManager = FindObjectOfType<HUDManager>();
         _sceneLoader = FindObjectOfType<SceneLoader>();
+        level = GameManager.Instance.GetTargetLevel();
+        Debug.Log("Got the target level on start: level: " + level);
         _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, true);
     }
 
@@ -39,15 +41,23 @@ public class LevelManager : MonoBehaviour
 
     public void OnCompleteLevelClick()
     {
-        GameManager.Instance.MarkAsCompleted(level);
+        GameManager.Instance.MarkAsCompleted(level-1);
         level++;
-        _sceneLoader.SwitchLevelEnv(level+1, CleanUpLevel, InitializeNewLevel, false);
+        _sceneLoader.SwitchLevelEnv(level, CleanUpLevel, InitializeNewLevel, false);
     }
 
     private void InitializeNewLevel()
     {
+        Debug.Log("Initializing LevelManager: level: " + level);
+
+        if (level == -1)
+        {
+            level = GameManager.Instance.GetTargetLevel();
+            Debug.Log("Initializing Asked for level: level: " + level);
+        }
+        
         _connectionsManager.FindNewReceivers();
-        _objectPlacementSystem.Initialize(levelsData.levelsData[level]);
+        _objectPlacementSystem.Initialize(levelsData.levelsData[level-1]);
     }
 
     private void CleanUpLevel()
@@ -65,6 +75,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnExitToMainMenuClick()
     {
+        level = -1;
         _sceneLoader.LoadMainMenuLevel();
     }
     

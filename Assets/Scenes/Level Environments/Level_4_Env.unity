@@ -247,10 +247,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605949085664231831, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Receiver
+      objectReference: {fileID: 0}
     - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
       propertyPath: m_Name
       value: NPC_TikToker (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4582917142055358569, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
@@ -498,10 +508,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605949085664231831, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Receiver
+      objectReference: {fileID: 0}
     - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
       propertyPath: m_Name
       value: NPC_TikToker (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4582917142055358569, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
@@ -1068,10 +1088,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605949085664231831, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Receiver
+      objectReference: {fileID: 0}
     - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
       propertyPath: m_Name
       value: NPC_TikToker (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4582917142055358569, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
@@ -1141,10 +1171,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605949085664231831, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Receiver
+      objectReference: {fileID: 0}
     - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}
       propertyPath: m_Name
       value: NPC_TikToker
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806133735195298515, guid: 93a545bee8228bc469cec8f5ae8d0827,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4582917142055358569, guid: 93a545bee8228bc469cec8f5ae8d0827,
         type: 3}

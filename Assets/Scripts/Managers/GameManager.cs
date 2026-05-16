@@ -20,8 +20,6 @@ public class GameManager : MonoBehaviour
 
     private bool _allLevelsCompleted = false;
 
-    private int _levelIndex;
-
     private bool _levelLoaded;
 
     private int _targetLevelToLoad;
