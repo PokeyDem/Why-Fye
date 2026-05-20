@@ -217,8 +217,6 @@ public class ConnectionsManager : MonoBehaviour
             if (placedDeviceData.deviceObject != device)
                 continue;
 
-            Debug.Log("Device found: " + placedDeviceData.deviceObject.name);
-
             if (placedDeviceData.isReceiving && placedDeviceData.deviceType != DeviceType.Router && placedDeviceData.receivingFrom.sendingTo.Count > 0)
             {
                 placedDeviceData.receivingFrom.sendingTo.Remove(placedDeviceData);
@@ -230,19 +228,15 @@ public class ConnectionsManager : MonoBehaviour
             }
             
             LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
-            Debug.Log("Line renderers for " + placedDeviceData.deviceObject.name + " found: " + renderers.Length);
 
             foreach (var lr in renderers)
             {
                 
             }
 
-            Debug.Log("Line renderers for " + placedDeviceData.deviceObject.name + " disabled");
-
             foreach (var receiver in placedDeviceData.sendingTo)
             {
                 DisconnectDevice(receiver);
-                Debug.Log("Started disconnecting procedure: " + receiver.deviceObject.name);
             }
             
             allPlacedDevices.Remove(placedDeviceData);
@@ -266,8 +260,6 @@ public class ConnectionsManager : MonoBehaviour
             lr.SetPositions(pos);
         }
 
-        Debug.Log("Removed line renderers for: " + deviceData.deviceObject.name + " Amount: " + renderers.Length);
-
         if (deviceData.deviceType == DeviceType.Receiver)
         {
             deviceData.isReceiving = false;
@@ -285,21 +277,14 @@ public class ConnectionsManager : MonoBehaviour
     
     public DeviceType GetDeviceType(GameObject device)
     {
-        Debug.Log("Passed device: " + device.name);
         foreach (var placedDeviceData in allPlacedDevices.ToList())
         {
             if (placedDeviceData.deviceObject == device)
             {
-                Debug.Log("Found: " + placedDeviceData.deviceType);
                 return placedDeviceData.deviceType;
             }
-            else
-            {
-                Debug.Log("Mismatch: " + device.name + " vs. " + placedDeviceData.deviceObject.name);
-            }
         }
-
-        Debug.Log("Returned default");
+        
         return DeviceType.Router;
     } 
 }

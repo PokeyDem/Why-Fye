@@ -159,33 +159,6 @@ public class ObjectPlacementSystem : MonoBehaviour
                 
         _validPos = true;
         _currentPreviewPos = hit.point;
-        
-        
-        // if (Physics.Raycast(ray, out hit, math.INFINITY))
-        // {
-        //     if (((1 << hit.collider.gameObject.layer) & placementLayer) != 0)
-        //     {
-        //         float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
-        //         _currentSurfaceNormal = hit.normal;
-        //         
-        //         if (!Mathf.Approximately(surfaceAngle, slopeAngle))
-        //         {
-        //             _validPos = false;
-        //             return;
-        //         }
-        //         
-        //         _validPos = true;
-        //         _currentPreviewPos = hit.point;
-        //     }
-        //     else
-        //     {
-        //         _validPos = false;
-        //     }
-        // }
-        // else
-        // {
-        //     _validPos = false;
-        // }
     }
 
     private void RemoveDevice()
