@@ -12,6 +12,7 @@ public class ConnectionsManager : MonoBehaviour
     [SerializeField] private string receiverTagName; 
 
     public static Action OnCompletion;
+    public static Action OnCompletionRevoke;
     public void LinkNewDevice(GameObject newDevice, DeviceType deviceType)
     {
         PlacedDeviceData newDeviceData = new PlacedDeviceData(newDevice, deviceType);
@@ -178,6 +179,7 @@ public class ConnectionsManager : MonoBehaviour
         {
             if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
             {
+                OnCompletionRevoke?.Invoke();
                 return;
             }
         }
@@ -207,4 +209,97 @@ public class ConnectionsManager : MonoBehaviour
             }
         }
     }
+
+    public void RemoveDevice(GameObject device)
+    {
+        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        {
+            if (placedDeviceData.deviceObject != device)
+                continue;
+
+            Debug.Log("Device found: " + placedDeviceData.deviceObject.name);
+
+            if (placedDeviceData.isReceiving && placedDeviceData.deviceType != DeviceType.Router && placedDeviceData.receivingFrom.sendingTo.Count > 0)
+            {
+                placedDeviceData.receivingFrom.sendingTo.Remove(placedDeviceData);
+            }
+            ConnectionStream[] streams = placedDeviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
+            foreach (var stream in streams)
+            {
+                stream.CloseConnection();
+            }
+            
+            LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
+            Debug.Log("Line renderers for " + placedDeviceData.deviceObject.name + " found: " + renderers.Length);
+
+            foreach (var lr in renderers)
+            {
+                
+            }
+
+            Debug.Log("Line renderers for " + placedDeviceData.deviceObject.name + " disabled");
+
+            foreach (var receiver in placedDeviceData.sendingTo)
+            {
+                DisconnectDevice(receiver);
+                Debug.Log("Started disconnecting procedure: " + receiver.deviceObject.name);
+            }
+            
+            allPlacedDevices.Remove(placedDeviceData);
+        }
+    }
+
+    public void DisconnectDevice(PlacedDeviceData deviceData)
+    {
+        deviceData.isReceiving = false;
+        
+        ConnectionStream[] streams = deviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
+        foreach (var stream in streams)
+        {
+            stream.CloseConnection();
+        }
+        
+        LineRenderer[] renderers = deviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
+        foreach (var lr in renderers)
+        {
+            Vector3[] pos = new[] { lr.GetPosition(0) };
+            lr.SetPositions(pos);
+        }
+
+        Debug.Log("Removed line renderers for: " + deviceData.deviceObject.name + " Amount: " + renderers.Length);
+
+        if (deviceData.deviceType == DeviceType.Receiver)
+        {
+            deviceData.isReceiving = false;
+            AreAllReceiversConnected();
+            return;
+        }
+       
+        foreach (var connection in deviceData.sendingTo)
+        {
+            DisconnectDevice(connection);
+        }
+        
+        deviceData.sendingTo.Clear();
+    }
+    
+    public DeviceType GetDeviceType(GameObject device)
+    {
+        Debug.Log("Passed device: " + device.name);
+        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        {
+            if (placedDeviceData.deviceObject == device)
+            {
+                Debug.Log("Found: " + placedDeviceData.deviceType);
+                return placedDeviceData.deviceType;
+            }
+            else
+            {
+                Debug.Log("Mismatch: " + device.name + " vs. " + placedDeviceData.deviceObject.name);
+            }
+        }
+
+        Debug.Log("Returned default");
+        return DeviceType.Router;
+    } 
 }

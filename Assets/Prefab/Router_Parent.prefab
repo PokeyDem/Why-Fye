@@ -41,9 +41,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8845137866148432224}
   - component: {fileID: 8120591527343451507}
-  m_Layer: 2
+  m_Layer: 7
   m_Name: Router_Parent
-  m_TagString: Untagged
+  m_TagString: Device
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,6 +177,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 08ac2127513cbe14e884fc0190718a38,
+        type: 3}
+      propertyPath: m_TagString
+      value: Device
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

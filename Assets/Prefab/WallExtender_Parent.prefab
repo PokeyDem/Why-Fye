@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3225423283396962888}
   - component: {fileID: 8532367099396866361}
-  m_Layer: 2
+  m_Layer: 7
   m_Name: WallExtender_Parent
-  m_TagString: Untagged
+  m_TagString: Device
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

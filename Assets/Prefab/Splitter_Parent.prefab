@@ -173,9 +173,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4755781952908484834}
   - component: {fileID: 4534898173617672471}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Splitter_Parent
-  m_TagString: Untagged
+  m_TagString: Device
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

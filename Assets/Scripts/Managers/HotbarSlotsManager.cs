@@ -16,14 +16,14 @@ public class HotbarSlotsManager : MonoBehaviour
     {
         playerControls.OnSlotSelected += SelectSlot;
         ObjectPlacementSystem.OnObjectPlaced += HandleDecrease;
-        ObjectPlacementSystem.OnInitialization += SetAmountOfDevices;
+        ObjectPlacementSystem.OnDeviceAmountUpdate += SetAmountOfDevices;
     }
 
     private void OnDisable()
     {
         playerControls.OnSlotSelected -= SelectSlot;
         ObjectPlacementSystem.OnObjectPlaced -= HandleDecrease;
-        ObjectPlacementSystem.OnInitialization -= SetAmountOfDevices;
+        ObjectPlacementSystem.OnDeviceAmountUpdate -= SetAmountOfDevices;
     }
 
     private void HandleDecrease()
@@ -38,14 +38,22 @@ public class HotbarSlotsManager : MonoBehaviour
 
     private void SelectSlot(int index)
     {
-        DiselectSlot(_selectedSlotIndex);
+        DeselectSlot(_selectedSlotIndex);
         _selectedSlotIndex = index;
         slots[index].ChangeFrameState(true);
     }
 
-    private void DiselectSlot(int index)
+    private void DeselectSlot(int index)
     {
         slots[index].ChangeFrameState(false);
+    }
+
+    public void DeselectAllSlots()
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            slots[i].ChangeFrameState(false);
+        }
     }
 
     private void SetAmountOfDevices(Dictionary<int, int> amountOfDevices)

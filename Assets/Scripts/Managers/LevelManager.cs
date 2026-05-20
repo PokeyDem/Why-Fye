@@ -16,11 +16,13 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         ConnectionsManager.OnCompletion += ReceiversConnected;
+        ConnectionsManager.OnCompletionRevoke += ReceiversDisconnected;
     }
 
     private void OnDisable()
     {
         ConnectionsManager.OnCompletion -= ReceiversConnected;
+        ConnectionsManager.OnCompletionRevoke -= ReceiversDisconnected;
     }
 
     private void Start()
@@ -37,6 +39,11 @@ public class LevelManager : MonoBehaviour
     private void ReceiversConnected()
     {
         _hudManager.ShowCompleteButton();
+    }
+
+    private void ReceiversDisconnected()
+    {
+        _hudManager.HideCompleteButton();
     }
 
     public void OnCompleteLevelClick()

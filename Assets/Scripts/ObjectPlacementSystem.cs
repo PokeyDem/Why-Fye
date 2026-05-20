@@ -18,18 +18,23 @@ public class ObjectPlacementSystem : MonoBehaviour
     [SerializeField] private Vector3 previewPrefabsIdlePos;
     [SerializeField] private int selectedPrefabIndex = 0; 
     [SerializeField] private ConnectionsManager connectionsManager;
+    [SerializeField] private HUDManager hudManager;
     [SerializeField] private PlayerControls playerControls;
     
     [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
+
+    [SerializeField] private LayerMask deviceLayer;
     
     private Camera _camera;
 
     private bool _validPos;
     private Vector3 _currentPreviewPos;
     private Vector3 _currentSurfaceNormal;
+    private Transform _lastHitDevice;
+    private bool _isInRemoveMode;
     private Dictionary<int, int> _amountOfDevices = new Dictionary<int,int>();
     
-    public static event Action<Dictionary<int, int>> OnInitialization;
+    public static event Action<Dictionary<int, int>> OnDeviceAmountUpdate;
     public static event Action OnObjectPlaced;
 
     private void OnEnable()
@@ -69,7 +74,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         {
             _amountOfDevices.Add((int)deviceOnLevel.deviceType, deviceOnLevel.deviceAmount);
         }
-        OnInitialization?.Invoke(_amountOfDevices);
+        OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
     }
 
     private void StartPlacingObject()
@@ -79,7 +84,10 @@ public class ObjectPlacementSystem : MonoBehaviour
         
         CheckThePosition();
         
-        if (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos)
+        if (_isInRemoveMode && _lastHitDevice == null)
+            return;
+        
+        if (!_isInRemoveMode && (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos))
             return;
         
         placementIndicator.StartFilling(PlaceObject, playerControls.OnScreenPosition);
@@ -92,19 +100,30 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void PlaceObject()
     {
+        if (!placementModeEnabled)
+            return;
         
-        if (placementModeEnabled && _validPos)
+        if (!_isInRemoveMode)
         {
+            if (!_validPos)
+                return;
+            
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
             _amountOfDevices[selectedPrefabIndex]--;
             OnObjectPlaced?.Invoke();
         }
+        else
+        {
+            RemoveDevice();
+        }
     }
 
     private void CheckThePosition()
     {
+        _lastHitDevice = null;
+        
         Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
         Debug.DrawRay(ray.origin, ray.direction, Color.red, 10000);
         RaycastHit hit;
@@ -115,12 +134,19 @@ public class ObjectPlacementSystem : MonoBehaviour
             return;
         }
 
+        if (hit.collider.gameObject.CompareTag("Device"))
+        {
+            _validPos = false;
+            _lastHitDevice = hit.transform;
+            Debug.Log("Hit device: " + hit.transform.gameObject.name);
+            return;
+        }
+        
         if (((1 << hit.collider.gameObject.layer) & placementLayer) == 0)
         {
             _validPos = false;
             return;
         }
-        
         
         float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
         _currentSurfaceNormal = hit.normal;
@@ -162,8 +188,21 @@ public class ObjectPlacementSystem : MonoBehaviour
         // }
     }
 
+    private void RemoveDevice()
+    {
+        int deviceTypeIndex = (int)connectionsManager.GetDeviceType(_lastHitDevice.gameObject);
+        connectionsManager.RemoveDevice(_lastHitDevice.gameObject);
+        _amountOfDevices[deviceTypeIndex]++;
+        OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
+        
+        Destroy(_lastHitDevice.gameObject);
+    }
+
     private void SwitchIndex(int newIndex)
     {
+        if (_isInRemoveMode)
+            DisableRemoveMode();
+        
         selectedPrefabIndex = newIndex;
 
         if (prefabCatalog.allAvailableDevices[selectedPrefabIndex].onlyOnWalls)
@@ -180,5 +219,17 @@ public class ObjectPlacementSystem : MonoBehaviour
     public void ResumePlacement()
     {
         placementModeEnabled = true;
+    }
+
+    public void EnableRemoveMode()
+    {
+        _isInRemoveMode = true;
+        hudManager.ShowRemoveModeIconFrame();
+    }
+
+    public void DisableRemoveMode()
+    {
+        _isInRemoveMode = false;
+        hudManager.HideRemoveModeIconFrame();
     }
 }

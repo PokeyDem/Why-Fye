@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
    [SerializeField] private Button completeLevelButton;
+   [SerializeField] private HotbarSlotsManager hotbarSlotsManager;
+   [SerializeField] private GameObject removeModeIconFrame;
 
    private void Start()
    {
@@ -21,5 +23,16 @@ public class HUDManager : MonoBehaviour
    public void HideCompleteButton()
    {
       completeLevelButton.gameObject.SetActive(false);
+   }
+
+   public void ShowRemoveModeIconFrame()
+   {
+      hotbarSlotsManager.DeselectAllSlots();
+      removeModeIconFrame.SetActive(true);
+   }
+
+   public void HideRemoveModeIconFrame()
+   {
+      removeModeIconFrame.SetActive(false);
    }
 }
