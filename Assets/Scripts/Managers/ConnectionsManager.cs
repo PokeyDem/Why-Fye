@@ -13,17 +13,20 @@ public class ConnectionsManager : MonoBehaviour
 
     public static Action OnCompletion;
     public static Action OnCompletionRevoke;
-    public void LinkNewDevice(GameObject newDevice, DeviceType deviceType)
+    public void LinkNewDevice(GameObject newDevice, DeviceType deviceType, PlacedDeviceData newDeviceData = null)
     {
-        PlacedDeviceData newDeviceData = new PlacedDeviceData(newDevice, deviceType);
-        newDeviceData.deviceType = deviceType;
-
-        if (deviceType == DeviceType.Router)
+        if (newDeviceData == null)
         {
-            newDeviceData.isReceiving = true;
-        }
+            newDeviceData = new PlacedDeviceData(newDevice, deviceType);
+            newDeviceData.deviceType = deviceType;
+
+            if (deviceType == DeviceType.Router)
+            {
+                newDeviceData.isReceiving = true;
+            }
         
-        allPlacedDevices.Add(newDeviceData);
+            allPlacedDevices.Add(newDeviceData);
+        }
 
         List<PlacedDeviceData> validConnections = FindValidConnections(newDevice.transform);
 
@@ -138,6 +141,7 @@ public class ConnectionsManager : MonoBehaviour
     
     private void AssignConnection(PlacedDeviceData sender, PlacedDeviceData receiver)
     {
+        Debug.Log("Assign connection called: sender: " + sender.deviceObject.name + " | Receiver: " + receiver.deviceObject.name);
         if (sender.sendingTo.Count >= sender.maxOutgoingConnections)
         {
             var oldestConnection = sender.sendingTo[0];
@@ -161,11 +165,13 @@ public class ConnectionsManager : MonoBehaviour
         }
         
         ConnectionStream[] streams = sender.deviceObject.GetComponentsInChildren<ConnectionStream>();
+        Debug.Log("Found streams: " + streams.Length);
         foreach (var stream in streams)
         {
-            if (!stream.IsConnected())
+            if (!stream.IsConnected() || sender.deviceType == DeviceType.Router)
             {
                 stream.ConnectToReceiver(receiver.deviceObject.transform);
+                Debug.Log("Stream connected");
                 break;
             }
         }
@@ -219,22 +225,17 @@ public class ConnectionsManager : MonoBehaviour
 
             if (placedDeviceData.isReceiving && placedDeviceData.deviceType != DeviceType.Router && placedDeviceData.receivingFrom.sendingTo.Count > 0)
             {
+                placedDeviceData.deviceObject.GetComponentInChildren<ConnectionStream>().CloseConnection();
                 placedDeviceData.receivingFrom.sendingTo.Remove(placedDeviceData);
             }
+            
             ConnectionStream[] streams = placedDeviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
             foreach (var stream in streams)
             {
                 stream.CloseConnection();
             }
-            
-            LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
 
-            foreach (var lr in renderers)
-            {
-                
-            }
-
-            foreach (var receiver in placedDeviceData.sendingTo)
+            foreach (var receiver in placedDeviceData.sendingTo.ToList())
             {
                 DisconnectDevice(receiver);
             }
@@ -256,13 +257,14 @@ public class ConnectionsManager : MonoBehaviour
         LineRenderer[] renderers = deviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
         foreach (var lr in renderers)
         {
-            Vector3[] pos = new[] { lr.GetPosition(0) };
+            Vector3[] pos = { lr.GetPosition(0) };
             lr.SetPositions(pos);
         }
 
         if (deviceData.deviceType == DeviceType.Receiver)
         {
             deviceData.isReceiving = false;
+            deviceData.deviceObject.GetComponent<ReceiverController>().DeviceDisconnected();
             AreAllReceiversConnected();
             return;
         }
@@ -270,6 +272,18 @@ public class ConnectionsManager : MonoBehaviour
         foreach (var connection in deviceData.sendingTo)
         {
             DisconnectDevice(connection);
+        }
+
+        if (deviceData.sendingTo.Count == 0)
+        {
+            foreach (var connection in allPlacedDevices)
+            {
+                if (connection.deviceType == DeviceType.Router && !connection.isSending)
+                {
+                    LinkNewDevice(connection.deviceObject, connection.deviceType, connection);
+                    break;
+                }
+            }
         }
         
         deviceData.sendingTo.Clear();

@@ -16,7 +16,7 @@ public class ConnectionStream : MonoBehaviour
     private Material _lineMaterial;
     private float _currentOffset;
 
-    private void Start()
+    private void Awake()
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _lineMaterial = _lineRenderer.material;
@@ -26,20 +26,34 @@ public class ConnectionStream : MonoBehaviour
 
     private void Update()
     {
-        if (receiverTarget != null)
+
+        if (receiverTarget == null || _targetMountPoint == null)
+        {
+            _lineRenderer.enabled = false;
+            return;
+        }
+        
+        debugLogField = receiverTarget.name;
+
+        if (_lineRenderer.enabled)
         {
             UpdateLinePositions();
             AnimateStripes();
         }
-        else
-        {
-            _lineRenderer.enabled = false;
-        }
+        // if (receiverTarget != null)
+        // {
+        //     _lineRenderer.enabled = true;
+        //     UpdateLinePositions();
+        //     AnimateStripes();
+        // }
+        // else
+        // {
+        //     _lineRenderer.enabled = false;
+        // }
     }
 
     private void UpdateLinePositions()
     {
-        _lineRenderer.enabled = true;
         
         _lineRenderer.SetPosition(0, _mountPoint.position);
         _lineRenderer.SetPosition(1, _targetMountPoint.position);
@@ -48,7 +62,6 @@ public class ConnectionStream : MonoBehaviour
         
         // _lineMaterial.mainTextureScale = new Vector2((maxTilingDistance - distance) * tileResolution, 1f);
         
-        debugLogField = $"Distance: {distance}";
     }
 
     private void AnimateStripes()
@@ -59,6 +72,8 @@ public class ConnectionStream : MonoBehaviour
 
     public void ConnectToReceiver(Transform receiver)
     {
+        Debug.Log("Called connect to receiver: " + receiver.gameObject.name);
+        _lineRenderer.enabled = true;
         receiverTarget = receiver;
         _targetMountPoint = receiver.gameObject.transform.GetChild(0).transform;
     }
@@ -67,10 +82,12 @@ public class ConnectionStream : MonoBehaviour
     {
         receiverTarget = null;
         _lineRenderer.enabled = false;
+        
     }
 
     public bool IsConnected()
     {
-        return receiverTarget != null;
+        Debug.Log("IsConnected receiver: " + receiverTarget);
+        return receiverTarget !=null;
     }
 }
