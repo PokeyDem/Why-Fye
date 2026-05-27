@@ -186,6 +186,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shelf
       objectReference: {fileID: 0}
+    - target: {fileID: 7842146954433367426, guid: cf545144e8903af478cab034ae4cc89f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -394,6 +399,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_3_Floor_P
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 03c9e54303318ce47b86c077ba532699,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -979,6 +989,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_3_InnerWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 672df312807ea4f4c94c691bd6ce1d15,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2476,6 +2491,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_3_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6412692fdd0cda94a93ea269e0fe9578,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4259,6 +4279,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant
       objectReference: {fileID: 0}
+    - target: {fileID: 2707476308216915893, guid: 9c610bcfb19f9d540b066e717fb0da35,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     - target: {fileID: 3375786532173413647, guid: 9c610bcfb19f9d540b066e717fb0da35,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5447,6 +5472,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level_3_OuterWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b0bd11710b924544cb3be347ac8730d7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

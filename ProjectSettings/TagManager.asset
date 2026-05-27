@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Receiver
   - Device
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Placeable
-  - Device
-  - 
+  - Connection_Devices
+  - PlayerAction_Devices
   - 
   - 
   - 

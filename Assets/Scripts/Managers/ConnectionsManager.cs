@@ -9,7 +9,8 @@ public class ConnectionsManager : MonoBehaviour
 {
     [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
     [SerializeField] private float sensorHeightOffset;
-    [SerializeField] private string receiverTagName; 
+    [SerializeField] private string receiverTagName;
+    [SerializeField] private LayerMask connectionMask;
 
     public static Action OnCompletion;
     public static Action OnCompletionRevoke;
@@ -125,7 +126,8 @@ public class ConnectionsManager : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.transform != targetTransform && hit.collider.transform != originDevice)
+                Debug.Log(hit.transform.gameObject.tag);
+                if (hit.transform.gameObject.CompareTag("Obstacle"))
                 {
                     isViewBlocked = true;
                     break;
@@ -134,6 +136,7 @@ public class ConnectionsManager : MonoBehaviour
             
             if (!isViewBlocked)
                 validConnections.Add(placedDeviceData);
+            Debug.Log(isViewBlocked);
         }
         
         return validConnections;
@@ -141,7 +144,6 @@ public class ConnectionsManager : MonoBehaviour
     
     private void AssignConnection(PlacedDeviceData sender, PlacedDeviceData receiver)
     {
-        Debug.Log("Assign connection called: sender: " + sender.deviceObject.name + " | Receiver: " + receiver.deviceObject.name);
         if (sender.sendingTo.Count >= sender.maxOutgoingConnections)
         {
             var oldestConnection = sender.sendingTo[0];
@@ -165,13 +167,12 @@ public class ConnectionsManager : MonoBehaviour
         }
         
         ConnectionStream[] streams = sender.deviceObject.GetComponentsInChildren<ConnectionStream>();
-        Debug.Log("Found streams: " + streams.Length);
+     
         foreach (var stream in streams)
         {
             if (!stream.IsConnected() || sender.deviceType == DeviceType.Router)
             {
                 stream.ConnectToReceiver(receiver.deviceObject.transform);
-                Debug.Log("Stream connected");
                 break;
             }
         }

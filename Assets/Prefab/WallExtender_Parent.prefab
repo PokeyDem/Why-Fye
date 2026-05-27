@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1959660305380660883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3530704336392740008}
+  - component: {fileID: 3984107764953798846}
+  m_Layer: 7
+  m_Name: ConnectionCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3530704336392740008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959660305380660883}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.02670002, y: 0.021700025, z: 0.5135002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3225423283396962888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3984107764953798846
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959660305380660883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.19132376, y: 0.12930608, z: 0.19070625}
+  m_Center: {x: 0.02537018, y: 0.032594442, z: -0.51390266}
 --- !u!1 &2276851361206746482
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,8 +62,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3225423283396962888}
-  - component: {fileID: 8532367099396866361}
-  m_Layer: 7
+  - component: {fileID: 8754003282319153289}
+  m_Layer: 0
   m_Name: WallExtender_Parent
   m_TagString: Device
   m_Icon: {fileID: 0}
@@ -31,9 +84,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8870487724049919392}
+  - {fileID: 3530704336392740008}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8532367099396866361
+--- !u!65 &8754003282319153289
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19570094, y: 0.11850572, z: 0.19348907}
-  m_Center: {x: -0.0009394586, y: 0.058520913, z: 0.000078201294}
+  m_Size: {x: 0.32082194, y: 0.19928479, z: 0.32797146}
+  m_Center: {x: 0.0011915863, y: 0.09055698, z: 0.0023827553}
 --- !u!1 &9205466462485062612
 GameObject:
   m_ObjectHideFlags: 0

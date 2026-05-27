@@ -141,7 +141,7 @@ public class ObjectPlacementSystem : MonoBehaviour
             Debug.Log("Hit device: " + hit.transform.gameObject.name);
             return;
         }
-        
+
         if (((1 << hit.collider.gameObject.layer) & placementLayer) == 0)
         {
             _validPos = false;
