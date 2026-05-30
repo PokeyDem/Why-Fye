@@ -57,10 +57,8 @@ public class ConnectionsManager : MonoBehaviour
     public void FindNewReceivers()
     {
         ClearReceivers();
-        
-        GameObject[] receivers = GameObject.FindGameObjectsWithTag(receiverTagName);
 
-        foreach (GameObject receiver in receivers)
+        foreach (GameObject receiver in ReceiverComponent.ActiveReceivers)
         {
             allPlacedDevices.Add(new PlacedDeviceData(receiver, DeviceType.Receiver));
         }
