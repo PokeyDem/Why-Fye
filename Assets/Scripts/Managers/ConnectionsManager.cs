@@ -180,15 +180,18 @@ public class ConnectionsManager : MonoBehaviour
 
     private void AreAllReceiversConnected()
     {
+        Debug.Log("Level completion check started");
         foreach (var connection in allPlacedDevices)
         {
             if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
             {
                 OnCompletionRevoke?.Invoke();
+                Debug.Log("Level completion check failed");
                 return;
             }
         }
         OnCompletion?.Invoke();
+        Debug.Log("Level completion check succeeded");
     }
 
     public void ResetDevices()
@@ -199,7 +202,7 @@ public class ConnectionsManager : MonoBehaviour
             {
                 placedDeviceData.isReceiving = false;
                 placedDeviceData.receivingFrom = null;
-                placedDeviceData.deviceObject.GetComponent<ReceiverController>().DeviceDisconnected();
+                placedDeviceData.deviceObject.GetComponentInChildren<ReceiverController>().DeviceDisconnected();
             }
             else
             {

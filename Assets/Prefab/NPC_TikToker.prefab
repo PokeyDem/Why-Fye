@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 583781440804683180}
   m_Layer: 0
   m_Name: Phone_Receiver
-  m_TagString: Untagged
+  m_TagString: Receiver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -622,10 +622,9 @@ GameObject:
   - component: {fileID: 4582917142055358569}
   - component: {fileID: 7600358800314321427}
   - component: {fileID: 7515193576883933598}
-  - component: {fileID: 242283701238182682}
   m_Layer: 0
   m_Name: NPC_TikToker
-  m_TagString: Receiver
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -684,18 +683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isConnectedBoolName: isConnected
   canvas: {fileID: 4222126527624125552}
---- !u!114 &242283701238182682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3806133735195298515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e717a0a1b4cf914798eb7bbdc1dd953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4222126527624125552
 GameObject:
   m_ObjectHideFlags: 0
