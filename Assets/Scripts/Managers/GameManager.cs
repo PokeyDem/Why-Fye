@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Color activeColor;
     [SerializeField] private Color lockedColor;
     [SerializeField] private Color completedColor;
+    private bool _saveLoaded = false;
 
     private bool _isInitialized = false;
    
@@ -34,11 +35,21 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
+        }
+
+        if (!_saveLoaded)
+        {
+            Debug.Log("Save loaded");
+            SaveManager.instance.LoadGameFromFile();
+            _saveLoaded = true;
         }
     }
     
     private void Initialize()
     {
+        if (_saveLoaded)
+            return;
         foreach (Button button in levelButtons)
         {
             completedLevels.Add(false);
@@ -50,6 +61,7 @@ public class GameManager : MonoBehaviour
     public void MarkAsCompleted(int level)
     {
         completedLevels[level] = true;
+        SaveManager.instance.SaveGameToFile();
     }
 
     public void ValidateLevelButtons()
@@ -61,7 +73,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < levelButtons.Count; i++)
         {
             bool isUnlocked = (i == 0) || completedLevels[i] || completedLevels[i - 1];
-
           
             levelButtons[i].interactable = isUnlocked;
 
@@ -107,5 +118,26 @@ public class GameManager : MonoBehaviour
     public int GetTargetLevel()
     {
         return _targetLevelToLoad;
+    }
+
+    public List<bool> GetUnlockedLevelsData()
+    {
+        Debug.Log("Data to save: " + completedLevels.Count);
+        foreach (var completedLevel in completedLevels)
+        {
+            Debug.Log(completedLevel);
+        }
+        return completedLevels;
+    }
+
+    public void LoadUnlockedLevelsData(UnlockedLevelsData unlockedLevelsData)
+    {
+        Debug.Log("Data to load: ");
+        foreach (var completedLevel in unlockedLevelsData.unlockedLevels)
+        {
+            Debug.Log(completedLevel);
+        }
+        completedLevels = unlockedLevelsData.unlockedLevels;
+        ValidateLevelButtons();
     }
 }
