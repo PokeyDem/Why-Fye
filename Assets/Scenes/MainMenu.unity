@@ -657,6 +657,9 @@ MonoBehaviour:
   - {fileID: 1644323819}
   - {fileID: 1895693679}
   - {fileID: 2097929322}
+  activeButtonColor: {r: 1, g: 1, b: 1, a: 1}
+  inactiveButtonColor: {r: 0.5254902, g: 0.5254902, b: 0.5254902, a: 0.83137256}
+  completedLevelButtonColor: {r: 0.14456797, g: 0.93962264, b: 0.11878247, a: 1}
 --- !u!1 &327811055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,16 +1356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   completedLevels: 
-  levelButtons:
-  - {fileID: 967165229}
-  - {fileID: 1309323499}
-  - {fileID: 825858577}
-  - {fileID: 1644323819}
-  - {fileID: 1895693679}
-  - {fileID: 2097929322}
-  activeColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedColor: {r: 0.5245282, g: 0.5245282, b: 0.5245282, a: 0.83137256}
-  completedColor: {r: 0.5411765, g: 1, b: 0.5254902, a: 1}
+  mainMenuUIManager: {fileID: 306728015}
 --- !u!4 &451862249
 Transform:
   m_ObjectHideFlags: 0

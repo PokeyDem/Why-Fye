@@ -105,9 +105,9 @@ public class ObjectPlacementSystem : MonoBehaviour
         
         if (!_isInRemoveMode)
         {
+            CheckThePosition();
             if (!_validPos)
                 return;
-            
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
             GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
             connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
