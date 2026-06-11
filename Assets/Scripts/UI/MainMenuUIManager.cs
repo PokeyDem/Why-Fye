@@ -10,7 +10,32 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject creditsMenuElements;
     [SerializeField] private GameObject controlsMenuElements;
     [SerializeField] private List<Button> levelButtons = new List<Button>();
+    [SerializeField] private Color activeButtonColor;
+    [SerializeField] private Color inactiveButtonColor;
+    [SerializeField] private Color completedLevelButtonColor;
 
+    
+    public void ValidateLevelButtons(List<bool> completedLevels)
+    {
+
+        for (int i = 0; i < levelButtons.Count; i++)
+        {
+            bool isUnlocked = (i == 0) || completedLevels[i] || completedLevels[i - 1];
+          
+            levelButtons[i].interactable = isUnlocked;
+
+            var block = levelButtons[i].colors;
+            
+            block.normalColor = isUnlocked ? activeButtonColor : inactiveButtonColor;
+
+            if (completedLevels[i])
+            {
+                block.normalColor = completedLevelButtonColor;
+            }
+    
+            levelButtons[i].colors = block;
+        }
+    }
     public List<Button> GetLevelButtons()
     {
         return levelButtons;

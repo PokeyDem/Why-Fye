@@ -7,10 +7,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private List<bool> completedLevels;
-    [SerializeField] private List<Button> levelButtons = new List<Button>();
-    [SerializeField] private Color activeColor;
-    [SerializeField] private Color lockedColor;
-    [SerializeField] private Color completedColor;
+    [SerializeField] private MainMenuUIManager mainMenuUIManager;
     private bool _saveLoaded = false;
 
     private bool _isInitialized = false;
@@ -18,8 +15,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     private bool _loadedFromLevel = false;
-
-    private bool _allLevelsCompleted = false;
 
     private bool _levelLoaded;
 
@@ -35,7 +30,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
@@ -43,7 +37,6 @@ public class GameManager : MonoBehaviour
     {
         if (!_saveLoaded)
         {
-            Debug.Log("Save loaded");
             SaveManager.Instance.LoadGameFromFile();
             _saveLoaded = true;
         }
@@ -53,11 +46,11 @@ public class GameManager : MonoBehaviour
     {
         if (_saveLoaded)
             return;
-        foreach (Button button in levelButtons)
+        foreach (Button button in mainMenuUIManager.GetLevelButtons())
         {
             completedLevels.Add(false);
         }
-
+        
         _isInitialized = true;
     }
 
@@ -69,38 +62,10 @@ public class GameManager : MonoBehaviour
 
     public void ValidateLevelButtons()
     {
-        int completedLevelsCounter = 0;
         if (!_isInitialized)
             Initialize();
-
-        for (int i = 0; i < levelButtons.Count; i++)
-        {
-            bool isUnlocked = (i == 0) || completedLevels[i] || completedLevels[i - 1];
-          
-            levelButtons[i].interactable = isUnlocked;
-
-            var block = levelButtons[i].colors;
-            
-            block.normalColor = isUnlocked ? activeColor : lockedColor;
-
-            if (completedLevels[i])
-            {
-                block.normalColor = completedColor;
-            }
-    
-            levelButtons[i].colors = block;
-
-            if (isUnlocked)
-                completedLevelsCounter++;
-        }
-
-        if (completedLevelsCounter == levelButtons.Count)
-            _allLevelsCompleted = true;
-    }
-
-    public void InitButtons(List<Button> buttons)
-    {
-        levelButtons = buttons;
+        
+        mainMenuUIManager.ValidateLevelButtons(completedLevels);
     }
 
     public void SetLoadedFromLevel(bool loaded)
@@ -125,21 +90,11 @@ public class GameManager : MonoBehaviour
 
     public List<bool> GetUnlockedLevelsData()
     {
-        Debug.Log("Data to save: " + completedLevels.Count);
-        foreach (var completedLevel in completedLevels)
-        {
-            Debug.Log(completedLevel);
-        }
         return completedLevels;
     }
 
     public void LoadUnlockedLevelsData(UnlockedLevelsData unlockedLevelsData)
     {
-        Debug.Log("Data to load: ");
-        foreach (var completedLevel in unlockedLevelsData.unlockedLevels)
-        {
-            Debug.Log(completedLevel);
-        }
         completedLevels = unlockedLevelsData.unlockedLevels;
         ValidateLevelButtons();
     }

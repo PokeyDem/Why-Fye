@@ -17,7 +17,6 @@ public class JsonDataService : MonoBehaviour
             }
             
             File.WriteAllText(path, JsonConvert.SerializeObject(data));
-            Debug.Log("Data saved: path: " + path);
             return true;
         }
         catch (Exception e)

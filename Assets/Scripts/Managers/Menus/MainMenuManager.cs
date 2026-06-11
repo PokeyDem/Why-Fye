@@ -14,7 +14,6 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(sceneTransitionManager.PlayFadeIn());
-        GameManager.Instance.InitButtons(mainMenuUIManager.GetLevelButtons());
         GameManager.Instance.ValidateLevelButtons();
         if (GameManager.Instance.GetLoadedFromLevel())
         {
