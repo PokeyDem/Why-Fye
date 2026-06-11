@@ -7,7 +7,7 @@ public class JsonDataService : MonoBehaviour
 {
     public bool SaveData<T>(string relativePath, T data, bool encrypted)
     {
-        string path = Application.persistentDataPath + relativePath;
+        string path = Path.Combine(Application.persistentDataPath, relativePath);
 
         try
         {
@@ -15,9 +15,7 @@ public class JsonDataService : MonoBehaviour
             {
                 File.Delete(path);
             }
-
-            using FileStream stream = File.Create(path);
-            stream.Close();
+            
             File.WriteAllText(path, JsonConvert.SerializeObject(data));
             Debug.Log("Data saved: path: " + path);
             return true;
@@ -30,7 +28,7 @@ public class JsonDataService : MonoBehaviour
     }
     
     public T LoadData<T>(string relativePath, bool encrypted){
-        string path = Application.persistentDataPath + relativePath;
+        string path = Path.Combine(Application.persistentDataPath, relativePath);
 
         if (!File.Exists(path)){
             throw new FileNotFoundException($"{path} does not exist");
@@ -47,6 +45,6 @@ public class JsonDataService : MonoBehaviour
     }
 
     public bool DoesFileExist(String relativePath){
-        return File.Exists(Application.persistentDataPath + relativePath);
+        return File.Exists(Path.Combine(Application.persistentDataPath, relativePath));
     }
 }

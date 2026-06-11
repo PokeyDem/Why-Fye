@@ -37,15 +37,18 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
 
+    private void Start()
+    {
         if (!_saveLoaded)
         {
             Debug.Log("Save loaded");
-            SaveManager.instance.LoadGameFromFile();
+            SaveManager.Instance.LoadGameFromFile();
             _saveLoaded = true;
         }
     }
-    
+
     private void Initialize()
     {
         if (_saveLoaded)
@@ -61,7 +64,7 @@ public class GameManager : MonoBehaviour
     public void MarkAsCompleted(int level)
     {
         completedLevels[level] = true;
-        SaveManager.instance.SaveGameToFile();
+        SaveManager.Instance.SaveGameToFile();
     }
 
     public void ValidateLevelButtons()

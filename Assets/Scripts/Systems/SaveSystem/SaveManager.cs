@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager instance;
+    public static SaveManager Instance;
 
     [SerializeField] private string savePath;
     [SerializeField] private GameManager gameManager;
@@ -13,12 +13,12 @@ public class SaveManager : MonoBehaviour
     
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }

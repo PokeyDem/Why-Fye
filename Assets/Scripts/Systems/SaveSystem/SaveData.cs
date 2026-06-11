@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting;
 
+[UnityEngine.Scripting.Preserve]
 public class UnlockedLevelsData
 {
     public List<bool> unlockedLevels;
@@ -12,6 +14,7 @@ public class UnlockedLevelsData
     }
 }
 
+[UnityEngine.Scripting.Preserve]
 public class SaveData
 {
     public UnlockedLevelsData unlockedLevels;

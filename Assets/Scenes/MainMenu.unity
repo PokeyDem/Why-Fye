@@ -6589,7 +6589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71265bdb192ac3d41a35b81cb343c440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: /save.json
+  savePath: save.json
   gameManager: {fileID: 451862248}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
