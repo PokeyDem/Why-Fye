@@ -11,6 +11,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private SceneTransitionManager sceneTransitionManager;
     [SerializeField] private MainMenuUIManager mainMenuUIManager;
 
+    private bool _isInAction;
+
     private void Start()
     {
         StartCoroutine(sceneTransitionManager.PlayFadeIn());
@@ -23,6 +25,9 @@ public class MainMenuManager : MonoBehaviour
     
     public void OnLevelButtonClick(int levelIndex)
     {
+        if (_isInAction)
+            return;
+        _isInAction = true;
         GameManager.Instance.SetTargetLevel(levelIndex);
         StartCoroutine(sceneTransitionManager.PlayFadeOut());
         StartCoroutine(LoadLevel());
@@ -32,6 +37,7 @@ public class MainMenuManager : MonoBehaviour
     {
         yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
         SceneManager.LoadSceneAsync(baseLevelSceneName);
+        _isInAction = false;
     }
     
     private void SwitchToMainMenu()

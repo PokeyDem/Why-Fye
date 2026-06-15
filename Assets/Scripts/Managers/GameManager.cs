@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private List<bool> completedLevels;
     [SerializeField] private MainMenuUIManager mainMenuUIManager;
+    
     private bool _saveLoaded = false;
 
     private bool _isInitialized = false;

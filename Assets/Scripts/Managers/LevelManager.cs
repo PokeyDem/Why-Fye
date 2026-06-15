@@ -48,6 +48,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnCompleteLevelClick()
     {
+        _hudManager.HideCompleteButton();
         GameManager.Instance.MarkAsCompleted(level-1);
         level++;
         _sceneLoader.SwitchLevelEnv(level, CleanUpLevel, InitializeNewLevel, false);
