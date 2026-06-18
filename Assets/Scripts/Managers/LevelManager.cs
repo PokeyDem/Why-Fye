@@ -32,7 +32,6 @@ public class LevelManager : MonoBehaviour
         _hudManager = FindObjectOfType<HUDManager>();
         _sceneLoader = FindObjectOfType<SceneLoader>();
         level = GameManager.Instance.GetTargetLevel();
-        Debug.Log("Got the target level on start: level: " + level);
         _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, true);
     }
 
@@ -56,12 +55,9 @@ public class LevelManager : MonoBehaviour
 
     private void InitializeNewLevel()
     {
-        Debug.Log("Initializing LevelManager: level: " + level);
-
         if (level == -1)
         {
             level = GameManager.Instance.GetTargetLevel();
-            Debug.Log("Initializing Asked for level: level: " + level);
         }
         
         _connectionsManager.FindNewReceivers();

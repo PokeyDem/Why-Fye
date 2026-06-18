@@ -124,7 +124,6 @@ public class ConnectionsManager : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                Debug.Log(hit.transform.gameObject.tag);
                 if (hit.transform.gameObject.CompareTag("Obstacle"))
                 {
                     isViewBlocked = true;
@@ -134,7 +133,6 @@ public class ConnectionsManager : MonoBehaviour
             
             if (!isViewBlocked)
                 validConnections.Add(placedDeviceData);
-            Debug.Log(isViewBlocked);
         }
         
         return validConnections;

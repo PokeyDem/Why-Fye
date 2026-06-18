@@ -43,6 +43,16 @@ public class JsonDataService : MonoBehaviour
         }
     }
 
+    public void ClearData(string relativePath)
+    {
+        string path = Path.Combine(Application.persistentDataPath, relativePath);
+        
+        if (!File.Exists(path))
+            return;
+        
+        File.Delete(path);
+    }
+
     public bool DoesFileExist(String relativePath){
         return File.Exists(Path.Combine(Application.persistentDataPath, relativePath));
     }

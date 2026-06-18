@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,11 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject mainManuElements;
     [SerializeField] private GameObject creditsMenuElements;
     [SerializeField] private GameObject controlsMenuElements;
+    [SerializeField] private GameObject settingMenuElements;
     [SerializeField] private List<Button> levelButtons = new List<Button>();
     [SerializeField] private Color activeButtonColor;
     [SerializeField] private Color inactiveButtonColor;
     [SerializeField] private Color completedLevelButtonColor;
-
     
     public void ValidateLevelButtons(List<bool> completedLevels)
     {
@@ -66,19 +67,14 @@ public class MainMenuUIManager : MonoBehaviour
         creditsMenuElements.SetActive(true);
     }
 
-    public void DisableCreditsMenuElements()
-    {
-        creditsMenuElements.SetActive(false);
-    }
-
     public void EnableControlsMenuElements()
     {
         controlsMenuElements.SetActive(true);
     }
 
-    public void DisableControlsMenuElements()
+    public void EnableSettingsMenuElements()
     {
-        controlsMenuElements.SetActive(false);
+        settingMenuElements.SetActive(true);
     }
 
     public void DisableAllSubMenus()
@@ -86,7 +82,6 @@ public class MainMenuUIManager : MonoBehaviour
         levelMenuElements.SetActive(false);
         creditsMenuElements.SetActive(false);
         controlsMenuElements.SetActive(false);
+        settingMenuElements.SetActive(false);
     }
-    
-    
 }

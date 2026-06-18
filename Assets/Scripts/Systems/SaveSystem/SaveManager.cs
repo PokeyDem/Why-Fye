@@ -8,7 +8,6 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance;
 
     [SerializeField] private string savePath;
-    [SerializeField] private GameManager gameManager;
     private JsonDataService _jsonDataService = new JsonDataService();
     
     private void Awake()
@@ -26,17 +25,22 @@ public class SaveManager : MonoBehaviour
 
     public void SaveGameToFile()
     {
-        UnlockedLevelsData unlockedLevelsData = new UnlockedLevelsData(gameManager.GetUnlockedLevelsData());
+        UnlockedLevelsData unlockedLevelsData = new UnlockedLevelsData(GameManager.Instance.GetUnlockedLevelsData());
         SaveData saveData = new SaveData(unlockedLevelsData);
         _jsonDataService.SaveData(savePath, saveData, true);
     }
 
-    public void LoadGameFromFile()
+    public List<bool> LoadGameFromFile()
     {
         if (!_jsonDataService.DoesFileExist(savePath))
-            return;
+            return null;
         
         SaveData saveData = _jsonDataService.LoadData<SaveData>(savePath, true);
-        gameManager.LoadUnlockedLevelsData(saveData.unlockedLevels);
+        return saveData.unlockedLevelsData.unlockedLevels;
+    }
+
+    public void ClearSaveData()
+    {
+        _jsonDataService.ClearData(savePath);
     }
 }

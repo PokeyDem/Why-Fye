@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private int amountOfLevels;
     [SerializeField] private List<bool> completedLevels;
-    [SerializeField] private MainMenuUIManager mainMenuUIManager;
     
     private bool _saveLoaded = false;
 
@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     private bool _levelLoaded;
 
     private int _targetLevelToLoad;
+
+    public static event Action OnLevelButtonsValidationRequest;
 
     private void Awake()
     {
@@ -38,35 +40,40 @@ public class GameManager : MonoBehaviour
     {
         if (!_saveLoaded)
         {
-            SaveManager.Instance.LoadGameFromFile();
-            _saveLoaded = true;
+            List<bool> loadedSave = SaveManager.Instance.LoadGameFromFile();
+            if (loadedSave != null)
+            {
+                _saveLoaded = true;
+                LoadUnlockedLevelsData(loadedSave);
+            }
+            else
+            {
+                Initialize();
+            }
         }
+        OnLevelButtonsValidationRequest?.Invoke();
     }
 
     private void Initialize()
     {
-        if (_saveLoaded)
+
+        if (_isInitialized)
             return;
-        foreach (Button button in mainMenuUIManager.GetLevelButtons())
+        
+        completedLevels = new List<bool>();
+        for (int i = 0; i < amountOfLevels; i++)
         {
             completedLevels.Add(false);
         }
         
         _isInitialized = true;
+        OnLevelButtonsValidationRequest?.Invoke();
     }
 
     public void MarkAsCompleted(int level)
     {
         completedLevels[level] = true;
         SaveManager.Instance.SaveGameToFile();
-    }
-
-    public void ValidateLevelButtons()
-    {
-        if (!_isInitialized)
-            Initialize();
-        
-        mainMenuUIManager.ValidateLevelButtons(completedLevels);
     }
 
     public void SetLoadedFromLevel(bool loaded)
@@ -94,9 +101,25 @@ public class GameManager : MonoBehaviour
         return completedLevels;
     }
 
-    public void LoadUnlockedLevelsData(UnlockedLevelsData unlockedLevelsData)
+    private void LoadUnlockedLevelsData(List<bool> unlockedLevels)
     {
-        completedLevels = unlockedLevelsData.unlockedLevels;
-        ValidateLevelButtons();
+        completedLevels = unlockedLevels;
+        OnLevelButtonsValidationRequest?.Invoke();
+    }
+
+    public int GetAmountOfLevels()
+    {
+        return amountOfLevels;
+    }
+    
+    public void ResetCompletedLevels()
+    {
+        completedLevels = new List<bool>();
+        for (int i = 0; i < amountOfLevels; i++)
+        {
+            completedLevels.Add(false);
+        }
+        
+        SaveManager.Instance.SaveGameToFile();
     }
 }

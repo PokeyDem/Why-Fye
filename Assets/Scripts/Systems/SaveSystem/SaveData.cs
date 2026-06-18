@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-[UnityEngine.Scripting.Preserve]
+[Preserve]
 public class UnlockedLevelsData
 {
     public List<bool> unlockedLevels;
@@ -14,13 +14,13 @@ public class UnlockedLevelsData
     }
 }
 
-[UnityEngine.Scripting.Preserve]
+[Preserve]
 public class SaveData
 {
-    public UnlockedLevelsData unlockedLevels;
+    public UnlockedLevelsData unlockedLevelsData;
 
     public SaveData(UnlockedLevelsData unlockedLevelsData)
     {
-        this.unlockedLevels =  unlockedLevelsData;
+        this.unlockedLevelsData =  unlockedLevelsData;
     }
 }
