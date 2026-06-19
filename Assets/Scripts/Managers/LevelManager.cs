@@ -80,6 +80,7 @@ public class LevelManager : MonoBehaviour
     public void OnExitToMainMenuClick()
     {
         level = -1;
+        GameManager.Instance.SetLoadedFromLevel(true);
         _sceneLoader.LoadMainMenuLevel();
     }
     
