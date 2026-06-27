@@ -32,9 +32,9 @@ public class ObjectPlacementSystem : MonoBehaviour
     private Vector3 _currentSurfaceNormal;
     private Transform _lastHitDevice;
     private bool _isInRemoveMode;
-    private Dictionary<int, int> _amountOfDevices = new Dictionary<int,int>();
+    private List<int> _amountOfDevices = new List<int>();
     
-    public static event Action<Dictionary<int, int>> OnDeviceAmountUpdate;
+    public static event Action<List<int>> OnDeviceAmountUpdate;
     public static event Action OnObjectPlaced;
 
     private void OnEnable()
@@ -44,6 +44,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         playerControls.OnSlotSelected += SwitchIndex;
         PauseMenuManager.OnPause += StopPlacement;
         PauseMenuManager.OnResume += ResumePlacement;
+        TutorialManager.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
     }
 
     private void OnDisable()
@@ -53,6 +54,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         playerControls.OnSlotSelected -= SwitchIndex;
         PauseMenuManager.OnPause -= StopPlacement;
         PauseMenuManager.OnResume -= ResumePlacement;
+        TutorialManager.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
     }
 
     private void Start()
@@ -72,7 +74,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         _amountOfDevices.Clear();
         foreach (var deviceOnLevel in currentLevelData.devicesData)
         {
-            _amountOfDevices.Add((int)deviceOnLevel.deviceType, deviceOnLevel.deviceAmount);
+            _amountOfDevices.Add(deviceOnLevel.deviceAmount);
         }
         OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
     }
@@ -138,7 +140,6 @@ public class ObjectPlacementSystem : MonoBehaviour
         {
             _validPos = false;
             _lastHitDevice = hit.transform;
-            Debug.Log("Hit device: " + hit.transform.gameObject.name);
             return;
         }
 
@@ -204,5 +205,10 @@ public class ObjectPlacementSystem : MonoBehaviour
     {
         _isInRemoveMode = false;
         hudManager.HideRemoveModeIconFrame();
+    }
+
+    private void ActualizeDevicesAmountList(List<int> newAmounts)
+    {
+        _amountOfDevices = newAmounts;
     }
 }

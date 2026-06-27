@@ -9,8 +9,8 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 {
     [SerializeField] private float doubleTapTimeWindow = 0.5f;
     [SerializeField] private float doubleTapDistanceTolerance = 0.05f;
-    [SerializeField] private float PlacementTapIndicationDelay = 0.2f;
-    [SerializeField] private float CancelPlacementOnMovementTreshold = 0.2f;
+    [SerializeField] private float placementTapIndicationDelay = 0.2f;
+    [SerializeField] private float cancelPlacementOnMovementThreshold = 0.2f;
     
     [NonSerialized] public Vector2 LookDelta;
     [NonSerialized] public Vector2 PreviousDelta;
@@ -19,7 +19,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     
     [NonSerialized] private float _lastTapTime;
     [NonSerialized] private Vector2 _lastTapPosition;
-    [NonSerialized] private bool IsHolding;
+    [NonSerialized] private bool _isHolding;
     
     private PlayerInputActions _playerInput;
     
@@ -29,6 +29,8 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     public event Action OnStopPlacement;
 
     public event Action OnCameraPivotChanged;
+
+    public static event Action OnScreenClickDetected;
 
     private int _currentSlot = 0;
     
@@ -40,7 +42,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     private void OnDisable()
     {
         IsOrbiting = false;
-        IsHolding = false;
+        _isHolding = false;
         _playerInput.PlayerControl.Disable();
     }
     
@@ -58,15 +60,18 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
+        if (context.started)
+            OnScreenClickDetected?.Invoke();
+            
         if (context.performed)
         {
-            IsHolding = true;
+            _isHolding = true;
             OnStartPlacement?.Invoke();
         }
 
         if (context.canceled)
         {
-            IsHolding = false;
+            _isHolding = false;
             OnStopPlacement?.Invoke();
         }
     }
@@ -127,7 +132,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
         PreviousDelta = LookDelta;
         LookDelta = context.ReadValue<Vector2>();
         
-        if (context.started && Vector2.SqrMagnitude(LookDelta - PreviousDelta) > CancelPlacementOnMovementTreshold)
+        if (context.started && Vector2.SqrMagnitude(LookDelta - PreviousDelta) > cancelPlacementOnMovementThreshold)
             OnStopPlacement?.Invoke();
     }
 

@@ -19,12 +19,12 @@ public class CameraPivotControl : MonoBehaviour
 
     private void OnEnable()
     {
-        playerControls.OnCameraPivotChanged += ChangePivotPosition;
+        playerControls.OnCameraPivotChanged += ChangePivotPositionRayCast;
     }
 
     private void OnDisable()
     {
-        playerControls.OnCameraPivotChanged -= ChangePivotPosition;
+        playerControls.OnCameraPivotChanged -= ChangePivotPositionRayCast;
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class CameraPivotControl : MonoBehaviour
         }
     }
 
-    private void ChangePivotPosition()
+    private void ChangePivotPositionRayCast()
     {
         if (PointerOverUIDetector.Instance.IsPointerOverUI()) 
             return;
@@ -55,5 +55,11 @@ public class CameraPivotControl : MonoBehaviour
             _newPos = hit.point;
             _isTransitioning = true;
         }
+    }
+
+    public void ChangePivotPositionTransform(Transform newPivot)
+    {
+        _newPos = newPivot.position;
+        _isTransitioning = true;
     }
 }
