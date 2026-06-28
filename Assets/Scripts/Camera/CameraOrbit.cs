@@ -41,4 +41,9 @@ public class CameraOrbit : MonoBehaviour
         
         transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
     }
+
+    public void SetCameraRotation()
+    {
+        
+    }
 }

@@ -54,6 +54,9 @@ public class TutorialManager : MonoBehaviour
 
     private void SetStep(int step)
     {
+        if (step > 0 && tutorialSteps[step - 1].highlightObject)
+            tutorialSteps[step - 1].objectToHighlight.SetActive(false);
+        
         if (step == tutorialSteps.Count)
         {
             DisableTutorial();
@@ -68,7 +71,10 @@ public class TutorialManager : MonoBehaviour
         
         if (tutorialSteps[step].changeAmountOfDevices)
             OnDeviceAmountUpdate?.Invoke(tutorialSteps[step].newAmountOfDevices);
-            
+
+        if (tutorialSteps[step].highlightObject)
+            tutorialSteps[step].objectToHighlight.SetActive(true);
+
     }
 
     [Serializable]
