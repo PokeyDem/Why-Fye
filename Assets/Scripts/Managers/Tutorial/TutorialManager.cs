@@ -7,6 +7,7 @@ public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private ObjectPlacementSystem objectPlacementSystem;
     [SerializeField] private CameraPivotControl cameraPivotControl;
+    [SerializeField] private CameraOrbit cameraOrbit;
     [SerializeField] private NextStepDetectorManager nextStepDetectorManager;
     [SerializeField] private List<TutorialStep> tutorialSteps;
     [SerializeField] private GameObject _tutorialWindow;
@@ -74,6 +75,9 @@ public class TutorialManager : MonoBehaviour
 
         if (tutorialSteps[step].highlightObject)
             tutorialSteps[step].objectToHighlight.SetActive(true);
+        
+        if (tutorialSteps[step].changeCameraAngle)
+            cameraOrbit.SetCameraRotation(tutorialSteps[step].newCameraAngle);
 
     }
 
@@ -92,9 +96,11 @@ public class TutorialManager : MonoBehaviour
         public GameObject objectToHighlight;
 
         public bool changeAmountOfDevices;
-        
         [Range(0,3)]
         public List<int> newAmountOfDevices;
+
+        public bool changeCameraAngle;
+        public Quaternion newCameraAngle;
         
         [Tooltip("Method to trigger next step switch")]
         public NextTutorialStepDetectionMethod nextStepDetectionMethod;

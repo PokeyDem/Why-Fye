@@ -470,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPlacementSystem: {fileID: 46301836}
   cameraPivotControl: {fileID: 1498223411}
+  cameraOrbit: {fileID: 1498223410}
   nextStepDetectorManager: {fileID: 66428633}
   tutorialSteps:
   - tutorialText: "Hey, there! Welcome to your first day here. Your job is to provide
@@ -480,6 +481,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   - tutorialText: See this little poor guy here? He desperately needs our help to
       get his daily dose of easy dopamine
@@ -489,6 +492,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 1
+    newCameraAngle: {x: -0.022874301, y: -0.6103711, z: 0.014513634, w: 0.79165214}
     nextStepDetectionMethod: 0
   - tutorialText: "Let\u2019s get to work!"
     changeCameraPivot: 0
@@ -497,24 +502,30 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   - tutorialText: "Let\u2019s start by placing the router in the highlighted zone.
       Router serves as an access point, providing the initial signal."
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    nextStepDetectionMethod: 0
-  - tutorialText: Select it in the hotbar at the bottom of the screen, then hold
-      your finger in highlighted area to place it.
     changeCameraPivot: 1
     newCameraPivot: {fileID: 456664779}
     highlightObject: 1
     objectToHighlight: {fileID: 456664778}
+    changeAmountOfDevices: 0
+    newAmountOfDevices: 
+    changeCameraAngle: 1
+    newCameraAngle: {x: 0.00528738, y: 0.039100107, z: 0.1339027, w: 0.99020875}
+    nextStepDetectionMethod: 0
+  - tutorialText: Select it in the hotbar at the bottom of the screen, then hold
+      your finger in highlighted area to place it.
+    changeCameraPivot: 0
+    newCameraPivot: {fileID: 0}
+    highlightObject: 1
+    objectToHighlight: {fileID: 456664778}
     changeAmountOfDevices: 1
     newAmountOfDevices: 010000000000000000000000
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 1
   - tutorialText: 'Nice!
 
@@ -530,6 +541,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   - tutorialText: 'Well, the thing is, in our world the router needs to be in direct
       line of sight to provide signal.
@@ -541,6 +554,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   - tutorialText: To solve this problem, we use signal extenders. They can be placed
       only on the walls, and extend the signal further.
@@ -550,6 +565,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   - tutorialText: "Let\u2019s see it in action. Select extender in hotbar at the
       bottom of the screen, and place it in highlighted zone"
@@ -559,16 +576,20 @@ MonoBehaviour:
     objectToHighlight: {fileID: 1611370098}
     changeAmountOfDevices: 1
     newAmountOfDevices: 000000000100000000000000
+    changeCameraAngle: 1
+    newCameraAngle: {x: 0.031578805, y: 0.9763616, z: -0.0069121877, w: -0.21371277}
     nextStepDetectionMethod: 1
   - tutorialText: 'Nice!
 
       Place one more to compete the job!'
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
+    changeCameraPivot: 1
+    newCameraPivot: {fileID: 1957984143}
+    highlightObject: 1
+    objectToHighlight: {fileID: 1957984142}
     changeAmountOfDevices: 1
     newAmountOfDevices: 000000000100000000000000
+    changeCameraAngle: 1
+    newCameraAngle: {x: 0.0012649272, y: 0.018689023, z: 0.067516565, w: 0.9975423}
     nextStepDetectionMethod: 1
   - tutorialText: Now, press the green checkmark to complete the job
     changeCameraPivot: 0
@@ -577,6 +598,8 @@ MonoBehaviour:
     objectToHighlight: {fileID: 0}
     changeAmountOfDevices: 0
     newAmountOfDevices: 
+    changeCameraAngle: 0
+    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
     nextStepDetectionMethod: 0
   _tutorialWindow: {fileID: 444204531}
 --- !u!114 &66428633
@@ -4391,6 +4414,7 @@ MonoBehaviour:
   minVerticalAngle: -20
   maxVerticalAngle: 40
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
+  autoRotationSpeed: 5
 --- !u!114 &1498223411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4959,6 +4983,146 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1957984141
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9.15
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 9.15
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 9.15
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.4670033
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.712
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.36
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a26a234aaba2b9a408a31f3677ddc780, type: 2}
+    - target: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_Name
+      value: TutorialObjectPlacementArea (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1957984144}
+  m_SourcePrefab: {fileID: 100100000, guid: 8ee4123fd9499754798fac90ee17e88c, type: 3}
+--- !u!1 &1957984142 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1957984141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1957984143 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1957984141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1957984144
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957984142}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.057106696, y: 0.056708317, z: 0.000000010187707}
+  m_Center: {x: 0.00019321589, y: 0.00021030664, z: 0.0000000012982073}
 --- !u!1 &1991551951
 GameObject:
   m_ObjectHideFlags: 0
@@ -5267,3 +5431,4 @@ SceneRoots:
   - {fileID: 1697091032}
   - {fileID: 456664777}
   - {fileID: 1611370097}
+  - {fileID: 1957984141}

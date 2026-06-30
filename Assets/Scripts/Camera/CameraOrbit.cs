@@ -9,9 +9,12 @@ public class CameraOrbit : MonoBehaviour
     [SerializeField] private float minVerticalAngle = -20f;
     [SerializeField] private float maxVerticalAngle = 40f;
     [SerializeField] private PlayerControls playerControls;
+    [SerializeField] private float autoRotationSpeed;
 
     private float _currentYaw;
     private float _currentPitch;
+    private bool _autoRotation;
+    private Quaternion _autoRotationTarget;
 
     private void Start()
     {
@@ -22,10 +25,14 @@ public class CameraOrbit : MonoBehaviour
 
     private void Update()
     {
-        if (playerControls.IsOrbiting)
+        if (playerControls.IsOrbiting && !_autoRotation)
         {
             RotateCamera();
         }
+        
+        if (_autoRotation)
+            AutoRotateCamera();
+            
     }
 
     private void RotateCamera()
@@ -42,8 +49,36 @@ public class CameraOrbit : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
     }
 
-    public void SetCameraRotation()
+    public void SetCameraRotation(Quaternion rotation)
     {
-        
+        _autoRotationTarget = rotation;
+        EnableAutoRotation();
+    }
+    
+    private void AutoRotateCamera()
+    {
+        Quaternion rotation;
+        rotation = Quaternion.Slerp(transform.rotation, _autoRotationTarget, Time.deltaTime * autoRotationSpeed);
+        transform.rotation = rotation;
+
+        if (Quaternion.Angle(transform.rotation, _autoRotationTarget) < 0.01f)
+        {
+            transform.rotation = _autoRotationTarget;
+            _currentYaw = _autoRotationTarget.eulerAngles.y;
+            _currentPitch = _autoRotationTarget.eulerAngles.z;
+            DisableAutoRotation();
+        }
+
+        Debug.Log("Rotation called: " + transform.rotation.eulerAngles + " Target: " + _autoRotationTarget.eulerAngles);
+    }
+
+    private void EnableAutoRotation()
+    {
+        _autoRotation = true;
+    }
+
+    private void DisableAutoRotation()
+    {
+        _autoRotation = false;
     }
 }
