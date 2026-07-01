@@ -11,6 +11,9 @@ public class CameraPivotControl : MonoBehaviour
     private Camera _camera;
     private Vector3 _newPos;
     private bool _isTransitioning;
+    private bool _isTransitioningToTransform;
+    
+    public event Action OnCameraPivotChanged;
 
     private void Start()
     {
@@ -38,6 +41,12 @@ public class CameraPivotControl : MonoBehaviour
         {
             transform.position = _newPos;
             _isTransitioning = false;
+            
+            if (_isTransitioningToTransform)
+            {
+                _isTransitioningToTransform = false;
+                OnCameraPivotChanged?.Invoke();
+            }
         }
     }
 
@@ -57,9 +66,10 @@ public class CameraPivotControl : MonoBehaviour
         }
     }
 
-    public void ChangePivotPositionTransform(Transform newPivot)
+    public void ChangePivotPositionTransform(Vector3 newPivot)
     {
-        _newPos = newPivot.position;
+        _newPos = newPivot;
         _isTransitioning = true;
+        _isTransitioningToTransform = true;
     }
 }

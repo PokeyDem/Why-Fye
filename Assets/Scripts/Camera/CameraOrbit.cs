@@ -68,8 +68,6 @@ public class CameraOrbit : MonoBehaviour
             _currentPitch = _autoRotationTarget.eulerAngles.z;
             DisableAutoRotation();
         }
-
-        Debug.Log("Rotation called: " + transform.rotation.eulerAngles + " Target: " + _autoRotationTarget.eulerAngles);
     }
 
     private void EnableAutoRotation()

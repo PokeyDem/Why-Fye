@@ -22,6 +22,7 @@ public class ObjectPlacementSystem : MonoBehaviour
     [SerializeField] private PlayerControls playerControls;
     
     [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
+    [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
 
     [SerializeField] private LayerMask deviceLayer;
     
@@ -44,7 +45,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         playerControls.OnSlotSelected += SwitchIndex;
         PauseMenuManager.OnPause += StopPlacement;
         PauseMenuManager.OnResume += ResumePlacement;
-        TutorialManager.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
+        deviceAmountActualizer.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
     }
 
     private void OnDisable()
@@ -54,7 +55,7 @@ public class ObjectPlacementSystem : MonoBehaviour
         playerControls.OnSlotSelected -= SwitchIndex;
         PauseMenuManager.OnPause -= StopPlacement;
         PauseMenuManager.OnResume -= ResumePlacement;
-        TutorialManager.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
+        deviceAmountActualizer.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
     }
 
     private void Start()

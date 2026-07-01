@@ -1,109 +1,103 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.tvOS;
 
 public class TutorialManager : MonoBehaviour
 {
+    [Header("Systems used in the tutorial")]
     [SerializeField] private ObjectPlacementSystem objectPlacementSystem;
     [SerializeField] private CameraPivotControl cameraPivotControl;
     [SerializeField] private CameraOrbit cameraOrbit;
-    [SerializeField] private NextStepDetectorManager nextStepDetectorManager;
-    [SerializeField] private List<TutorialStep> tutorialSteps;
-    [SerializeField] private GameObject _tutorialWindow;
-    private TextMeshProUGUI _tutorialTextField;
-    private int _currentStep = 0;
+    [SerializeField] private NextStepDetectorsManager nextStepDetectorsManager;
+    [SerializeField] private TextPrinter textPrinter;
+    [SerializeField] private ObjectHighlighter objectHighlighter;
+    [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
     
-    public static event Action<List<int>> OnDeviceAmountUpdate;
-
-    private void OnEnable()
-    {
-        NextStepDetectorManager.OnNextStepDetected += SetNextStep;
-    }
+    [Header("Tutorial UI")]
+    [SerializeField] private GameObject tutorialWindow;
+    
+    [Header("Commands for each step")]
+    [SerializeField] private List<TutorialStepCommands> tutorialStepCommands;
+    
+    private TextMeshProUGUI _tutorialTextField;
+    private TutorialContext _tutorialContext;
+    
+    private int _currentStepIndex;
+    private int _currentCommandIndex;
 
     private void Awake()
     {
-        _tutorialTextField = _tutorialWindow.GetComponentInChildren<TextMeshProUGUI>();
+        _tutorialTextField = tutorialWindow.GetComponentInChildren<TextMeshProUGUI>();
+        textPrinter.Initialize(_tutorialTextField);
     }
 
     private void Start()
     {
+        InitializeTutorialContext();
+        
         if (GameManager.Instance.GetTargetLevel() == 1)
         {
             EnableTutorial();
         }
     }
 
+    private void InitializeTutorialContext()
+    {
+        _tutorialContext = new TutorialContext();
+        _tutorialContext.textPrinter = textPrinter;
+        _tutorialContext.cameraPivotControl = cameraPivotControl;
+        _tutorialContext.objectHighlighter = objectHighlighter;
+        _tutorialContext.deviceAmountActualizer = deviceAmountActualizer;
+        _tutorialContext.nextStepDetectorsManager = nextStepDetectorsManager;
+    }
+    
+    private void SetStep(int step, int command)
+    {
+        tutorialStepCommands[step].commands[command].Execute(_tutorialContext, OnCommandFinished);
+    }
+
+    private void OnCommandFinished()
+    {
+        if (_currentCommandIndex + 1 < tutorialStepCommands[_currentStepIndex].commands.Count)
+        {
+            _currentCommandIndex++;
+            SetStep(_currentStepIndex, _currentCommandIndex);
+        }
+        else if (_currentStepIndex + 1 < tutorialStepCommands.Count)
+        {
+            _currentStepIndex++;
+            _currentCommandIndex = 0;
+            SetStep(_currentStepIndex, _currentCommandIndex);
+        }
+        else
+        {
+            DisableTutorial();
+        }
+    }
+
     private void EnableTutorial()
     {
-        _tutorialWindow.SetActive(true);
-        SetStep(0);
+        tutorialWindow.SetActive(true);
+        _currentCommandIndex = 0;
+        _currentStepIndex = 0;
+        
+        SetStep(_currentStepIndex, _currentCommandIndex);
     }
 
     private void DisableTutorial()
     {
-        _tutorialWindow.SetActive(false);
-        _currentStep = 0;
-        nextStepDetectorManager.DisableAllDetectors();
-    }
-
-    private void SetNextStep()
-    {
-        _currentStep++;
-        SetStep(_currentStep);
-    }
-
-    private void SetStep(int step)
-    {
-        if (step > 0 && tutorialSteps[step - 1].highlightObject)
-            tutorialSteps[step - 1].objectToHighlight.SetActive(false);
-        
-        if (step == tutorialSteps.Count)
-        {
-            DisableTutorial();
-            return;
-        }
-        
-        nextStepDetectorManager.SetDetectionMethod(tutorialSteps[step].nextStepDetectionMethod);
-        _tutorialTextField.text = tutorialSteps[step].tutorialText;
-        
-        if (tutorialSteps[step].changeCameraPivot)
-            cameraPivotControl.ChangePivotPositionTransform(tutorialSteps[step].newCameraPivot);
-        
-        if (tutorialSteps[step].changeAmountOfDevices)
-            OnDeviceAmountUpdate?.Invoke(tutorialSteps[step].newAmountOfDevices);
-
-        if (tutorialSteps[step].highlightObject)
-            tutorialSteps[step].objectToHighlight.SetActive(true);
-        
-        if (tutorialSteps[step].changeCameraAngle)
-            cameraOrbit.SetCameraRotation(tutorialSteps[step].newCameraAngle);
-
+        tutorialWindow.SetActive(false);
+        _currentStepIndex = 0;
+        nextStepDetectorsManager.DisableAllDetectors();
     }
 
     [Serializable]
-    struct TutorialStep
+    public struct TutorialStepCommands
     {
-        [TextArea(3, 10)]
-        public string tutorialText;
-        
-        [Tooltip("Camera pivot preferences for this step")]
-        public bool changeCameraPivot;
-        public Transform newCameraPivot;
-        
-        [Tooltip("Highlight an object for this step")]
-        public bool highlightObject;
-        public GameObject objectToHighlight;
-
-        public bool changeAmountOfDevices;
-        [Range(0,3)]
-        public List<int> newAmountOfDevices;
-
-        public bool changeCameraAngle;
-        public Quaternion newCameraAngle;
-        
-        [Tooltip("Method to trigger next step switch")]
-        public NextTutorialStepDetectionMethod nextStepDetectionMethod;
+        public List<TutorialCommand> commands;
     }
 }
 

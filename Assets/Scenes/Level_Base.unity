@@ -371,6 +371,7 @@ MonoBehaviour:
   hudManager: {fileID: 1816600660}
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
   placementIndicator: {fileID: 1816600661}
+  deviceAmountActualizer: {fileID: 785658465}
   deviceLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -453,7 +454,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 170218872}
+  - {fileID: 1322848418}
+  - {fileID: 785658464}
   m_Father: {fileID: 37672833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &66428632
@@ -471,137 +475,43 @@ MonoBehaviour:
   objectPlacementSystem: {fileID: 46301836}
   cameraPivotControl: {fileID: 1498223411}
   cameraOrbit: {fileID: 1498223410}
-  nextStepDetectorManager: {fileID: 66428633}
-  tutorialSteps:
-  - tutorialText: "Hey, there! Welcome to your first day here. Your job is to provide
-      people with the internet connection \n"
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  - tutorialText: See this little poor guy here? He desperately needs our help to
-      get his daily dose of easy dopamine
-    changeCameraPivot: 1
-    newCameraPivot: {fileID: 417537578}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 1
-    newCameraAngle: {x: -0.022874301, y: -0.6103711, z: 0.014513634, w: 0.79165214}
-    nextStepDetectionMethod: 0
-  - tutorialText: "Let\u2019s get to work!"
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  - tutorialText: "Let\u2019s start by placing the router in the highlighted zone.
-      Router serves as an access point, providing the initial signal."
-    changeCameraPivot: 1
-    newCameraPivot: {fileID: 456664779}
-    highlightObject: 1
-    objectToHighlight: {fileID: 456664778}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 1
-    newCameraAngle: {x: 0.00528738, y: 0.039100107, z: 0.1339027, w: 0.99020875}
-    nextStepDetectionMethod: 0
-  - tutorialText: Select it in the hotbar at the bottom of the screen, then hold
-      your finger in highlighted area to place it.
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 1
-    objectToHighlight: {fileID: 456664778}
-    changeAmountOfDevices: 1
-    newAmountOfDevices: 010000000000000000000000
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 1
-  - tutorialText: 'Nice!
-
-      (Remember, router can be placed only on light-colored
-      floor parts.
-
-      Highlight: light-colored floor)
-
-'
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  - tutorialText: 'Well, the thing is, in our world the router needs to be in direct
-      line of sight to provide signal.
-
-'
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  - tutorialText: To solve this problem, we use signal extenders. They can be placed
-      only on the walls, and extend the signal further.
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  - tutorialText: "Let\u2019s see it in action. Select extender in hotbar at the
-      bottom of the screen, and place it in highlighted zone"
-    changeCameraPivot: 1
-    newCameraPivot: {fileID: 1611370099}
-    highlightObject: 1
-    objectToHighlight: {fileID: 1611370098}
-    changeAmountOfDevices: 1
-    newAmountOfDevices: 000000000100000000000000
-    changeCameraAngle: 1
-    newCameraAngle: {x: 0.031578805, y: 0.9763616, z: -0.0069121877, w: -0.21371277}
-    nextStepDetectionMethod: 1
-  - tutorialText: 'Nice!
-
-      Place one more to compete the job!'
-    changeCameraPivot: 1
-    newCameraPivot: {fileID: 1957984143}
-    highlightObject: 1
-    objectToHighlight: {fileID: 1957984142}
-    changeAmountOfDevices: 1
-    newAmountOfDevices: 000000000100000000000000
-    changeCameraAngle: 1
-    newCameraAngle: {x: 0.0012649272, y: 0.018689023, z: 0.067516565, w: 0.9975423}
-    nextStepDetectionMethod: 1
-  - tutorialText: Now, press the green checkmark to complete the job
-    changeCameraPivot: 0
-    newCameraPivot: {fileID: 0}
-    highlightObject: 0
-    objectToHighlight: {fileID: 0}
-    changeAmountOfDevices: 0
-    newAmountOfDevices: 
-    changeCameraAngle: 0
-    newCameraAngle: {x: 0, y: 0, z: 0, w: 0}
-    nextStepDetectionMethod: 0
-  _tutorialWindow: {fileID: 444204531}
+  nextStepDetectorsManager: {fileID: 66428633}
+  textPrinter: {fileID: 170218873}
+  objectHighlighter: {fileID: 1322848419}
+  deviceAmountActualizer: {fileID: 785658465}
+  tutorialWindow: {fileID: 444204531}
+  tutorialStepCommands:
+  - commands:
+    - {fileID: 11400000, guid: 243d2808eb2a24349820a891141d8287, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: 6b3f5e88d53829149831ce0ffb3b812d, type: 2}
+    - {fileID: 11400000, guid: 34811b961c6e78447a3c8d0b61d0934f, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: fe13ac01f5912d040a3725675bc2cfeb, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: 2b6ee97a58763f645961de6257ccff2f, type: 2}
+    - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: e13d2348cbc9c234ca1baee8e7d8a935, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: b1fc910478b238f4790f0e3212be51cb, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: c7dcc22c06d6f33408596348329e90ba, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: 26626a6e2effd3948a9349eb8ceaa8d2, type: 2}
+    - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: 968e0bb356940b84bb3c764437aadbd5, type: 2}
+    - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
+  - commands:
+    - {fileID: 11400000, guid: 906955487119d4d4cae19b79cc29c594, type: 2}
+    - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
 --- !u!114 &66428633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +627,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133387057}
   m_CullTransparentMesh: 1
+--- !u!1 &170218871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 170218872}
+  - component: {fileID: 170218873}
+  m_Layer: 0
+  m_Name: TextPrinter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &170218872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170218871}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 66428631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &170218873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170218871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ce9e5472c04fb43b0e914be8237786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textField: {fileID: 0}
+  nextCharacterDelay: 0.05
 --- !u!1 &190710745
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +906,7 @@ MonoBehaviour:
   selectionColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
+  deviceAmountActualizer: {fileID: 785658465}
 --- !u!1 &301677598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,12 +1681,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 456664777}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &456664779 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
-    type: 3}
-  m_PrefabInstance: {fileID: 456664777}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &456664780
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2378,6 +2329,50 @@ Transform:
   - {fileID: 1498223409}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &785658463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 785658464}
+  - component: {fileID: 785658465}
+  m_Layer: 0
+  m_Name: DeviceAmountActualizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &785658464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785658463}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 66428631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &785658465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785658463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c9a2615edbdab44aba80731bebd35d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &801146936
 GameObject:
   m_ObjectHideFlags: 0
@@ -3963,6 +3958,54 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1322848417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1322848418}
+  - component: {fileID: 1322848419}
+  m_Layer: 0
+  m_Name: ObjectsHighlighter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1322848418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322848417}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 66428631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1322848419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322848417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d2a688e859905478d3a6809817a75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToHighlight:
+  - {fileID: 456664778}
+  - {fileID: 1611370098}
+  - {fileID: 1957984142}
 --- !u!1 &1331378600
 GameObject:
   m_ObjectHideFlags: 0
@@ -4693,12 +4736,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1611370097}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1611370099 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1611370097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1611370100
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5093,12 +5130,6 @@ PrefabInstance:
 --- !u!1 &1957984142 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ee4123fd9499754798fac90ee17e88c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1957984141}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1957984143 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ee4123fd9499754798fac90ee17e88c,
     type: 3}
   m_PrefabInstance: {fileID: 1957984141}
   m_PrefabAsset: {fileID: 0}

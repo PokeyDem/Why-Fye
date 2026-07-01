@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NextStepDetectorManager : MonoBehaviour
+public class NextStepDetectorsManager : MonoBehaviour
 {
-    
     private Dictionary<NextTutorialStepDetectionMethod, INextStepDetector> _nextStepDetectors = new Dictionary<NextTutorialStepDetectionMethod, INextStepDetector>();
-
-    public static event Action OnNextStepDetected;
+    private bool _detectionEnabled;
+    public event Action OnActionDetected;
 
     private void Awake()
     {
@@ -23,7 +22,11 @@ public class NextStepDetectorManager : MonoBehaviour
 
     private void OnNextStep()
     {
-        OnNextStepDetected?.Invoke();
+        if (!_detectionEnabled)
+            return;
+        
+        OnActionDetected?.Invoke();
+        Debug.Log("Next step detected");
     }
 
     public void SetDetectionMethod(NextTutorialStepDetectionMethod newDetectionMethod)
@@ -43,6 +46,16 @@ public class NextStepDetectorManager : MonoBehaviour
             monoBehaviourComponent.enabled = false;
         }
     }
-    
-    
+
+    public void EnableDetection()
+    {
+        _detectionEnabled = true;
+        Debug.Log("Detection enabled");
+    }
+
+    public void DisableDetection()
+    {
+        _detectionEnabled = false;
+        Debug.Log("Detection disabled");
+    }
 }
