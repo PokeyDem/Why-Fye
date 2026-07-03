@@ -16,6 +16,8 @@ public class CameraOrbit : MonoBehaviour
     private bool _autoRotation;
     private Quaternion _autoRotationTarget;
 
+    public event Action OnRotationFinished;
+
     private void Start()
     {
         Vector3 angles = transform.eulerAngles;

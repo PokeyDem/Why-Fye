@@ -9,4 +9,5 @@ public class TutorialContext
    public ObjectHighlighter objectHighlighter;
    public NextStepDetectorsManager nextStepDetectorsManager;
    public DeviceAmountActualizer deviceAmountActualizer;
+   public CameraOrbit cameraOrbit;
 }

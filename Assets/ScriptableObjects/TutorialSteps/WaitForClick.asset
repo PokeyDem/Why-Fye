@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce77c9a57fecd649a69bf5f541ede05, type: 3}
   m_Name: WaitForClick
   m_EditorClassIdentifier: 
+  waitForCompletion: 1
   nextStepDetectionMethod: 0

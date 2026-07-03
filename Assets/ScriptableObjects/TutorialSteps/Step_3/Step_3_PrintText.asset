@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556fd2b9d9bfd334bb136011ff786cef, type: 3}
   m_Name: Step_3_PrintText
   m_EditorClassIdentifier: 
+  waitForCompletion: 1
   textToPrint: "Let\u2019s get to work!\r\nStart by placing the router in the highlighted
     zone\nRouter serves as an access point providing the initial signa\r\n"

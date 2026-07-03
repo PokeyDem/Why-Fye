@@ -56,26 +56,56 @@ public class TutorialManager : MonoBehaviour
     
     private void SetStep(int step, int command)
     {
-        tutorialStepCommands[step].commands[command].Execute(_tutorialContext, OnCommandFinished);
+        _currentStepIndex = step;
+        _currentCommandIndex = command;
+        
+        bool isExecutingSequenceWithoutWaiting = true;
+        TutorialCommand currentCommand;
+        
+        while (isExecutingSequenceWithoutWaiting)
+        {
+            currentCommand = tutorialStepCommands[_currentStepIndex].commands[_currentCommandIndex];
+            if (currentCommand.WaitForCompletion())
+            {
+                currentCommand.Execute(_tutorialContext, OnCommandFinished);
+                isExecutingSequenceWithoutWaiting = false;
+            }
+            else
+            {
+                currentCommand.Execute(_tutorialContext,null);
+                IncrementStepAndCommandIndices();
+            }
+        }
     }
 
     private void OnCommandFinished()
     {
+        Debug.Log("Command finished");
+        bool tutorialFinished = IncrementStepAndCommandIndices();
+        if (!tutorialFinished)
+        {
+            SetStep(_currentStepIndex, _currentCommandIndex);
+        }
+    }
+
+    private bool IncrementStepAndCommandIndices()
+    {
         if (_currentCommandIndex + 1 < tutorialStepCommands[_currentStepIndex].commands.Count)
         {
             _currentCommandIndex++;
-            SetStep(_currentStepIndex, _currentCommandIndex);
+            
         }
         else if (_currentStepIndex + 1 < tutorialStepCommands.Count)
         {
             _currentStepIndex++;
             _currentCommandIndex = 0;
-            SetStep(_currentStepIndex, _currentCommandIndex);
         }
         else
         {
             DisableTutorial();
+            return true;
         }
+        return false;
     }
 
     private void EnableTutorial()
