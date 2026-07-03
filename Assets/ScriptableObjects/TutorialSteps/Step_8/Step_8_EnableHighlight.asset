@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4715c42e10a079b43926a64bda35710f, type: 3}
-  m_Name: Step_3_HighlightObject
+  m_Script: {fileID: 11500000, guid: 7ab6f726d32e5e74ba5249f740ed4494, type: 3}
+  m_Name: Step_8_EnableHighlight
   m_EditorClassIdentifier: 
   waitForCompletion: 0
-  objectToHighlightIndex: 0
+  objectToHighlightIndex: 1

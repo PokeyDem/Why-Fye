@@ -20,4 +20,11 @@ public class ObjectHighlighter : MonoBehaviour
         
         OnHighlightComplete?.Invoke();
     }
+
+    public void DisableHighlight()
+    {
+        objectsToHighlight[highlightedObjectIndex].SetActive(false);
+        highlightedObjectIndex = -1;
+        OnHighlightComplete?.Invoke();
+    }
 }
