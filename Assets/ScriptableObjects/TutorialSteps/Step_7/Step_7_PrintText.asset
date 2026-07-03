@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556fd2b9d9bfd334bb136011ff786cef, type: 3}
   m_Name: Step_7_PrintText
   m_EditorClassIdentifier: 
+  waitForCompletion: 1
   textToPrint: "To solve this problem, we use signal extenders \nRemember, they can
     be placed only on the walls"

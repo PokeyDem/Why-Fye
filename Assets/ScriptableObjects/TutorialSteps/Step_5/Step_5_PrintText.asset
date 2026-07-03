@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556fd2b9d9bfd334bb136011ff786cef, type: 3}
   m_Name: Step_5_PrintText
   m_EditorClassIdentifier: 
+  waitForCompletion: 1
   textToPrint: 'Nice!
 
     Also, remember that router can be placed only on light-colored

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556fd2b9d9bfd334bb136011ff786cef, type: 3}
   m_Name: Step_6_PrintText
   m_EditorClassIdentifier: 
+  waitForCompletion: 1
   textToPrint: Well, the thing is, in our world the router needs to be in direct
     line of sight to provide signal

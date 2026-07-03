@@ -68,6 +68,7 @@ public class CameraOrbit : MonoBehaviour
             transform.rotation = _autoRotationTarget;
             _currentYaw = _autoRotationTarget.eulerAngles.y;
             _currentPitch = _autoRotationTarget.eulerAngles.z;
+            OnRotationFinished?.Invoke();
             DisableAutoRotation();
         }
     }
