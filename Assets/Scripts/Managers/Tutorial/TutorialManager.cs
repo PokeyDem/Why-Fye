@@ -51,6 +51,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialContext.cameraPivotControl = cameraPivotControl;
         _tutorialContext.objectHighlighter = objectHighlighter;
         _tutorialContext.deviceAmountActualizer = deviceAmountActualizer;
+        _tutorialContext.cameraOrbit = cameraOrbit;
         _tutorialContext.nextStepDetectorsManager = nextStepDetectorsManager;
     }
     
