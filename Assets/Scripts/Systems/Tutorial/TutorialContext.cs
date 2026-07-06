@@ -10,4 +10,5 @@ public class TutorialContext
    public NextStepDetectorsManager nextStepDetectorsManager;
    public DeviceAmountActualizer deviceAmountActualizer;
    public CameraOrbit cameraOrbit;
+   public TutorialSpriteSwitcher TutorialSpriteSwitcher;
 }

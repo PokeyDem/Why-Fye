@@ -15,6 +15,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TextPrinter textPrinter;
     [SerializeField] private ObjectHighlighter objectHighlighter;
     [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
+    [SerializeField] private TutorialSpriteSwitcher tutorialSpriteSwitcher;
     
     [Header("Tutorial UI")]
     [SerializeField] private GameObject tutorialWindow;
@@ -27,6 +28,7 @@ public class TutorialManager : MonoBehaviour
     
     private int _currentStepIndex;
     private int _currentCommandIndex;
+    
 
     private void Awake()
     {
@@ -53,6 +55,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialContext.deviceAmountActualizer = deviceAmountActualizer;
         _tutorialContext.cameraOrbit = cameraOrbit;
         _tutorialContext.nextStepDetectorsManager = nextStepDetectorsManager;
+        _tutorialContext.TutorialSpriteSwitcher = tutorialSpriteSwitcher;
     }
     
     private void SetStep(int step, int command)
@@ -73,7 +76,7 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                currentCommand.Execute(_tutorialContext,null);
+                currentCommand.Execute(_tutorialContext, null);
                 IncrementStepAndCommandIndices();
             }
         }

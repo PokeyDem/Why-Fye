@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5903097d1ca6839488591534f8b047d0, type: 3}
-  m_Name: DisableHighlightObjectCommand
+  m_Script: {fileID: 11500000, guid: ce0f5fab440aa124c9b5eca1729e2719, type: 3}
+  m_Name: SwitchSprite_Greeting
   m_EditorClassIdentifier: 
-  waitForCompletion: 1
+  waitForCompletion: 0
+  spriteType: 0

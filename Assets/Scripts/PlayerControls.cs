@@ -23,7 +23,7 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     
     private PlayerInputActions _playerInput;
     
-    public event Action<int> OnSlotSelected;
+    public event Action<int> OnSlotSelected; 
     
     public event Action OnStartPlacement;
     public event Action OnStopPlacement;

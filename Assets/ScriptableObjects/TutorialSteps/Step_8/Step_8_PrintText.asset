@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Step_8_PrintText
   m_EditorClassIdentifier: 
   waitForCompletion: 1
-  textToPrint: " Let\u2019s see it in action!\nSelect extender in hotbar at the bottom
+  textToPrint: "Let\u2019s see it in action!\nSelect extender in hotbar at the bottom
     of the screen, and place it in highlighted zone"
