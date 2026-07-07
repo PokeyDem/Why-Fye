@@ -69,7 +69,6 @@ public class ObjectPlacementSystem : MonoBehaviour
     {
         currentLevelData = levelData;
         ResetDevicesAmount();
-        placementModeEnabled = true;
     }
 
     public void ResetDevicesAmount()
@@ -194,11 +193,15 @@ public class ObjectPlacementSystem : MonoBehaviour
     public void DisablePlacement()
     {
         placementModeEnabled = false;
+        OnSystemStateUpdated?.Invoke();
+        Debug.Log("Placement mode disabled");
     }
 
     public void EnablePlacement()
     {
         placementModeEnabled = true;
+        OnSystemStateUpdated?.Invoke();
+        Debug.Log("Placement mode disabled");
     }
 
     public void EnableRemoveMode()

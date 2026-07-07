@@ -484,6 +484,7 @@ MonoBehaviour:
   tutorialWindow: {fileID: 444204531}
   tutorialStepCommands:
   - commands:
+    - {fileID: 11400000, guid: 02a9894aafb72514fa839ae2eaf0705a, type: 2}
     - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
     - {fileID: 11400000, guid: acfaef0922eaf6c4fb15773c7af4d192, type: 2}
     - {fileID: 11400000, guid: 243d2808eb2a24349820a891141d8287, type: 2}

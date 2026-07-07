@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Step_1_TextPrint
   m_EditorClassIdentifier: 
   waitForCompletion: 1
-  textToPrint: ' Hey, there! Welcome to your first day here. Your job is to provide
-    people with the internet connection'
+  textToPrint: Hey, there! Welcome to your first day here. Your job is to provide
+    people with the internet access

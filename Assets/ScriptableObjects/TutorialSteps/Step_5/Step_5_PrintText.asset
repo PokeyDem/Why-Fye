@@ -15,5 +15,5 @@ MonoBehaviour:
   waitForCompletion: 1
   textToPrint: 'Nice!
 
-    Also, remember that router can be placed only on light-colored
+    Also, remember that router can be placed only on the light-colored
     floor parts'

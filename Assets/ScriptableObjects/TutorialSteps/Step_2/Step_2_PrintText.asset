@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Step_2_PrintText
   m_EditorClassIdentifier: 
   waitForCompletion: 1
-  textToPrint: ' See this little  guy here? He desperately needs our help to get
-    his daily dose of dopamine'
+  textToPrint: See this little guy here? He desperately needs our help to get his
+    daily dose of dopamine

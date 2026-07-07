@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Step_7_PrintText
   m_EditorClassIdentifier: 
   waitForCompletion: 1
-  textToPrint: "To solve this problem, we use signal extenders \nRemember, they can
-    be placed only on the walls"
+  textToPrint: "To solve this problem, we use signal extenders \nRemember, you can
+    place them only on walls"

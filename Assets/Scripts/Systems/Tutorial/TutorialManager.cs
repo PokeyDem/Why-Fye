@@ -73,11 +73,13 @@ public class TutorialManager : MonoBehaviour
             currentCommand = tutorialStepCommands[_currentStepIndex].commands[_currentCommandIndex];
             if (currentCommand.WaitForCompletion())
             {
+                Debug.Log("Executing command: " + currentCommand.GetType().Name + " Wait for completion | Step: " + _currentStepIndex + " Command: " + _currentCommandIndex + "");
                 currentCommand.Execute(_tutorialContext, OnCommandFinished);
                 isExecutingSequenceWithoutWaiting = false;
             }
             else
             {
+                Debug.Log("Executing command: " + currentCommand.GetType().Name + " Don't for completion | Step: " + _currentStepIndex + " Command: " + _currentCommandIndex + "");
                 currentCommand.Execute(_tutorialContext, null);
                 IncrementStepAndCommandIndices();
             }
@@ -86,7 +88,6 @@ public class TutorialManager : MonoBehaviour
 
     private void OnCommandFinished()
     {
-        Debug.Log("Command finished");
         bool tutorialFinished = IncrementStepAndCommandIndices();
         if (!tutorialFinished)
         {

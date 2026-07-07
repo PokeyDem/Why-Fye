@@ -26,7 +26,6 @@ public class NextStepDetectorsManager : MonoBehaviour
             return;
         
         OnActionDetected?.Invoke();
-        Debug.Log("Next step detected");
     }
 
     public void SetDetectionMethod(NextTutorialStepDetectionMethod newDetectionMethod)
@@ -50,12 +49,10 @@ public class NextStepDetectorsManager : MonoBehaviour
     public void EnableDetection()
     {
         _detectionEnabled = true;
-        Debug.Log("Detection enabled");
     }
 
     public void DisableDetection()
     {
         _detectionEnabled = false;
-        Debug.Log("Detection disabled");
     }
 }

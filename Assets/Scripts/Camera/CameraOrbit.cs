@@ -59,7 +59,6 @@ public class CameraOrbit : MonoBehaviour
     
     private void AutoRotateCamera()
     {
-        Debug.Log("AutoRotateCamera");
         Quaternion rotation;
         rotation = Quaternion.Slerp(transform.rotation, _autoRotationTarget, Time.deltaTime * autoRotationSpeed);
         transform.rotation = rotation;
