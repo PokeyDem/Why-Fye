@@ -29,7 +29,8 @@ public class TutorialManager : MonoBehaviour
     private int _currentStepIndex;
     private int _currentCommandIndex;
     
-
+    //TODO: Add command to disable/enable placement (u can break the tutorial by placing the object before waiting for action starts)
+    
     private void Awake()
     {
         _tutorialTextField = tutorialWindow.GetComponentInChildren<TextMeshProUGUI>();
@@ -56,6 +57,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialContext.cameraOrbit = cameraOrbit;
         _tutorialContext.nextStepDetectorsManager = nextStepDetectorsManager;
         _tutorialContext.TutorialSpriteSwitcher = tutorialSpriteSwitcher;
+        _tutorialContext.objectPlacementSystem = objectPlacementSystem;
     }
     
     private void SetStep(int step, int command)

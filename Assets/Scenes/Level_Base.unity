@@ -484,6 +484,7 @@ MonoBehaviour:
   tutorialWindow: {fileID: 444204531}
   tutorialStepCommands:
   - commands:
+    - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
     - {fileID: 11400000, guid: acfaef0922eaf6c4fb15773c7af4d192, type: 2}
     - {fileID: 11400000, guid: 243d2808eb2a24349820a891141d8287, type: 2}
     - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
@@ -502,8 +503,10 @@ MonoBehaviour:
   - commands:
     - {fileID: 11400000, guid: 8e92cf50ae3921d43a5870a8376686ba, type: 2}
     - {fileID: 11400000, guid: 2b6ee97a58763f645961de6257ccff2f, type: 2}
+    - {fileID: 11400000, guid: 4a17371ce5a8cd24ab0b5ebcfc4d4c13, type: 2}
     - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
     - {fileID: 11400000, guid: 0f0c780ee52508f4fb85532fa86418d5, type: 2}
+    - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
   - commands:
     - {fileID: 11400000, guid: 23d4110a391517b4e986f870313b0cf6, type: 2}
     - {fileID: 11400000, guid: e13d2348cbc9c234ca1baee8e7d8a935, type: 2}
@@ -521,7 +524,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 16a5d3a2756f08147b8ad0eb4b0e3e29, type: 2}
     - {fileID: 11400000, guid: 59a7f795ca0f92d4790677296a297614, type: 2}
     - {fileID: 11400000, guid: 26626a6e2effd3948a9349eb8ceaa8d2, type: 2}
+    - {fileID: 11400000, guid: 4a17371ce5a8cd24ab0b5ebcfc4d4c13, type: 2}
     - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
+    - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
     - {fileID: 11400000, guid: 0f0c780ee52508f4fb85532fa86418d5, type: 2}
   - commands:
     - {fileID: 11400000, guid: c0dfd7960820b994498f83983be3b088, type: 2}
@@ -529,7 +534,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9f2c0d3362b8a82418c5c5259961d36b, type: 2}
     - {fileID: 11400000, guid: 32e37cef5c703274eb422227f0389445, type: 2}
     - {fileID: 11400000, guid: 968e0bb356940b84bb3c764437aadbd5, type: 2}
+    - {fileID: 11400000, guid: 4a17371ce5a8cd24ab0b5ebcfc4d4c13, type: 2}
     - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
+    - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
     - {fileID: 11400000, guid: 0f0c780ee52508f4fb85532fa86418d5, type: 2}
   - commands:
     - {fileID: 11400000, guid: 906955487119d4d4cae19b79cc29c594, type: 2}

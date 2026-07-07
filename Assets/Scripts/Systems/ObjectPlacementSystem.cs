@@ -38,13 +38,15 @@ public class ObjectPlacementSystem : MonoBehaviour
     public static event Action<List<int>> OnDeviceAmountUpdate;
     public static event Action OnObjectPlaced;
 
+    public event Action OnSystemStateUpdated;
+
     private void OnEnable()
     {
         playerControls.OnStartPlacement += StartPlacingObject;
         playerControls.OnStopPlacement += StopPlacingObject;
         playerControls.OnSlotSelected += SwitchIndex;
-        PauseMenuManager.OnPause += StopPlacement;
-        PauseMenuManager.OnResume += ResumePlacement;
+        PauseMenuManager.OnPause += DisablePlacement;
+        PauseMenuManager.OnResume += EnablePlacement;
         deviceAmountActualizer.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
     }
 
@@ -53,8 +55,8 @@ public class ObjectPlacementSystem : MonoBehaviour
         playerControls.OnStartPlacement -= StartPlacingObject;
         playerControls.OnStopPlacement -= StopPlacingObject;
         playerControls.OnSlotSelected -= SwitchIndex;
-        PauseMenuManager.OnPause -= StopPlacement;
-        PauseMenuManager.OnResume -= ResumePlacement;
+        PauseMenuManager.OnPause -= DisablePlacement;
+        PauseMenuManager.OnResume -= EnablePlacement;
         deviceAmountActualizer.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
     }
 
@@ -83,6 +85,9 @@ public class ObjectPlacementSystem : MonoBehaviour
     private void StartPlacingObject()
     {
         if (PointerOverUIDetector.Instance.IsPointerOverUI())
+            return;
+        
+        if (!placementModeEnabled)
             return;
         
         CheckThePosition();
@@ -186,12 +191,12 @@ public class ObjectPlacementSystem : MonoBehaviour
             slopeAngle = 0;
     }
 
-    public void StopPlacement()
+    public void DisablePlacement()
     {
         placementModeEnabled = false;
     }
 
-    public void ResumePlacement()
+    public void EnablePlacement()
     {
         placementModeEnabled = true;
     }

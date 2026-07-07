@@ -11,4 +11,5 @@ public class TutorialContext
    public DeviceAmountActualizer deviceAmountActualizer;
    public CameraOrbit cameraOrbit;
    public TutorialSpriteSwitcher TutorialSpriteSwitcher;
+   public ObjectPlacementSystem objectPlacementSystem;
 }
