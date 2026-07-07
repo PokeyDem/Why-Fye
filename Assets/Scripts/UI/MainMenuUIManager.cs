@@ -15,6 +15,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Color activeButtonColor;
     [SerializeField] private Color inactiveButtonColor;
     [SerializeField] private Color completedLevelButtonColor;
+    [SerializeField] private Color completedLevelPressedButtonColor;
     
     public void ValidateLevelButtons(List<bool> completedLevels)
     {
@@ -32,6 +33,8 @@ public class MainMenuUIManager : MonoBehaviour
             if (completedLevels[i])
             {
                 block.normalColor = completedLevelButtonColor;
+                block.pressedColor = completedLevelPressedButtonColor;
+                block.selectedColor = completedLevelButtonColor;
             }
     
             levelButtons[i].colors = block;

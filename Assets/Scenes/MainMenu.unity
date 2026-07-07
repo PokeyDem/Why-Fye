@@ -811,6 +811,7 @@ MonoBehaviour:
   activeButtonColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveButtonColor: {r: 0.5254902, g: 0.5254902, b: 0.5254902, a: 0.83137256}
   completedLevelButtonColor: {r: 0.14456797, g: 0.93962264, b: 0.11878247, a: 1}
+  completedLevelPressedButtonColor: {r: 0.06355635, g: 0.3735848, b: 0.05286572, a: 0}
 --- !u!1 &327811055
 GameObject:
   m_ObjectHideFlags: 0
