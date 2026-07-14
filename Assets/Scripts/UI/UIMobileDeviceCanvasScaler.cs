@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class UIMobileDeviceCanvasScaler : MonoBehaviour
 {
     [SerializeField] private CanvasScaler canvasScaler;
+    [SerializeField] private float maxScaleFactor;
+    [SerializeField] private float minScaleFactor;
     [SerializeField] private Vector2 referenceResolution = new Vector2(2560f, 1440f);
 
     private void Start()
@@ -21,8 +23,8 @@ public class UIMobileDeviceCanvasScaler : MonoBehaviour
         float currentAspect = (float)Screen.width / (float)Screen.height;
 
         if (currentAspect >= targetAspect)
-            canvasScaler.matchWidthOrHeight = 1f;
+            canvasScaler.matchWidthOrHeight = maxScaleFactor;
         else
-            canvasScaler.matchWidthOrHeight = 0f;
+            canvasScaler.matchWidthOrHeight = minScaleFactor;
     }
 }
