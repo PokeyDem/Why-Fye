@@ -59,7 +59,7 @@ public class MainMenuManager : MonoBehaviour
     {
         mainMenuUIManager.DisableAllSubMenus();
         mainMenuUIManager.EnableMainMenuElements();
-        ValidateLevelButtons();
+        // ValidateLevelButtons();
     }
 
     public void SwitchToLevelMenu()

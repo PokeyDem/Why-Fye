@@ -11,38 +11,44 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject creditsMenuElements;
     [SerializeField] private GameObject controlsMenuElements;
     [SerializeField] private GameObject settingMenuElements;
-    [SerializeField] private List<Button> levelButtons = new List<Button>();
-    [SerializeField] private Color activeButtonColor;
-    [SerializeField] private Color inactiveButtonColor;
-    [SerializeField] private Color completedLevelButtonColor;
-    [SerializeField] private Color completedLevelPressedButtonColor;
-    
+    [SerializeField] private List<LevelButtonBehaviour> levelButtons = new List<LevelButtonBehaviour>();
+    [SerializeField] private Color unlockedTextColor;
+    [SerializeField] private Color lockedTextColor;
+    [SerializeField] private int unlockedButtonAlpha;
+    [SerializeField] private int lockedButtonAlpha;
+
+    private void Start()
+    {
+        foreach (var levelButtonBehaviour in levelButtons)
+        {
+            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedButtonAlpha, lockedButtonAlpha);
+            
+        }
+    }
+
     public void ValidateLevelButtons(List<bool> completedLevels)
     {
-
         for (int i = 0; i < levelButtons.Count; i++)
         {
+            levelButtons[i].gameObject.SetActive(true);
             bool isUnlocked = (i == 0) || completedLevels[i] || completedLevels[i - 1];
-          
-            levelButtons[i].interactable = isUnlocked;
-
-            var block = levelButtons[i].colors;
             
-            block.normalColor = isUnlocked ? activeButtonColor : inactiveButtonColor;
+            if (!isUnlocked)
+            {
+                levelButtons[i].LockButton();
+                continue;
+            }
 
             if (completedLevels[i])
             {
-                block.normalColor = completedLevelButtonColor;
-                block.pressedColor = completedLevelPressedButtonColor;
-                block.selectedColor = completedLevelButtonColor;
+                levelButtons[i].SetCompleted();
             }
-    
-            levelButtons[i].colors = block;
+            else
+            {
+                levelButtons[i].UnlockButton();
+            }
+            levelButtons[i].gameObject.SetActive(true);
         }
-    }
-    public List<Button> GetLevelButtons()
-    {
-        return levelButtons;
     }
 
     public void EnableLevelMenuElements()
