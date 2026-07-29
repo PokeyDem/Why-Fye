@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class MainMenuUIManager : MonoBehaviour
 {
     [Tooltip("Parent object of the each sub menu UI")]
-    [SerializeField] private GameObject levelMenuElements;
-    [SerializeField] private GameObject mainManuElements;
-    [SerializeField] private GameObject creditsMenuElements;
-    [SerializeField] private GameObject controlsMenuElements;
-    [SerializeField] private GameObject settingMenuElements;
-    [SerializeField] private GameObject stagesMenuElements;
+    [SerializeField] private CanvasGroup levelMenuElements;
+    [SerializeField] private CanvasGroup mainManuElements;
+    [SerializeField] private CanvasGroup creditsMenuElements;
+    [SerializeField] private CanvasGroup controlsMenuElements;
+    [SerializeField] private CanvasGroup settingMenuElements;
+    [SerializeField] private CanvasGroup stagesMenuElements;
     
     [SerializeField] private List<LevelButtonBehaviour> levelButtons = new List<LevelButtonBehaviour>();
     
@@ -77,48 +77,97 @@ public class MainMenuUIManager : MonoBehaviour
             levelButtons[i].gameObject.SetActive(true);
         }
     }
-
-    public void EnableLevelMenuElements()
-    {
-        levelMenuElements.SetActive(true);
-    }
-
+    
     public void EnableMainMenuElements()
     {
-        mainManuElements.SetActive(true);
+        mainManuElements.alpha = 1;
+        mainManuElements.interactable = true;
+        mainManuElements.blocksRaycasts = true;
     }
 
     public void DisableMainMenuElements()
     {
-        mainManuElements.SetActive(false);
+        mainManuElements.alpha = 0;
+        mainManuElements.interactable = false;
+        mainManuElements.blocksRaycasts = false;
+    }
+    
+    public void EnableLevelMenuElements()
+    {
+        levelMenuElements.alpha = 1;
+        levelMenuElements.interactable = true;
+        levelMenuElements.blocksRaycasts = true;
+    }
+
+    private void DisableLevelMenuElements()
+    {
+        levelMenuElements.alpha = 0;
+        levelMenuElements.interactable = false;
+        levelMenuElements.blocksRaycasts = false;
     }
 
     public void EnableCreditsMenuElements()
     {
-        creditsMenuElements.SetActive(true);
+        creditsMenuElements.alpha = 1;
+        creditsMenuElements.interactable = true;
+        creditsMenuElements.blocksRaycasts = true;
+    }
+
+    private void DisableCreditsMenuElements()
+    {
+        creditsMenuElements.alpha = 0;
+        creditsMenuElements.interactable = false;
+        creditsMenuElements.blocksRaycasts = false;
     }
 
     public void EnableControlsMenuElements()
     {
-        controlsMenuElements.SetActive(true);
+        controlsMenuElements.alpha = 1;
+        controlsMenuElements.interactable = true;
+        controlsMenuElements.blocksRaycasts = true;
+    }
+
+    private void DisableControlsMenuElements()
+    {
+        controlsMenuElements.alpha = 0;
+        controlsMenuElements.interactable = false;
+        controlsMenuElements.blocksRaycasts = false;
     }
 
     public void EnableSettingsMenuElements()
     {
-        settingMenuElements.SetActive(true);
+        settingMenuElements.alpha = 1;
+        settingMenuElements.interactable = true;
+        settingMenuElements.blocksRaycasts = true;
+    }
+
+    private void DisableSettingsMenuElements()
+    {
+        settingMenuElements.alpha = 0;
+        settingMenuElements.interactable = false;
+        settingMenuElements.blocksRaycasts = false;
     }
 
     public void EnableStagesMenuElements()
     {
-        stagesMenuElements.SetActive(true);
+        stagesMenuElements.alpha = 1;
+        stagesMenuElements.interactable = true;
+        stagesMenuElements.blocksRaycasts = true;
+    }
+
+    private void DisableStagesMenuElements()
+    {
+        stagesMenuElements.alpha = 0;
+        stagesMenuElements.interactable = false;
+        stagesMenuElements.blocksRaycasts = false;
     }
 
     public void DisableAllSubMenus()
     {
-        levelMenuElements.SetActive(false);
-        creditsMenuElements.SetActive(false);
-        controlsMenuElements.SetActive(false);
-        settingMenuElements.SetActive(false);
-        stagesMenuElements.SetActive(false);
+        DisableLevelMenuElements();
+        DisableCreditsMenuElements();
+        DisableControlsMenuElements();
+        DisableSettingsMenuElements();
+        DisableStagesMenuElements();
     }
 }
