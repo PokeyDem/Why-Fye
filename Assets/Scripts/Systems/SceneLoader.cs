@@ -12,9 +12,10 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private String mainMenuLevelName;
 
     private int _currentSceneIndex;
-    public void SwitchLevelEnv(int index, Action onCleanUp, Action onInitialization, bool isInitialBoot)
+    public void SwitchLevelEnv(int stageIndex, int levelIndex, Action onCleanUp, Action onInitialization, bool isInitialBoot)
     {
-        StartCoroutine(LoadSequenceCoroutine(index, onCleanUp, onInitialization, isInitialBoot));
+        _currentSceneIndex = stageIndex * 10 + levelIndex;
+        StartCoroutine(LoadSequenceCoroutine(levelIndex, onCleanUp, onInitialization, isInitialBoot));
     }
 
     public void LoadMainMenuLevel()

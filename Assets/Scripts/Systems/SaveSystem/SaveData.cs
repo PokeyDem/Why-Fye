@@ -6,9 +6,9 @@ using UnityEngine.Scripting;
 [Preserve]
 public class UnlockedLevelsData
 {
-    public List<bool> unlockedLevels;
+    public List<StageLevelsData> unlockedLevels;
 
-    public UnlockedLevelsData(List<bool> unlockedLevels)
+    public UnlockedLevelsData(List<StageLevelsData> unlockedLevels)
     {
         this.unlockedLevels = unlockedLevels;
     }

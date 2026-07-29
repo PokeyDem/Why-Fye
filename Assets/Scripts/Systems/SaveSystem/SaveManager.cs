@@ -30,7 +30,7 @@ public class SaveManager : MonoBehaviour
         _jsonDataService.SaveData(savePath, saveData, true);
     }
 
-    public List<bool> LoadGameFromFile()
+    public List<StageLevelsData> LoadGameFromFile()
     {
         if (!_jsonDataService.DoesFileExist(savePath))
             return null;

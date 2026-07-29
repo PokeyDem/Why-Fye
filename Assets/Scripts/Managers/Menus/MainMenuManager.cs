@@ -43,9 +43,17 @@ public class MainMenuManager : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
+    public void OnStageButtonClick(int stageIndex)
+    {
+        GameManager.Instance.SetTargetLevelStage(stageIndex);
+        mainMenuUIManager.DisableAllSubMenus();
+        mainMenuUIManager.EnableLevelMenuElements();
+        //MainMenuShowLevelButtons + ValidationProcess
+    }
+
     private void ValidateLevelButtons()
     {
-        mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetUnlockedLevelsData());
+        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     private IEnumerator LoadLevel()
@@ -66,7 +74,7 @@ public class MainMenuManager : MonoBehaviour
     {
         mainMenuUIManager.DisableMainMenuElements();
         mainMenuUIManager.EnableLevelMenuElements();
-        mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetUnlockedLevelsData());
+        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     public void SwitchToCreditsMenu()
@@ -89,7 +97,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnStartButtonClick()
     {
-        SwitchToLevelMenu();
+        mainMenuUIManager.DisableMainMenuElements();
+        mainMenuUIManager.EnableStagesMenuElements();
+        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     public void OnBackButtonClick()

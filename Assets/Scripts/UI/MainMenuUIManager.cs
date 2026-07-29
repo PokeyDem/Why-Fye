@@ -6,32 +6,59 @@ using UnityEngine.UI;
 
 public class MainMenuUIManager : MonoBehaviour
 {
+    [Tooltip("Parent object of the each sub menu UI")]
     [SerializeField] private GameObject levelMenuElements;
     [SerializeField] private GameObject mainManuElements;
     [SerializeField] private GameObject creditsMenuElements;
     [SerializeField] private GameObject controlsMenuElements;
     [SerializeField] private GameObject settingMenuElements;
+    [SerializeField] private GameObject stagesMenuElements;
+    
     [SerializeField] private List<LevelButtonBehaviour> levelButtons = new List<LevelButtonBehaviour>();
+    
+    [Tooltip("Colors and alphas for the level buttons")]
     [SerializeField] private Color unlockedTextColor;
     [SerializeField] private Color lockedTextColor;
-    [SerializeField] private int unlockedButtonAlpha;
-    [SerializeField] private int lockedButtonAlpha;
+    [SerializeField] private int unlockedLevelButtonAlpha;
+    [SerializeField] private int lockedLevelButtonAlpha;
+    
+    [SerializeField] private List<StageButtonBehaviour> stageButtons = new List<StageButtonBehaviour>();
+   
+    private List<StageLevelsData> _completedLevels;
 
     private void Start()
     {
         foreach (var levelButtonBehaviour in levelButtons)
         {
-            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedButtonAlpha, lockedButtonAlpha);
+            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedLevelButtonAlpha, lockedLevelButtonAlpha);
             
         }
     }
 
-    public void ValidateLevelButtons(List<bool> completedLevels)
+    public void ValidateStageButtons(List<StageLevelsData> completedLevels)
+    {
+        _completedLevels = completedLevels;
+        for (int i = 0; i < completedLevels.Count; i++)
+        {
+            if (completedLevels[i].isStageUnlocked)
+            {
+                stageButtons[i].UnlockButton();
+                Debug.Log("Stage " + i + " is unlocked");
+            }
+            else
+            {
+                stageButtons[i].LockButton();
+                Debug.Log("Stage " + i + " is locked");
+            }
+        }
+    }
+
+    public void ValidateLevelButtons(int stageNum)
     {
         for (int i = 0; i < levelButtons.Count; i++)
         {
             levelButtons[i].gameObject.SetActive(true);
-            bool isUnlocked = (i == 0) || completedLevels[i] || completedLevels[i - 1];
+            bool isUnlocked = (i == 0) || _completedLevels[stageNum].levelsUnlocked[i] || _completedLevels[stageNum].levelsUnlocked[i - 1];
             
             if (!isUnlocked)
             {
@@ -39,7 +66,7 @@ public class MainMenuUIManager : MonoBehaviour
                 continue;
             }
 
-            if (completedLevels[i])
+            if (_completedLevels[stageNum].levelsUnlocked[i])
             {
                 levelButtons[i].SetCompleted();
             }
@@ -54,11 +81,6 @@ public class MainMenuUIManager : MonoBehaviour
     public void EnableLevelMenuElements()
     {
         levelMenuElements.SetActive(true);
-    }
-
-    public void DisableLevelMenuElements()
-    {
-        levelMenuElements.SetActive(false);
     }
 
     public void EnableMainMenuElements()
@@ -86,11 +108,17 @@ public class MainMenuUIManager : MonoBehaviour
         settingMenuElements.SetActive(true);
     }
 
+    public void EnableStagesMenuElements()
+    {
+        stagesMenuElements.SetActive(true);
+    }
+
     public void DisableAllSubMenus()
     {
         levelMenuElements.SetActive(false);
         creditsMenuElements.SetActive(false);
         controlsMenuElements.SetActive(false);
         settingMenuElements.SetActive(false);
+        stagesMenuElements.SetActive(false);
     }
 }

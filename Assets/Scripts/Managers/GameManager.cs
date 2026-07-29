@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private int amountOfStages;
     [SerializeField] private int amountOfLevels;
-    [SerializeField] private List<bool> completedLevels;
+    [SerializeField] private List<StageLevelsData> completedLevels;
     
     private bool _saveLoaded = false;
 
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
     private bool _levelLoaded;
 
     private int _targetLevelToLoad;
+
+    private int _targetLevelStage;
 
     public static event Action OnLevelButtonsValidationRequest;
 
@@ -40,7 +43,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_saveLoaded)
         {
-            List<bool> loadedSave = SaveManager.Instance.LoadGameFromFile();
+            List<StageLevelsData> loadedSave = SaveManager.Instance.LoadGameFromFile();
             if (loadedSave != null)
             {
                 _saveLoaded = true;
@@ -54,25 +57,42 @@ public class GameManager : MonoBehaviour
         OnLevelButtonsValidationRequest?.Invoke();
     }
 
+    private List<StageLevelsData> InitializeStagesAndLevels()
+    {
+        List<StageLevelsData> stagesAndLevels = new List<StageLevelsData>();
+        for (int i = 0; i < amountOfStages; i++)
+        {
+            StageLevelsData currentStage = new StageLevelsData();
+            List<bool> currentLevels = new List<bool>();
+            for (int j = 0; j < amountOfLevels; j++)
+            {
+                currentLevels.Add(false);
+            }
+            currentStage.levelsUnlocked = currentLevels;
+            stagesAndLevels.Add(currentStage);
+            if (i == 0)
+                currentStage.isStageUnlocked = true;
+            else
+                currentStage.isStageUnlocked = false;
+        }
+        return stagesAndLevels;
+    }
+
     private void Initialize()
     {
 
         if (_isInitialized)
             return;
         
-        completedLevels = new List<bool>();
-        for (int i = 0; i < amountOfLevels; i++)
-        {
-            completedLevels.Add(false);
-        }
+        completedLevels = InitializeStagesAndLevels();
         
         _isInitialized = true;
         OnLevelButtonsValidationRequest?.Invoke();
     }
 
-    public void MarkAsCompleted(int level)
+    public void MarkAsCompleted(int stage, int level)
     {
-        completedLevels[level] = true;
+        completedLevels[stage].levelsUnlocked[level] = true;
         SaveManager.Instance.SaveGameToFile();
     }
 
@@ -96,12 +116,22 @@ public class GameManager : MonoBehaviour
         return _targetLevelToLoad;
     }
 
-    public List<bool> GetUnlockedLevelsData()
+    public void SetTargetLevelStage(int stageIndex)
+    {
+        _targetLevelStage = stageIndex;
+    }
+
+    public int GetTargetLevelStage()
+    {
+        return _targetLevelStage;
+    }
+
+    public List<StageLevelsData> GetUnlockedLevelsData()
     {
         return completedLevels;
     }
 
-    private void LoadUnlockedLevelsData(List<bool> unlockedLevels)
+    private void LoadUnlockedLevelsData(List<StageLevelsData> unlockedLevels)
     {
         completedLevels = unlockedLevels;
         OnLevelButtonsValidationRequest?.Invoke();
@@ -114,12 +144,17 @@ public class GameManager : MonoBehaviour
     
     public void ResetCompletedLevels()
     {
-        completedLevels = new List<bool>();
-        for (int i = 0; i < amountOfLevels; i++)
-        {
-            completedLevels.Add(false);
-        }
+        completedLevels = InitializeStagesAndLevels();
         
         SaveManager.Instance.SaveGameToFile();
     }
+}
+
+[Serializable]
+public struct StageLevelsData
+{
+    public int stageNumber;
+    public bool isStageUnlocked;
+    public bool isStageCompleted;
+    public List<bool> levelsUnlocked;
 }
