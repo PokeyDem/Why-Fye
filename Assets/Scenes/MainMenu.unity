@@ -675,7 +675,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.8039216, g: 0.8039216, b: 0.8039216, a: 0.75686276}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedColor: {r: 1, g: 1, b: 1, a: 0.42745098}
+  lockedColor: {r: 1, g: 1, b: 1, a: 1}
   lockImage: {fileID: 1247619556}
   button: {fileID: 238210035}
   image: {fileID: 238210036}
@@ -976,8 +976,8 @@ MonoBehaviour:
   - {fileID: 1019267625}
   unlockedTextColor: {r: 0, g: 0, b: 0, a: 1}
   lockedTextColor: {r: 0.3886792, g: 0.3886792, b: 0.3886792, a: 1}
-  unlockedLevelButtonAlpha: 0
-  lockedLevelButtonAlpha: 0
+  unlockedLevelButtonAlpha: 255
+  lockedLevelButtonAlpha: 240
   stageButtons:
   - {fileID: 1353725857}
   - {fileID: 238210038}
@@ -1048,7 +1048,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.8039216, g: 0.8039216, b: 0.8039216, a: 0.75686276}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1130,7 +1130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedColor: {r: 1, g: 1, b: 1, a: 0.42745098}
+  lockedColor: {r: 1, g: 1, b: 1, a: 1}
   lockImage: {fileID: 2102681882}
   button: {fileID: 313486328}
   image: {fileID: 313486329}
@@ -1674,7 +1674,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.8039216, g: 0.8039216, b: 0.8039216, a: 0.75686276}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1756,7 +1756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedColor: {r: 1, g: 1, b: 1, a: 0.42745098}
+  lockedColor: {r: 1, g: 1, b: 1, a: 1}
   lockImage: {fileID: 616530605}
   button: {fileID: 422293536}
   image: {fileID: 422293537}
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fa4767acd9abe42a74b2a947a85d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfStages: 0
+  amountOfStages: 4
   amountOfLevels: 6
   completedLevels: []
 --- !u!4 &451862249
@@ -3032,7 +3032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6830188, g: 0.6830188, b: 0.6830188, a: 1}
+  m_Color: {r: 0.5921569, g: 0.5921569, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5521,7 +5521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6830188, g: 0.6830188, b: 0.6830188, a: 1}
+  m_Color: {r: 0.5921569, g: 0.5921569, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6093,7 +6093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedColor: {r: 1, g: 1, b: 1, a: 1}
-  lockedColor: {r: 1, g: 1, b: 1, a: 0.42745098}
+  lockedColor: {r: 1, g: 1, b: 1, a: 1}
   lockImage: {fileID: 330843256}
   button: {fileID: 1353725854}
   image: {fileID: 1353725855}
@@ -8903,7 +8903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6830188, g: 0.6830188, b: 0.6830188, a: 1}
+  m_Color: {r: 0.5921569, g: 0.5921569, b: 0.5921569, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

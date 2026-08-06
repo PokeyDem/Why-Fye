@@ -14,8 +14,9 @@ public class SceneLoader : MonoBehaviour
     private int _currentSceneIndex;
     public void SwitchLevelEnv(int stageIndex, int levelIndex, Action onCleanUp, Action onInitialization, bool isInitialBoot)
     {
+     
         _currentSceneIndex = stageIndex * 10 + levelIndex;
-        StartCoroutine(LoadSequenceCoroutine(levelIndex, onCleanUp, onInitialization, isInitialBoot));
+        StartCoroutine(LoadSequenceCoroutine(_currentSceneIndex, onCleanUp, onInitialization, isInitialBoot));
     }
 
     public void LoadMainMenuLevel()

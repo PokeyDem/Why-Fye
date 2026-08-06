@@ -16,17 +16,22 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnLevelButtonsValidationRequest += ValidateLevelButtons;
+        GameManager.OnLevelButtonsValidationRequest += ValidateStages;
     }
-
+    
     private void OnDisable()
     {
-       GameManager.OnLevelButtonsValidationRequest -= ValidateLevelButtons;
+        GameManager.OnLevelButtonsValidationRequest -= ValidateStages;
     }
 
     private void Start()
     {
         StartCoroutine(sceneTransitionManager.PlayFadeIn());
+        if (GameManager.Instance.IsSaveLoaded() || GameManager.Instance.IsInitialized())
+        {
+            ValidateStages();
+        }
+        
         if (GameManager.Instance.GetLoadedFromLevel())
         {
             SwitchToLevelMenu();
@@ -46,14 +51,9 @@ public class MainMenuManager : MonoBehaviour
     public void OnStageButtonClick(int stageIndex)
     {
         GameManager.Instance.SetTargetLevelStage(stageIndex);
+        mainMenuUIManager.ValidateLevelButtons(stageIndex);
         mainMenuUIManager.DisableAllSubMenus();
         mainMenuUIManager.EnableLevelMenuElements();
-        //MainMenuShowLevelButtons + ValidationProcess
-    }
-
-    private void ValidateLevelButtons()
-    {
-        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     private IEnumerator LoadLevel()
@@ -66,15 +66,13 @@ public class MainMenuManager : MonoBehaviour
     private void SwitchToMainMenu()
     {
         mainMenuUIManager.DisableAllSubMenus();
-        mainMenuUIManager.EnableMainMenuElements();
-        // ValidateLevelButtons();
+        mainMenuUIManager.EnableMainMenuElements(); 
     }
 
     public void SwitchToLevelMenu()
     {
         mainMenuUIManager.DisableMainMenuElements();
         mainMenuUIManager.EnableLevelMenuElements();
-        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     public void SwitchToCreditsMenu()
@@ -99,12 +97,19 @@ public class MainMenuManager : MonoBehaviour
     {
         mainMenuUIManager.DisableMainMenuElements();
         mainMenuUIManager.EnableStagesMenuElements();
-        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
     }
 
     public void OnBackButtonClick()
     {
         SwitchToMainMenu();
+    }
+
+    private void ValidateStages()
+    {
+        Debug.Log("Validating stages");
+        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
+        mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetTargetLevelStage());
+        Debug.Log("Validating: " + GameManager.Instance.GetUnlockedLevelsData().Count + " stages");
     }
     
     public void OnExitButtonClick(){

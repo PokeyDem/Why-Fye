@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     private int _targetLevelToLoad;
 
     private int _targetLevelStage;
-
+    
     public static event Action OnLevelButtonsValidationRequest;
 
     private void Awake()
@@ -48,13 +48,13 @@ public class GameManager : MonoBehaviour
             {
                 _saveLoaded = true;
                 LoadUnlockedLevelsData(loadedSave);
+                OnLevelButtonsValidationRequest?.Invoke();
             }
             else
             {
                 Initialize();
             }
         }
-        OnLevelButtonsValidationRequest?.Invoke();
     }
 
     private List<StageLevelsData> InitializeStagesAndLevels()
@@ -62,7 +62,14 @@ public class GameManager : MonoBehaviour
         List<StageLevelsData> stagesAndLevels = new List<StageLevelsData>();
         for (int i = 0; i < amountOfStages; i++)
         {
+            
             StageLevelsData currentStage = new StageLevelsData();
+            
+            if (i == 0)
+                currentStage.isStageUnlocked = true;
+            else
+                currentStage.isStageUnlocked = false;
+            
             List<bool> currentLevels = new List<bool>();
             for (int j = 0; j < amountOfLevels; j++)
             {
@@ -70,10 +77,6 @@ public class GameManager : MonoBehaviour
             }
             currentStage.levelsUnlocked = currentLevels;
             stagesAndLevels.Add(currentStage);
-            if (i == 0)
-                currentStage.isStageUnlocked = true;
-            else
-                currentStage.isStageUnlocked = false;
         }
         return stagesAndLevels;
     }
@@ -134,7 +137,6 @@ public class GameManager : MonoBehaviour
     private void LoadUnlockedLevelsData(List<StageLevelsData> unlockedLevels)
     {
         completedLevels = unlockedLevels;
-        OnLevelButtonsValidationRequest?.Invoke();
     }
 
     public int GetAmountOfLevels()
@@ -147,6 +149,16 @@ public class GameManager : MonoBehaviour
         completedLevels = InitializeStagesAndLevels();
         
         SaveManager.Instance.SaveGameToFile();
+    }
+
+    public bool IsSaveLoaded()
+    {
+        return _saveLoaded;
+    }
+
+    public bool IsInitialized()
+    {
+        return _isInitialized;
     }
 }
 

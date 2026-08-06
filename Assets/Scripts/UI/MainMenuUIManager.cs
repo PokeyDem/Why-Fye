@@ -25,36 +25,41 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private List<StageButtonBehaviour> stageButtons = new List<StageButtonBehaviour>();
    
     private List<StageLevelsData> _completedLevels;
-
-    private void Start()
-    {
-        foreach (var levelButtonBehaviour in levelButtons)
-        {
-            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedLevelButtonAlpha, lockedLevelButtonAlpha);
-            
-        }
-    }
+    private bool _buttonsInitialized = false;
 
     public void ValidateStageButtons(List<StageLevelsData> completedLevels)
     {
+        if (!_buttonsInitialized)
+        {
+            InitializeButtons();
+            _buttonsInitialized = true;
+        }
+        
         _completedLevels = completedLevels;
         for (int i = 0; i < completedLevels.Count; i++)
         {
             if (completedLevels[i].isStageUnlocked)
             {
                 stageButtons[i].UnlockButton();
-                Debug.Log("Stage " + i + " is unlocked");
             }
             else
             {
                 stageButtons[i].LockButton();
-                Debug.Log("Stage " + i + " is locked");
             }
+        }
+    }
+
+    private void InitializeButtons()
+    {
+        foreach (var levelButtonBehaviour in levelButtons)
+        {
+            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedLevelButtonAlpha, lockedLevelButtonAlpha);
         }
     }
 
     public void ValidateLevelButtons(int stageNum)
     {
+        Debug.Log("Validating level buttons");
         for (int i = 0; i < levelButtons.Count; i++)
         {
             levelButtons[i].gameObject.SetActive(true);
