@@ -6,8 +6,6 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private LevelDataCatalog levelsData;
-    [SerializeField] private int stage = -1;
-    [SerializeField] private int level = -1;
     [SerializeField] private HUDManager hudManager;
     private ObjectPlacementSystem _objectPlacementSystem;
     private ConnectionsManager _connectionsManager;
@@ -32,7 +30,6 @@ public class LevelManager : MonoBehaviour
         _connectionsManager = FindObjectOfType<ConnectionsManager>();
         _hudManager = FindObjectOfType<HUDManager>();
         _sceneLoader = FindObjectOfType<SceneLoader>();
-        level = GameManager.Instance.GetTargetLevel();
         _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, true);
     }
 
@@ -49,20 +46,15 @@ public class LevelManager : MonoBehaviour
     public void OnCompleteLevelClick()
     {
         _hudManager.HideCompleteButton();
-        GameManager.Instance.MarkAsCompleted(stage , level-1);
-        level++;
-        _sceneLoader.SwitchLevelEnv(stage, level, CleanUpLevel, InitializeNewLevel, false);
+        GameManager.Instance.MarkAsCompleted(GameManager.Instance.GetTargetLevelStage() , GameManager.Instance.GetTargetLevel() - 1);
+        GameManager.Instance.IncreaseTargetLevel();
+        _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, false);
     }
 
     private void InitializeNewLevel()
     {
-        if (level == -1)
-        {
-            level = GameManager.Instance.GetTargetLevel();
-        }
-        
         _connectionsManager.FindNewReceivers();
-        _objectPlacementSystem.Initialize(levelsData.levelsData[level-1]);
+        _objectPlacementSystem.Initialize(levelsData.levelsData[GameManager.Instance.GetTargetLevelStage()-1]);
     }
 
     private void CleanUpLevel()
@@ -80,7 +72,6 @@ public class LevelManager : MonoBehaviour
 
     public void OnExitToMainMenuClick()
     {
-        level = -1;
         GameManager.Instance.SetLoadedFromLevel(true);
         _sceneLoader.LoadMainMenuLevel();
     }

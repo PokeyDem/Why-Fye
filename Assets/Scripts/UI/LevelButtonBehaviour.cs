@@ -13,15 +13,18 @@ public class LevelButtonBehaviour : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     private Color _unlockedTextColor;
     private Color _lockedTextColor;
-    private int _unlockedButtonAlpha;
-    private int _lockedButtonAlpha;
+    
+    private Color _unlockedButtonColor;
+    private Color _lockedButtonColor;
+    private Color _completedButtonColor;
 
-    public void Initialize(Color unlockedTextColor, Color lockedTextColor, int unlockedButtonAlpha, int lockedButtonAlpha)
+    public void Initialize(Color unlockedTextColor, Color lockedTextColor, Color unlockedButtonColor, Color lockedButtonColor, Color completedButtonColor)
     {
         _unlockedTextColor = unlockedTextColor;
         _lockedTextColor = lockedTextColor;
-        _unlockedButtonAlpha = unlockedButtonAlpha;
-        _lockedButtonAlpha = lockedButtonAlpha;
+        _unlockedButtonColor = unlockedButtonColor;
+        _lockedButtonColor = lockedButtonColor;
+        _completedButtonColor = completedButtonColor;
     }
 
     public void LockButton()
@@ -33,9 +36,7 @@ public class LevelButtonBehaviour : MonoBehaviour
         
         text.color = _lockedTextColor;
         
-        var color = image.color;
-        color.a = _lockedButtonAlpha;
-        image.color = color;
+        image.color = _lockedButtonColor;
     }
 
     public void UnlockButton()
@@ -47,9 +48,7 @@ public class LevelButtonBehaviour : MonoBehaviour
         
         text.color = _unlockedTextColor;
         
-        var color = image.color;
-        color.a = _unlockedButtonAlpha;
-        image.color = color;
+        image.color = _unlockedButtonColor;
     }
 
     public void SetCompleted()
@@ -57,8 +56,6 @@ public class LevelButtonBehaviour : MonoBehaviour
         lockImage.gameObject.SetActive(false);
         checkmarkImage.gameObject.SetActive(true);
        
-        var color = image.color;
-        color.a = _unlockedButtonAlpha;
-        image.color = color;
+        image.color = _completedButtonColor;
     }
 }

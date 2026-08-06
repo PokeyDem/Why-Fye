@@ -976,8 +976,9 @@ MonoBehaviour:
   - {fileID: 1019267625}
   unlockedTextColor: {r: 0, g: 0, b: 0, a: 1}
   lockedTextColor: {r: 0.3886792, g: 0.3886792, b: 0.3886792, a: 1}
-  unlockedLevelButtonAlpha: 255
-  lockedLevelButtonAlpha: 240
+  unlockedLevelButtonColor: {r: 1, g: 1, b: 1, a: 0.8627451}
+  lockedLevelButtonColor: {r: 1, g: 1, b: 1, a: 0.7058824}
+  completedLevelButtonColor: {r: 0.4326056, g: 1, b: 0.41320753, a: 0.78431374}
   stageButtons:
   - {fileID: 1353725857}
   - {fileID: 238210038}

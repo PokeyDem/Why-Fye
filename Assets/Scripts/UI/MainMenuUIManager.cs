@@ -19,8 +19,9 @@ public class MainMenuUIManager : MonoBehaviour
     [Tooltip("Colors and alphas for the level buttons")]
     [SerializeField] private Color unlockedTextColor;
     [SerializeField] private Color lockedTextColor;
-    [SerializeField] private int unlockedLevelButtonAlpha;
-    [SerializeField] private int lockedLevelButtonAlpha;
+    [SerializeField] private Color unlockedLevelButtonColor;
+    [SerializeField] private Color lockedLevelButtonColor;
+    [SerializeField] private Color completedLevelButtonColor;
     
     [SerializeField] private List<StageButtonBehaviour> stageButtons = new List<StageButtonBehaviour>();
    
@@ -53,13 +54,12 @@ public class MainMenuUIManager : MonoBehaviour
     {
         foreach (var levelButtonBehaviour in levelButtons)
         {
-            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedLevelButtonAlpha, lockedLevelButtonAlpha);
+            levelButtonBehaviour.Initialize(unlockedTextColor, lockedTextColor, unlockedLevelButtonColor, lockedLevelButtonColor, completedLevelButtonColor);
         }
     }
 
     public void ValidateLevelButtons(int stageNum)
     {
-        Debug.Log("Validating level buttons");
         for (int i = 0; i < levelButtons.Count; i++)
         {
             levelButtons[i].gameObject.SetActive(true);
