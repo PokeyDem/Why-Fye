@@ -420,8 +420,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelsData: {fileID: 11400000, guid: 2cf30965183954741a61598c25ae3921, type: 2}
-  stage: -1
-  level: 0
   hudManager: {fileID: 1816600660}
 --- !u!1 &66428630
 GameObject:
@@ -2418,7 +2416,6 @@ GameObject:
   - component: {fileID: 801146940}
   - component: {fileID: 801146939}
   - component: {fileID: 801146938}
-  - component: {fileID: 801146941}
   m_Layer: 0
   m_Name: HUDCanvas
   m_TagString: Untagged
@@ -2488,7 +2485,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2560, y: 1440}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -2518,22 +2515,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &801146941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801146936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 520e9ae193c7ca84f999fa9dc2502364, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasScaler: {fileID: 0}
-  maxScaleFactor: 0
-  minScaleFactor: 0
-  referenceResolution: {x: 2560, y: 1440}
 --- !u!1 &812036629
 GameObject:
   m_ObjectHideFlags: 0
