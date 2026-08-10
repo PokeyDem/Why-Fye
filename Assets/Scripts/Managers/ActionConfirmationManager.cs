@@ -5,29 +5,31 @@ using UnityEngine;
 
 public class ActionConfirmationManager : MonoBehaviour
 {
-    [SerializeField] private GameObject confirmationWindow;
+    [SerializeField] private CanvasGroup confirmationWindow;
     private Action _currentActionToConfirm;
     private void ShowConfirmationWindow()
     {
-        confirmationWindow.SetActive(true);
+        confirmationWindow.alpha = 1;
+        confirmationWindow.interactable = true;
+        confirmationWindow.blocksRaycasts = true;
     }
 
     private void HideConfirmationWindow()
     {
-        confirmationWindow.SetActive(false);
+        confirmationWindow.alpha = 0;
+        confirmationWindow.interactable = false;
+        confirmationWindow.blocksRaycasts = false;
     }
 
     public void ProcessConfirmation(Action onUserConfirmation)
     {
         _currentActionToConfirm = onUserConfirmation;
-        Debug.Log("Current action to confirm set");
         ShowConfirmationWindow();
     }
 
     public void OnConfirmButtonClick()
     {
         _currentActionToConfirm?.Invoke();
-        Debug.Log("Current action to confirm invoked");
         _currentActionToConfirm = null;
         HideConfirmationWindow();
     }

@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
 
     public void MarkAsCompleted(int stage, int level)
     {
-        Debug.Log("Marking level as completed: Stage: " + stage + " Level: " + level);
         completedLevels[stage].levelsUnlocked[level] = true;
         SaveManager.Instance.SaveGameToFile();
     }
@@ -162,8 +161,8 @@ public class GameManager : MonoBehaviour
     public void ResetCompletedLevels()
     {
         completedLevels = InitializeStagesAndLevels();
-        
         SaveManager.Instance.SaveGameToFile();
+        OnLevelButtonsValidationRequest?.Invoke();
     }
 
     public bool IsSaveLoaded()

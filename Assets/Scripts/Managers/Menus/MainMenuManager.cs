@@ -106,10 +106,8 @@ public class MainMenuManager : MonoBehaviour
 
     private void ValidateStages()
     {
-        Debug.Log("Validating stages");
         mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
         mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetTargetLevelStage());
-        Debug.Log("Validating: " + GameManager.Instance.GetUnlockedLevelsData().Count + " stages");
     }
     
     public void OnExitButtonClick(){

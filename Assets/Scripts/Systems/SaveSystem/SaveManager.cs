@@ -25,7 +25,6 @@ public class SaveManager : MonoBehaviour
 
     public void SaveGameToFile()
     {
-        Debug.Log("Saving game");
         UnlockedLevelsData unlockedLevelsData = new UnlockedLevelsData(GameManager.Instance.GetUnlockedLevelsData());
         SaveData saveData = new SaveData(unlockedLevelsData);
         _jsonDataService.SaveData(savePath, saveData, true);
