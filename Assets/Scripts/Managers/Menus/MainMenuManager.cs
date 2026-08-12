@@ -92,12 +92,19 @@ public class MainMenuManager : MonoBehaviour
         mainMenuUIManager.DisableMainMenuElements();
         mainMenuUIManager.EnableSettingsMenuElements();
     }
+    
+    public void SwitchToStagesMenu()
+    {
+        mainMenuUIManager.DisableMainMenuElements();
+        mainMenuUIManager.DisableAllSubMenus();
+        mainMenuUIManager.EnableStagesMenuElements();
+    }
 
     public void OnStartButtonClick()
     {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.EnableStagesMenuElements();
+        SwitchToStagesMenu();
     }
+    
 
     public void OnBackButtonClick()
     {
