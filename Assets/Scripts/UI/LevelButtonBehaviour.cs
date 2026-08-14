@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class LevelButtonBehaviour : MonoBehaviour
 {
     [SerializeField] private Image lockImage;
-    [SerializeField] private Image checkmarkImage;
     [SerializeField] private Button button;
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private Image selectionFrame;
     private Color _unlockedTextColor;
     private Color _lockedTextColor;
     
@@ -32,7 +32,6 @@ public class LevelButtonBehaviour : MonoBehaviour
         button.interactable = false;
         
         lockImage.gameObject.SetActive(true);
-        checkmarkImage.gameObject.SetActive(false);
         
         text.color = _lockedTextColor;
         
@@ -44,18 +43,18 @@ public class LevelButtonBehaviour : MonoBehaviour
         button.interactable = true;
         
         lockImage.gameObject.SetActive(false);
-        checkmarkImage.gameObject.SetActive(false);
         
         text.color = _unlockedTextColor;
         
         image.color = _unlockedButtonColor;
+        selectionFrame.gameObject.SetActive(true);
     }
 
     public void SetCompleted()
     {
-        lockImage.gameObject.SetActive(false);
-        checkmarkImage.gameObject.SetActive(true);
+        UnlockButton();
        
         image.color = _completedButtonColor;
+        selectionFrame.gameObject.SetActive(false);
     }
 }
