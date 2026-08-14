@@ -11,6 +11,10 @@ public class HotbarSlotsManager : MonoBehaviour
     [SerializeField] private PlayerControls playerControls;
 
     [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
+
+    [Tooltip("Scale range for the hotbar icons")] 
+    [SerializeField] private Vector3 highlightedImageScale;
+    [SerializeField] private Vector3 defaultImageScale;
     
     private int _selectedSlotIndex;
     
@@ -44,19 +48,19 @@ public class HotbarSlotsManager : MonoBehaviour
     {
         DeselectSlot(_selectedSlotIndex);
         _selectedSlotIndex = index;
-        slots[index].ChangeFrameState(true);
+        slots[index].SetScale(highlightedImageScale);
     }
 
     private void DeselectSlot(int index)
     {
-        slots[index].ChangeFrameState(false);
+        slots[index].SetScale(defaultImageScale);
     }
 
     public void DeselectAllSlots()
     {
         for (int i = 0; i < slots.Count; i++)
         {
-            slots[i].ChangeFrameState(false);
+            slots[i].SetScale(defaultImageScale);
         }
     }
 

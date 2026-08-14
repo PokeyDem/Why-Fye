@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,26 +10,32 @@ public class HotbarSlot : MonoBehaviour
     [SerializeField] Button button;
     [SerializeField] TextMeshProUGUI counterTextField;
     [SerializeField] GameObject frame;
-    private int counter;
+    
+    private RectTransform _rectTransform;
+    private int _counter;
 
-
-    public void ChangeFrameState(bool newState)
+    private void Awake()
     {
-        frame.SetActive(newState);
+        _rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void SetScale(Vector3 newScale)
+    {
+        _rectTransform.localScale = newScale;
     }
 
     public void SetCounter(int newValue)
     {
-        counter = newValue;
-        counterTextField.text = "x" + counter;
+        _counter = newValue;
+        counterTextField.text = _counter.ToString();
     }
 
     public void DecreaseCounter()
     {
-        if (counter == 0)
+        if (_counter == 0)
             return;
         
-        counter--;
-        counterTextField.text = "x" + counter;
+        _counter--;
+        counterTextField.text = _counter.ToString();
     }
 }
