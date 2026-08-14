@@ -21,6 +21,9 @@ public class TutorialManager : MonoBehaviour
     [Header("Commands for each step")]
     [SerializeField] private List<TutorialStepCommands> tutorialStepCommands;
     
+    [Header("Dev options")]
+    [SerializeField] private bool skipTutorial;
+    
     private TextMeshProUGUI _tutorialTextField;
     private TutorialContext _tutorialContext;
     
@@ -36,6 +39,9 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         InitializeTutorialContext();
+        
+        if (skipTutorial)
+            return;
         
         if (GameManager.Instance.GetTargetLevel() == 1)
         {
