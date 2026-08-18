@@ -207,7 +207,7 @@ public class ObjectPlacementSystem : MonoBehaviour
     public void EnableRemoveMode()
     {
         _isInRemoveMode = true;
-        hudManager.ShowRemoveModeIconFrame();
+        hudManager.EnableRemoveMode();
     }
 
     public void DisableRemoveMode()

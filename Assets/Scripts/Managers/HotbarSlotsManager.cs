@@ -44,16 +44,18 @@ public class HotbarSlotsManager : MonoBehaviour
         SelectSlot(0);
     }
 
-    private void SelectSlot(int index)
+    public void SelectSlot(int index)
     {
         DeselectSlot(_selectedSlotIndex);
         _selectedSlotIndex = index;
         slots[index].SetScale(highlightedImageScale);
+        slots[index].EnableSelectionMask();
     }
 
     private void DeselectSlot(int index)
     {
         slots[index].SetScale(defaultImageScale);
+        slots[index].DisableSelectionMask();
     }
 
     public void DeselectAllSlots()
@@ -61,6 +63,7 @@ public class HotbarSlotsManager : MonoBehaviour
         for (int i = 0; i < slots.Count; i++)
         {
             slots[i].SetScale(defaultImageScale);
+            slots[i].DisableSelectionMask();
         }
     }
 
@@ -75,6 +78,11 @@ public class HotbarSlotsManager : MonoBehaviour
     private void DecreaseAmountOfDevices(int slot)
     {
         slots[slot].DecreaseCounter();
+    }
+
+    public int GetRemoveModeSlotIndex()
+    {
+        return (slots.Count - 1);
     }
     
 }

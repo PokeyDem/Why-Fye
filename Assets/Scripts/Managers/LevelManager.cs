@@ -54,7 +54,8 @@ public class LevelManager : MonoBehaviour
     private void InitializeNewLevel()
     {
         _connectionsManager.FindNewReceivers();
-       
+
+        Debug.Log("Loading level devices: Raw Index: " + GameManager.Instance.GetRawLevelIndex());
         _objectPlacementSystem.Initialize(levelsData.levelsData[GameManager.Instance.GetRawLevelIndex()]);
         
     }

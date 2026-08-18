@@ -25,10 +25,9 @@ public class HUDManager : MonoBehaviour
       completeLevelButton.gameObject.SetActive(false);
    }
 
-   public void ShowRemoveModeIconFrame()
+   public void EnableRemoveMode()
    {
-      hotbarSlotsManager.DeselectAllSlots();
-      removeModeIconFrame.SetActive(true);
+      hotbarSlotsManager.SelectSlot(hotbarSlotsManager.GetRemoveModeSlotIndex());
    }
 
    public void HideRemoveModeIconFrame()

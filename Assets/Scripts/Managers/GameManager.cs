@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     public int GetRawLevelIndex()
     {
-        return _targetLevelToLoad + (_targetLevelStage - 1) * amountOfLevels;
+        return (_targetLevelToLoad - 1) + (_targetLevelStage - 1) * amountOfLevels;
     }
 }
 

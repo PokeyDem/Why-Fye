@@ -9,7 +9,7 @@ public class HotbarSlot : MonoBehaviour
 {
     [SerializeField] Button button;
     [SerializeField] TextMeshProUGUI counterTextField;
-    [SerializeField] GameObject frame;
+    [SerializeField] private GameObject selectionMask;
     
     private RectTransform _rectTransform;
     private int _counter;
@@ -22,6 +22,16 @@ public class HotbarSlot : MonoBehaviour
     public void SetScale(Vector3 newScale)
     {
         _rectTransform.localScale = newScale;
+    }
+
+    public void EnableSelectionMask()
+    {
+        selectionMask.SetActive(true);
+    }
+
+    public void DisableSelectionMask()
+    {
+        selectionMask.SetActive(false);
     }
 
     public void SetCounter(int newValue)
