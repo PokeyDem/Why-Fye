@@ -2071,7 +2071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1263.039, y: 588.9293}
+  m_AnchoredPosition: {x: -1263.039, y: 557}
   m_SizeDelta: {x: 180.511, y: 143.2172}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &681423740
@@ -3504,7 +3504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1260, y: 599}
+  m_AnchoredPosition: {x: 1260, y: 567.07056}
   m_SizeDelta: {x: 179.1561, y: 23.0267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1116322845
@@ -5336,7 +5336,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 191491783}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
-        m_MethodName: EscPressed
+        m_MethodName: OnExitToMenuButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
