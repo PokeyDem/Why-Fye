@@ -65,6 +65,7 @@ public class MainMenuUIManager : MonoBehaviour
             levelButtons[i].gameObject.SetActive(true);
             bool isUnlocked = (i == 0) || _completedLevels[stageNum].levelsUnlocked[i] || _completedLevels[stageNum].levelsUnlocked[i - 1];
             
+            
             if (!isUnlocked)
             {
                 levelButtons[i].LockButton();

@@ -36,6 +36,7 @@ public class LevelButtonBehaviour : MonoBehaviour
         text.color = _lockedTextColor;
         
         image.color = _lockedButtonColor;
+        selectionFrame.gameObject.SetActive(false);
     }
 
     public void UnlockButton()

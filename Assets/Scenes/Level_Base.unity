@@ -542,7 +542,7 @@ MonoBehaviour:
   - commands:
     - {fileID: 11400000, guid: 906955487119d4d4cae19b79cc29c594, type: 2}
     - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
-  skipTutorial: 1
+  skipTutorial: 0
 --- !u!114 &66428633
 MonoBehaviour:
   m_ObjectHideFlags: 0

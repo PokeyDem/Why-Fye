@@ -11,11 +11,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<StageLevelsData> completedLevels;
     
     private bool _saveLoaded = false;
-
+    
     private bool _isInitialized = false;
-   
+    
     public static GameManager Instance;
-
+    
     private bool _loadedFromLevel = false;
 
     private bool _levelLoaded;
@@ -62,20 +62,20 @@ public class GameManager : MonoBehaviour
         List<StageLevelsData> stagesAndLevels = new List<StageLevelsData>();
         for (int i = 0; i < amountOfStages; i++)
         {
-            
             StageLevelsData currentStage = new StageLevelsData();
             
-            if (i == 0)
-                currentStage.isStageUnlocked = true;
-            else
-                currentStage.isStageUnlocked = false;
+            currentStage.isStageUnlocked = false;
             
             List<bool> currentLevels = new List<bool>();
             for (int j = 0; j < amountOfLevels; j++)
             {
-                currentLevels.Add(false);
+                if (i == 0 && j == 0) 
+                    currentLevels.Add(true);
+                else
+                    currentLevels.Add(false);
             }
             currentStage.levelsUnlocked = currentLevels;
+            currentStage.stageNumber = i;
             stagesAndLevels.Add(currentStage);
         }
         return stagesAndLevels;
@@ -124,10 +124,13 @@ public class GameManager : MonoBehaviour
         _targetLevelToLoad++;
         if (_targetLevelToLoad > amountOfLevels)
         {
-            _targetLevelToLoad = 0;
+            _targetLevelToLoad = 1;
 
             if (_targetLevelStage + 1 < amountOfStages)
+            {
                 _targetLevelStage++;
+                OnLevelButtonsValidationRequest?.Invoke();
+            }
             else
                 _targetLevelToLoad = amountOfLevels - 1;
         }
@@ -177,7 +180,7 @@ public class GameManager : MonoBehaviour
 
     public int GetRawLevelIndex()
     {
-        return (_targetLevelToLoad - 1) + (_targetLevelStage - 1) * amountOfLevels;
+        return (_targetLevelToLoad - 1) + (_targetLevelStage) * amountOfLevels;
     }
 }
 

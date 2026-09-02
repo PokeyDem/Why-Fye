@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour
     public void OnCompleteLevelClick()
     {
         _hudManager.HideCompleteButton();
-        GameManager.Instance.MarkAsCompleted(GameManager.Instance.GetTargetLevelStage() , GameManager.Instance.GetTargetLevel() - 1);
+        GameManager.Instance.MarkAsCompleted(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel() - 1);
         GameManager.Instance.IncreaseTargetLevel();
         _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, false);
     }
@@ -54,10 +54,7 @@ public class LevelManager : MonoBehaviour
     private void InitializeNewLevel()
     {
         _connectionsManager.FindNewReceivers();
-
-        Debug.Log("Loading level devices: Raw Index: " + GameManager.Instance.GetRawLevelIndex());
         _objectPlacementSystem.Initialize(levelsData.levelsData[GameManager.Instance.GetRawLevelIndex()]);
-        
     }
 
     private void CleanUpLevel()

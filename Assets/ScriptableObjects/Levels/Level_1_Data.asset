@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devicesData:
   - deviceType: 0
-    deviceAmount: 0
+    deviceAmount: 1
   - deviceType: 1
-    deviceAmount: 0
+    deviceAmount: 2
   - deviceType: 2
     deviceAmount: 0
