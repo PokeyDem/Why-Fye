@@ -9,6 +9,7 @@ public class DeviceAmountActualizer : MonoBehaviour
 
     public void UpdateDeviceAmount(List<int> newAmount)
     {
+        Debug.Log("Actualizer calling OnDeviceAmountUpdate");
         OnDeviceAmountUpdate?.Invoke(newAmount);
     }
 }

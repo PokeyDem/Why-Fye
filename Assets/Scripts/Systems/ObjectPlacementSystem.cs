@@ -73,6 +73,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     public void ResetDevicesAmount()
     {
+        Debug.Log("Resetting devices amount");
         _amountOfDevices.Clear();
         foreach (var deviceOnLevel in currentLevelData.devicesData)
         {
@@ -218,6 +219,7 @@ public class ObjectPlacementSystem : MonoBehaviour
 
     private void ActualizeDevicesAmountList(List<int> newAmounts)
     {
+        Debug.Log("ObjectPlacementSystem heard the update call");
         _amountOfDevices = newAmounts;
     }
 }

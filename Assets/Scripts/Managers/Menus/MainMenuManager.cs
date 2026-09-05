@@ -44,7 +44,6 @@ public class MainMenuManager : MonoBehaviour
             return;
         _isInAction = true;
         GameManager.Instance.SetTargetLevel(levelIndex);
-        StartCoroutine(sceneTransitionManager.PlayFadeOut());
         StartCoroutine(LoadLevel());
     }
 

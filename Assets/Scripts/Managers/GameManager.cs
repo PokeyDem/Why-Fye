@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     private int _targetLevelStage;
     
+    private bool _isTutorialActive;
+    
     public static event Action OnLevelButtonsValidationRequest;
 
     private void Awake()
@@ -181,6 +183,16 @@ public class GameManager : MonoBehaviour
     public int GetRawLevelIndex()
     {
         return (_targetLevelToLoad - 1) + (_targetLevelStage) * amountOfLevels;
+    }
+
+    public void SetTutorialActive(bool active)
+    {
+        _isTutorialActive = active;
+    }
+
+    public bool IsTutorialActive()
+    {
+        return _isTutorialActive;
     }
 }
 

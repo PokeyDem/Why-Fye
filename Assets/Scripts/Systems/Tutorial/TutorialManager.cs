@@ -119,6 +119,7 @@ public class TutorialManager : MonoBehaviour
 
     private void EnableTutorial()
     {
+        GameManager.Instance.SetTutorialActive(true);
         tutorialWindow.SetActive(true);
         _currentCommandIndex = 0;
         _currentStepIndex = 0;
@@ -131,6 +132,7 @@ public class TutorialManager : MonoBehaviour
         tutorialWindow.SetActive(false);
         _currentStepIndex = 0;
         nextStepDetectorsManager.DisableAllDetectors();
+        GameManager.Instance.SetTutorialActive(false);
     }
 
     [Serializable]

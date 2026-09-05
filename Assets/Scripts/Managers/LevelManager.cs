@@ -54,6 +54,10 @@ public class LevelManager : MonoBehaviour
     private void InitializeNewLevel()
     {
         _connectionsManager.FindNewReceivers();
+        
+        if (GameManager.Instance.IsTutorialActive())
+            return;
+        
         _objectPlacementSystem.Initialize(levelsData.levelsData[GameManager.Instance.GetRawLevelIndex()]);
     }
 

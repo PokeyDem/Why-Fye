@@ -69,8 +69,10 @@ public class HotbarSlotsManager : MonoBehaviour
 
     private void SetAmountOfDevices(List<int> amountOfDevices)
     {
+        Debug.Log("HotbarSlotsManager heard the update call");
         for (int i = 0; i < amountOfDevices.Count; i++)
         {
+            Debug.Log($"Setting amount of devices for {i} to " + amountOfDevices[i]);
             slots[i].SetCounter(amountOfDevices[i]);
         }
     }
