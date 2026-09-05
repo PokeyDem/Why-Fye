@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Update Device Amount Command
   m_EditorClassIdentifier: 
   waitForCompletion: 0
-  _newAmount: 030000000300000000000000
+  _newAmount: 010000000200000000000000
