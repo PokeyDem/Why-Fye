@@ -8,6 +8,7 @@ public class CameraZoomManager : MonoBehaviour
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float minZoom = 1.15f;
     [SerializeField] private float maxZoom = 2.4f;
+    [SerializeField] private float currentZoom;
     
     [SerializeField] private PlayerControls playerControls;
 
@@ -69,5 +70,10 @@ public class CameraZoomManager : MonoBehaviour
     private void ZoomCamera(float increment)
     {
         _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - increment, minZoom, maxZoom);
+    }
+
+    private void OnValidate()
+    {
+        _camera.orthographicSize = Mathf.Clamp(currentZoom, minZoom, maxZoom); 
     }
 }
