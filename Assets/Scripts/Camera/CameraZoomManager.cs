@@ -8,8 +8,14 @@ public class CameraZoomManager : MonoBehaviour
     [SerializeField] private float zoomSpeed = 0.01f;
     [SerializeField] private float minZoom = 1.15f;
     [SerializeField] private float maxZoom = 2.4f;
+    
+    [SerializeField] private PlayerControls playerControls;
 
     private Camera _camera;
+
+    private bool _isZooming;
+    
+    private bool _isZoomingOnPreviousFrame;
 
     private void OnEnable()
     {
@@ -28,7 +34,17 @@ public class CameraZoomManager : MonoBehaviour
 
     private void Update()
     {
-        if (Touch.activeTouches.Count != 2) return;
+        _isZoomingOnPreviousFrame = _isZooming;
+        
+        if (Touch.activeTouches.Count != 2)
+        {
+            _isZooming = false;
+            SynchronizeIsZooming();
+            return;
+        }
+        
+        _isZooming = true;
+        SynchronizeIsZooming();
         
         Touch touchZero = Touch.activeTouches[0];
         Touch touchOne = Touch.activeTouches[1];
@@ -42,6 +58,12 @@ public class CameraZoomManager : MonoBehaviour
         float difference = curMagnitude - prevMagnitude;
 
         ZoomCamera(difference * zoomSpeed);
+    }
+
+    private void SynchronizeIsZooming()
+    {
+        if (_isZoomingOnPreviousFrame == _isZooming) return;
+        playerControls.SetIsZooming(_isZooming);
     }
 
     private void ZoomCamera(float increment)

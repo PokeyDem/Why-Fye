@@ -20,6 +20,8 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
     [NonSerialized] private float _lastTapTime;
     [NonSerialized] private Vector2 _lastTapPosition;
     [NonSerialized] private bool _isHolding;
+
+    private bool _isZooming;
     
     private PlayerInputActions _playerInput;
     
@@ -129,6 +131,12 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
 
     public void OnRotation(InputAction.CallbackContext context)
     {
+        if (_isZooming)
+        {
+            LookDelta = Vector2.zero;
+            return;
+        }
+        
         PreviousDelta = LookDelta;
         LookDelta = context.ReadValue<Vector2>();
         
@@ -172,5 +180,10 @@ public class PlayerControls : ScriptableObject, PlayerInputActions.IPlayerContro
                 _lastTapPosition = OnScreenPosition;
             }
         }
+    }
+
+    public void SetIsZooming(bool isZooming)
+    {
+        _isZooming = isZooming;
     }
 }
