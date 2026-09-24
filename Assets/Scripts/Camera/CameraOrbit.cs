@@ -1,15 +1,24 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Allows the camera to be rotated around the scene (pivot point)
+/// Also controls the camera's vertical angle
+/// </summary>
 public class CameraOrbit : MonoBehaviour
 {
+    
+    [Header("Dependencies")]
+    [SerializeField] private PlayerControls playerControls;
+    
+    [Header("Camera Rotation Settings")]
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float minVerticalAngle = -20f;
     [SerializeField] private float maxVerticalAngle = 40f;
-    [SerializeField] private PlayerControls playerControls;
     [SerializeField] private float autoRotationSpeed;
+    
+    [SerializeField, Tooltip("Slerp interpolation value threshold before assigning the actual target value")] 
+    private float snapThreshold;
 
     private float _currentYaw;
     private float _currentPitch;
@@ -25,7 +34,7 @@ public class CameraOrbit : MonoBehaviour
         _currentYaw = angles.y;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (playerControls.IsOrbiting && !_autoRotation)
         {
@@ -34,7 +43,6 @@ public class CameraOrbit : MonoBehaviour
         
         if (_autoRotation)
             AutoRotateCamera();
-            
     }
 
     private void RotateCamera()
@@ -48,9 +56,15 @@ public class CameraOrbit : MonoBehaviour
         
         _currentPitch = Mathf.Clamp(_currentPitch, minVerticalAngle, maxVerticalAngle);
         
+        // Pitch (x) and Yaw (y) axes are switched due to the camera parent x,y axis orientation being inverted
         transform.rotation = Quaternion.Euler(0f, _currentYaw, _currentPitch);
     }
 
+    
+    /// <summary>
+    /// Sets the rotation target for a camera
+    /// </summary>
+    /// <param name="rotation">Rotation target represented by Quaternion</param>
     public void SetCameraRotation(Quaternion rotation)
     {
         _autoRotationTarget = rotation;
@@ -59,11 +73,10 @@ public class CameraOrbit : MonoBehaviour
     
     private void AutoRotateCamera()
     {
-        Quaternion rotation;
-        rotation = Quaternion.Slerp(transform.rotation, _autoRotationTarget, Time.deltaTime * autoRotationSpeed);
+        Quaternion rotation = Quaternion.Slerp(transform.rotation, _autoRotationTarget, Time.deltaTime * autoRotationSpeed);
         transform.rotation = rotation;
 
-        if (Quaternion.Angle(transform.rotation, _autoRotationTarget) < 0.01f)
+        if (Quaternion.Angle(transform.rotation, _autoRotationTarget) < snapThreshold)
         {
             transform.rotation = _autoRotationTarget;
             _currentYaw = _autoRotationTarget.eulerAngles.y;
