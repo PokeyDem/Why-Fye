@@ -1,46 +1,48 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
-public class SaveManager : MonoBehaviour
+namespace Systems.SaveSystem
 {
-    public static SaveManager Instance;
+    public class SaveManager : MonoBehaviour
+    {
+        public static SaveManager Instance;
 
-    [SerializeField] private string savePath;
-    private JsonDataService _jsonDataService = new JsonDataService();
+        [SerializeField] private string savePath;
+        private JsonDataService _jsonDataService = new JsonDataService();
     
-    private void Awake()
-    {
-        if (Instance == null)
+        private void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
-        else if (Instance != this)
+
+        public void SaveGameToFile()
         {
-            Destroy(gameObject);
+            UnlockedLevelsData unlockedLevelsData = new UnlockedLevelsData(GameManager.Instance.GetUnlockedLevelsData());
+            SaveData saveData = new SaveData(unlockedLevelsData);
+            _jsonDataService.SaveData(savePath, saveData, true);
         }
-    }
 
-    public void SaveGameToFile()
-    {
-        UnlockedLevelsData unlockedLevelsData = new UnlockedLevelsData(GameManager.Instance.GetUnlockedLevelsData());
-        SaveData saveData = new SaveData(unlockedLevelsData);
-        _jsonDataService.SaveData(savePath, saveData, true);
-    }
-
-    public List<StageLevelsData> LoadGameFromFile()
-    {
-        if (!_jsonDataService.DoesFileExist(savePath))
-            return null;
+        public List<StageLevelsData> LoadGameFromFile()
+        {
+            if (!_jsonDataService.DoesFileExist(savePath))
+                return null;
         
-        SaveData saveData = _jsonDataService.LoadData<SaveData>(savePath, true);
-        return saveData.unlockedLevelsData.unlockedLevels;
-    }
+            SaveData saveData = _jsonDataService.LoadData<SaveData>(savePath, true);
+            return saveData.unlockedLevelsData.unlockedLevels;
+        }
 
-    public void ClearSaveData()
-    {
-        _jsonDataService.ClearData(savePath);
+        public void ClearSaveData()
+        {
+            _jsonDataService.ClearData(savePath);
+        }
     }
 }

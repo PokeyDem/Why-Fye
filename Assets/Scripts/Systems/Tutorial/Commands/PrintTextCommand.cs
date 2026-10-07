@@ -21,9 +21,9 @@ public class PrintTextCommand : TutorialCommand
         _textPrinterRef.PrintText(textToPrint);
     }
 
-    private void OnPrintingFinished()
-    {
-        _textPrinterRef.OnPrintFinished -= OnPrintingFinished;
-        _onComplete?.Invoke();
+    private void OnPrintingFinished() 
+    { 
+        _textPrinterRef.OnPrintFinished -= OnPrintingFinished; 
+        _onComplete?.Invoke(); 
     }
 }

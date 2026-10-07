@@ -1,126 +1,127 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class MainMenuManager : MonoBehaviour
+namespace Managers.Menus
 {
-    [SerializeField] private string baseLevelSceneName;
-    [SerializeField] private SceneTransitionManager sceneTransitionManager;
-    [SerializeField] private MainMenuUIManager mainMenuUIManager;
-
-    private bool _isInAction;
-
-    private void OnEnable()
+    public class MainMenuManager : MonoBehaviour
     {
-        GameManager.OnLevelButtonsValidationRequest += ValidateStages;
-    }
-    
-    private void OnDisable()
-    {
-        GameManager.OnLevelButtonsValidationRequest -= ValidateStages;
-    }
+        [SerializeField] private string baseLevelSceneName;
+        [SerializeField] private SceneTransitionManager sceneTransitionManager;
+        [SerializeField] private MainMenuUIManager mainMenuUIManager;
 
-    private void Start()
-    {
-        StartCoroutine(sceneTransitionManager.PlayFadeIn());
-        if (GameManager.Instance.IsSaveLoaded() || GameManager.Instance.IsInitialized())
+        private bool _isInAction;
+
+        private void OnEnable()
         {
-            ValidateStages();
+            GameManager.OnLevelButtonsValidationRequest += ValidateStages;
         }
+    
+        private void OnDisable()
+        {
+            GameManager.OnLevelButtonsValidationRequest -= ValidateStages;
+        }
+
+        private void Start()
+        {
+            StartCoroutine(sceneTransitionManager.PlayFadeIn());
+            if (GameManager.Instance.IsSaveLoaded() || GameManager.Instance.IsInitialized())
+            {
+                ValidateStages();
+            }
         
-        if (GameManager.Instance.GetLoadedFromLevel())
-        {
-            SwitchToLevelMenu();
+            if (GameManager.Instance.GetLoadedFromLevel())
+            {
+                SwitchToLevelMenu();
+            }
         }
-    }
     
-    public void OnLevelButtonClick(int levelIndex)
-    {
-        if (_isInAction)
-            return;
-        _isInAction = true;
-        GameManager.Instance.SetTargetLevel(levelIndex);
-        StartCoroutine(LoadLevel());
-    }
+        public void OnLevelButtonClick(int levelIndex)
+        {
+            if (_isInAction)
+                return;
+            _isInAction = true;
+            GameManager.Instance.SetTargetLevel(levelIndex);
+            StartCoroutine(LoadLevel());
+        }
 
-    public void OnStageButtonClick(int stageIndex)
-    {
-        GameManager.Instance.SetTargetLevelStage(stageIndex);
-        mainMenuUIManager.ValidateLevelButtons(stageIndex);
-        mainMenuUIManager.DisableAllSubMenus();
-        mainMenuUIManager.EnableLevelMenuElements();
-    }
+        public void OnStageButtonClick(int stageIndex)
+        {
+            GameManager.Instance.SetTargetLevelStage(stageIndex);
+            mainMenuUIManager.ValidateLevelButtons(stageIndex);
+            mainMenuUIManager.DisableAllSubMenus();
+            mainMenuUIManager.EnableLevelMenuElements();
+        }
 
-    private IEnumerator LoadLevel()
-    {
-        yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
-        SceneManager.LoadSceneAsync(baseLevelSceneName);
-        _isInAction = false;
-    }
+        private IEnumerator LoadLevel()
+        {
+            yield return StartCoroutine(sceneTransitionManager.PlayFadeOut());
+            SceneManager.LoadSceneAsync(baseLevelSceneName);
+            _isInAction = false;
+        }
     
-    private void SwitchToMainMenu()
-    {
-        mainMenuUIManager.DisableAllSubMenus();
-        mainMenuUIManager.EnableMainMenuElements(); 
-    }
+        private void SwitchToMainMenu()
+        {
+            mainMenuUIManager.DisableAllSubMenus();
+            mainMenuUIManager.EnableMainMenuElements(); 
+        }
 
-    public void SwitchToLevelMenu()
-    {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.EnableLevelMenuElements();
-    }
+        public void SwitchToLevelMenu()
+        {
+            mainMenuUIManager.DisableMainMenuElements();
+            mainMenuUIManager.EnableLevelMenuElements();
+        }
 
-    public void SwitchToCreditsMenu()
-    {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.EnableCreditsMenuElements();
-    }
+        public void SwitchToCreditsMenu()
+        {
+            mainMenuUIManager.DisableMainMenuElements();
+            mainMenuUIManager.EnableCreditsMenuElements();
+        }
 
-    public void SwitchToControlsMenu()
-    {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.EnableControlsMenuElements();
-    }
+        public void SwitchToControlsMenu()
+        {
+            mainMenuUIManager.DisableMainMenuElements();
+            mainMenuUIManager.EnableControlsMenuElements();
+        }
 
-    public void SwitchToSettingsMenu()
-    {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.EnableSettingsMenuElements();
-    }
+        public void SwitchToSettingsMenu()
+        {
+            mainMenuUIManager.DisableMainMenuElements();
+            mainMenuUIManager.EnableSettingsMenuElements();
+        }
     
-    public void SwitchToStagesMenu()
-    {
-        mainMenuUIManager.DisableMainMenuElements();
-        mainMenuUIManager.DisableAllSubMenus();
-        mainMenuUIManager.EnableStagesMenuElements();
-    }
+        public void SwitchToStagesMenu()
+        {
+            mainMenuUIManager.DisableMainMenuElements();
+            mainMenuUIManager.DisableAllSubMenus();
+            mainMenuUIManager.EnableStagesMenuElements();
+        }
 
-    public void OnStartButtonClick()
-    {
-        SwitchToStagesMenu();
-    }
+        public void OnStartButtonClick()
+        {
+            SwitchToStagesMenu();
+        }
     
 
-    public void OnBackButtonClick()
-    {
-        SwitchToMainMenu();
-    }
+        public void OnBackButtonClick()
+        {
+            SwitchToMainMenu();
+        }
 
-    private void ValidateStages()
-    {
-        mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
-        mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetTargetLevelStage());
-    }
+        private void ValidateStages()
+        {
+            mainMenuUIManager.ValidateStageButtons(GameManager.Instance.GetUnlockedLevelsData());
+            mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetTargetLevelStage());
+        }
     
-    public void OnExitButtonClick(){
-        #if UNITY_EDITOR
+        public void OnExitButtonClick(){
+#if UNITY_EDITOR
             EditorApplication.isPlaying = false;
-        #else
+#else
             Application.Quit();
-        #endif
+#endif
+        }
     }
 }

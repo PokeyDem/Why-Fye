@@ -1,18 +1,20 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReceiverComponent : MonoBehaviour
+namespace Systems
 {
-    public static readonly List<GameObject> ActiveReceivers = new List<GameObject>();
-
-    private void OnEnable()
+    public class ReceiverComponent : MonoBehaviour
     {
-        ActiveReceivers.Add(gameObject);
-    }
+        public static readonly List<GameObject> ActiveReceivers = new List<GameObject>();
 
-    private void OnDisable()
-    {
-        ActiveReceivers.Remove(gameObject);
+        private void OnEnable()
+        {
+            ActiveReceivers.Add(gameObject);
+        }
+
+        private void OnDisable()
+        {
+            ActiveReceivers.Remove(gameObject);
+        }
     }
 }

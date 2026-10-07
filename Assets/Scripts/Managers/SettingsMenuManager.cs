@@ -1,19 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Systems.SaveSystem;
 using UnityEngine;
 
-public class SettingsMenuManager : MonoBehaviour
+namespace Managers
 {
-    [SerializeField] ActionConfirmationManager actionConfirmationManager;
-    
-    public void OnClearSaveDataButtonClick()
+    public class SettingsMenuManager : MonoBehaviour
     {
-        actionConfirmationManager.ProcessConfirmation(() =>
+        [SerializeField] ActionConfirmationManager actionConfirmationManager;
+    
+        public void OnClearSaveDataButtonClick()
         {
-            SaveManager.Instance.ClearSaveData();
-            GameManager.Instance.ResetCompletedLevels();
+            actionConfirmationManager.ProcessConfirmation(() =>
+                {
+                    SaveManager.Instance.ClearSaveData();
+                    GameManager.Instance.ResetCompletedLevels();
+                }
+            );
         }
-    );
     }
 }

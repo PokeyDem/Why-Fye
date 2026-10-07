@@ -1,225 +1,230 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Managers;
+using Managers.Menus;
+using ScriptableObjects;
+using Systems.Tutorial;
+using UI;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
-public class ObjectPlacementSystem : MonoBehaviour
+namespace Systems
 {
-    [SerializeField] private LayerMask placementLayer;
-    [SerializeField] private float slopeAngle = 0f;
-    [SerializeField] private bool placementModeEnabled = false;
+    public class ObjectPlacementSystem : MonoBehaviour
+    {
+        [SerializeField] private LayerMask placementLayer;
+        [SerializeField] private float slopeAngle = 0f;
+        [SerializeField] private bool placementModeEnabled = false;
 
-    [SerializeField] private LevelData currentLevelData;
-    [SerializeField] private DeviceCatalog prefabCatalog;
+        [SerializeField] private LevelData currentLevelData;
+        [SerializeField] private DeviceCatalog prefabCatalog;
     
-    [SerializeField] private Vector3 previewPrefabsIdlePos;
-    [SerializeField] private int selectedPrefabIndex = 0; 
-    [SerializeField] private ConnectionsManager connectionsManager;
-    [SerializeField] private HUDManager hudManager;
-    [SerializeField] private PlayerControls playerControls;
+        [SerializeField] private Vector3 previewPrefabsIdlePos;
+        [SerializeField] private int selectedPrefabIndex = 0; 
+        [SerializeField] private ConnectionsManager connectionsManager;
+        [SerializeField] private HUDManager hudManager;
+        [SerializeField] private PlayerControls playerControls;
     
-    [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
-    [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
+        [SerializeField] private PlacementIndicatorBehaviour placementIndicator;
+        [SerializeField] private DeviceAmountActualizer deviceAmountActualizer;
 
-    [SerializeField] private LayerMask deviceLayer;
+        [SerializeField] private LayerMask deviceLayer;
     
-    private Camera _camera;
+        private UnityEngine.Camera _camera;
 
-    private bool _validPos;
-    private Vector3 _currentPreviewPos;
-    private Vector3 _currentSurfaceNormal;
-    private Transform _lastHitDevice;
-    private bool _isInRemoveMode;
-    private List<int> _amountOfDevices = new List<int>();
+        private bool _validPos;
+        private Vector3 _currentPreviewPos;
+        private Vector3 _currentSurfaceNormal;
+        private Transform _lastHitDevice;
+        private bool _isInRemoveMode;
+        private List<int> _amountOfDevices = new List<int>();
     
-    public static event Action<List<int>> OnDeviceAmountUpdate;
-    public static event Action OnObjectPlaced;
+        public static event Action<List<int>> OnDeviceAmountUpdate;
+        public static event Action OnObjectPlaced;
 
-    public event Action OnSystemStateUpdated;
+        public event Action OnSystemStateUpdated;
 
-    private void OnEnable()
-    {
-        playerControls.OnStartPlacement += StartPlacingObject;
-        playerControls.OnStopPlacement += StopPlacingObject;
-        playerControls.OnSlotSelected += SwitchIndex;
-        PauseMenuManager.OnPause += DisablePlacement;
-        PauseMenuManager.OnResume += EnablePlacement;
-        deviceAmountActualizer.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
-    }
-
-    private void OnDisable()
-    {
-        playerControls.OnStartPlacement -= StartPlacingObject;
-        playerControls.OnStopPlacement -= StopPlacingObject;
-        playerControls.OnSlotSelected -= SwitchIndex;
-        PauseMenuManager.OnPause -= DisablePlacement;
-        PauseMenuManager.OnResume -= EnablePlacement;
-        deviceAmountActualizer.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
-    }
-
-    private void Start()
-    {
-        _camera = Camera.main;
-    }
-
-    public void Initialize(LevelData levelData)
-    {
-        currentLevelData = levelData;
-        ResetDevicesAmount();
-    }
-
-    public void ResetDevicesAmount()
-    {
-        Debug.Log("Resetting devices amount");
-        _amountOfDevices.Clear();
-        foreach (var deviceOnLevel in currentLevelData.devicesData)
+        private void OnEnable()
         {
-            _amountOfDevices.Add(deviceOnLevel.deviceAmount);
+            playerControls.OnStartPlacement += StartPlacingObject;
+            playerControls.OnStopPlacement += StopPlacingObject;
+            playerControls.OnSlotSelected += SwitchIndex;
+            PauseMenuManager.OnPause += DisablePlacement;
+            PauseMenuManager.OnResume += EnablePlacement;
+            deviceAmountActualizer.OnDeviceAmountUpdate += ActualizeDevicesAmountList;
         }
-        OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
-    }
 
-    private void StartPlacingObject()
-    {
-        if (PointerOverUIDetector.Instance.IsPointerOverUI())
-            return;
-        
-        if (!placementModeEnabled)
-            return;
-        
-        CheckThePosition();
-        
-        if (_isInRemoveMode && _lastHitDevice == null)
-            return;
-        
-        if (!_isInRemoveMode && (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos))
-            return;
-        
-        placementIndicator.StartFilling(PlaceObject, playerControls.OnScreenPosition);
-    }
-
-    private void StopPlacingObject()
-    {
-        placementIndicator.StopFilling();
-    }
-
-    private void PlaceObject()
-    {
-        if (!placementModeEnabled)
-            return;
-        
-        if (!_isInRemoveMode)
+        private void OnDisable()
         {
-            CheckThePosition();
-            if (!_validPos)
+            playerControls.OnStartPlacement -= StartPlacingObject;
+            playerControls.OnStopPlacement -= StopPlacingObject;
+            playerControls.OnSlotSelected -= SwitchIndex;
+            PauseMenuManager.OnPause -= DisablePlacement;
+            PauseMenuManager.OnResume -= EnablePlacement;
+            deviceAmountActualizer.OnDeviceAmountUpdate -= ActualizeDevicesAmountList;
+        }
+
+        private void Start()
+        {
+            _camera = UnityEngine.Camera.main;
+        }
+
+        public void Initialize(LevelData levelData)
+        {
+            currentLevelData = levelData;
+            ResetDevicesAmount();
+        }
+
+        public void ResetDevicesAmount()
+        {
+            Debug.Log("Resetting devices amount");
+            _amountOfDevices.Clear();
+            foreach (var deviceOnLevel in currentLevelData.devicesData)
+            {
+                _amountOfDevices.Add(deviceOnLevel.deviceAmount);
+            }
+            OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
+        }
+
+        private void StartPlacingObject()
+        {
+            if (PointerOverUIDetector.Instance.IsPointerOverUI())
                 return;
-            Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
-            GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
-            connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
-            _amountOfDevices[selectedPrefabIndex]--;
-            OnObjectPlaced?.Invoke();
-        }
-        else
-        {
-            RemoveDevice();
-        }
-    }
-
-    private void CheckThePosition()
-    {
-        _lastHitDevice = null;
         
-        Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
-        Debug.DrawRay(ray.origin, ray.direction, Color.red, 10000);
-        RaycastHit hit;
-
-        if (!Physics.Raycast(ray, out hit, math.INFINITY))
-        {
-            _validPos = false;
-            return;
-        }
-
-        if (hit.collider.gameObject.CompareTag("Device"))
-        {
-            _validPos = false;
-            _lastHitDevice = hit.transform;
-            return;
-        }
-
-        if (((1 << hit.collider.gameObject.layer) & placementLayer) == 0)
-        {
-            _validPos = false;
-            return;
-        }
+            if (!placementModeEnabled)
+                return;
         
-        float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
-        _currentSurfaceNormal = hit.normal;
+            CheckThePosition();
+        
+            if (_isInRemoveMode && _lastHitDevice == null)
+                return;
+        
+            if (!_isInRemoveMode && (_amountOfDevices[selectedPrefabIndex] == 0 || !_validPos))
+                return;
+        
+            placementIndicator.StartFilling(PlaceObject, playerControls.OnScreenPosition);
+        }
+
+        private void StopPlacingObject()
+        {
+            placementIndicator.StopFilling();
+        }
+
+        private void PlaceObject()
+        {
+            if (!placementModeEnabled)
+                return;
+        
+            if (!_isInRemoveMode)
+            {
+                CheckThePosition();
+                if (!_validPos)
+                    return;
+                Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, _currentSurfaceNormal);
+                GameObject placedObject = Instantiate(prefabCatalog.allAvailableDevices[selectedPrefabIndex].devicePrefab, _currentPreviewPos, surfaceRotation);
+                connectionsManager.LinkNewDevice(placedObject, prefabCatalog.allAvailableDevices[selectedPrefabIndex].deviceType);
+                _amountOfDevices[selectedPrefabIndex]--;
+                OnObjectPlaced?.Invoke();
+            }
+            else
+            {
+                RemoveDevice();
+            }
+        }
+
+        private void CheckThePosition()
+        {
+            _lastHitDevice = null;
+        
+            Ray ray = _camera.ScreenPointToRay(playerControls.OnScreenPosition);
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, 10000);
+            RaycastHit hit;
+
+            if (!Physics.Raycast(ray, out hit, math.INFINITY))
+            {
+                _validPos = false;
+                return;
+            }
+
+            if (hit.collider.gameObject.CompareTag("Device"))
+            {
+                _validPos = false;
+                _lastHitDevice = hit.transform;
+                return;
+            }
+
+            if (((1 << hit.collider.gameObject.layer) & placementLayer) == 0)
+            {
+                _validPos = false;
+                return;
+            }
+        
+            float surfaceAngle = Vector3.Angle(hit.normal, Vector3.up);
+            _currentSurfaceNormal = hit.normal;
                 
-        if (!Mathf.Approximately(surfaceAngle, slopeAngle))
-        {
-            _validPos = false;
-            return;
-        }
+            if (!Mathf.Approximately(surfaceAngle, slopeAngle))
+            {
+                _validPos = false;
+                return;
+            }
                 
-        _validPos = true;
-        _currentPreviewPos = hit.point;
-    }
+            _validPos = true;
+            _currentPreviewPos = hit.point;
+        }
 
-    private void RemoveDevice()
-    {
-        int deviceTypeIndex = (int)connectionsManager.GetDeviceType(_lastHitDevice.gameObject);
-        connectionsManager.RemoveDevice(_lastHitDevice.gameObject);
-        _amountOfDevices[deviceTypeIndex]++;
-        OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
+        private void RemoveDevice()
+        {
+            int deviceTypeIndex = (int)connectionsManager.GetDeviceType(_lastHitDevice.gameObject);
+            connectionsManager.RemoveDevice(_lastHitDevice.gameObject);
+            _amountOfDevices[deviceTypeIndex]++;
+            OnDeviceAmountUpdate?.Invoke(_amountOfDevices);
         
-        Destroy(_lastHitDevice.gameObject);
-    }
+            Destroy(_lastHitDevice.gameObject);
+        }
 
-    private void SwitchIndex(int newIndex)
-    {
-        if (_isInRemoveMode)
-            DisableRemoveMode();
+        private void SwitchIndex(int newIndex)
+        {
+            if (_isInRemoveMode)
+                DisableRemoveMode();
         
-        selectedPrefabIndex = newIndex;
+            selectedPrefabIndex = newIndex;
 
-        if (prefabCatalog.allAvailableDevices[selectedPrefabIndex].onlyOnWalls)
-            slopeAngle = 90;
-        else
-            slopeAngle = 0;
-    }
+            if (prefabCatalog.allAvailableDevices[selectedPrefabIndex].onlyOnWalls)
+                slopeAngle = 90;
+            else
+                slopeAngle = 0;
+        }
 
-    public void DisablePlacement()
-    {
-        placementModeEnabled = false;
-        OnSystemStateUpdated?.Invoke();
-        Debug.Log("Placement mode disabled");
-    }
+        public void DisablePlacement()
+        {
+            placementModeEnabled = false;
+            OnSystemStateUpdated?.Invoke();
+            Debug.Log("Placement mode disabled");
+        }
 
-    public void EnablePlacement()
-    {
-        placementModeEnabled = true;
-        OnSystemStateUpdated?.Invoke();
-        Debug.Log("Placement mode disabled");
-    }
+        public void EnablePlacement()
+        {
+            placementModeEnabled = true;
+            OnSystemStateUpdated?.Invoke();
+            Debug.Log("Placement mode disabled");
+        }
 
-    public void EnableRemoveMode()
-    {
-        _isInRemoveMode = true;
-        hudManager.EnableRemoveMode();
-    }
+        public void EnableRemoveMode()
+        {
+            _isInRemoveMode = true;
+            hudManager.EnableRemoveMode();
+        }
 
-    public void DisableRemoveMode()
-    {
-        _isInRemoveMode = false;
-        hudManager.HideRemoveModeIconFrame();
-    }
+        public void DisableRemoveMode()
+        {
+            _isInRemoveMode = false;
+            hudManager.HideRemoveModeIconFrame();
+        }
 
-    private void ActualizeDevicesAmountList(List<int> newAmounts)
-    {
-        Debug.Log("ObjectPlacementSystem heard the update call");
-        _amountOfDevices = newAmounts;
+        private void ActualizeDevicesAmountList(List<int> newAmounts)
+        {
+            Debug.Log("ObjectPlacementSystem heard the update call");
+            _amountOfDevices = newAmounts;
+        }
     }
 }

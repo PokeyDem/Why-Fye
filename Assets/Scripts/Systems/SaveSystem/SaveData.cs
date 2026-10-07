@@ -1,26 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Managers;
 using UnityEngine.Scripting;
 
-[Preserve]
-public class UnlockedLevelsData
+namespace Systems.SaveSystem
 {
-    public List<StageLevelsData> unlockedLevels;
-
-    public UnlockedLevelsData(List<StageLevelsData> unlockedLevels)
+    [Preserve]
+    public class UnlockedLevelsData
     {
-        this.unlockedLevels = unlockedLevels;
+        public List<StageLevelsData> unlockedLevels;
+
+        public UnlockedLevelsData(List<StageLevelsData> unlockedLevels)
+        {
+            this.unlockedLevels = unlockedLevels;
+        }
     }
-}
 
-[Preserve]
-public class SaveData
-{
-    public UnlockedLevelsData unlockedLevelsData;
-
-    public SaveData(UnlockedLevelsData unlockedLevelsData)
+    [Preserve]
+    public class SaveData
     {
-        this.unlockedLevelsData =  unlockedLevelsData;
+        public UnlockedLevelsData unlockedLevelsData;
+
+        public SaveData(UnlockedLevelsData unlockedLevelsData)
+        {
+            this.unlockedLevelsData =  unlockedLevelsData;
+        }
     }
 }

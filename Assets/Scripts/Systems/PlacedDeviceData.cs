@@ -1,39 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DeviceType = ScriptableObjects.DeviceType;
 
-[System.Serializable]
-public class PlacedDeviceData
+namespace Systems
 {
-    public GameObject deviceObject;
-    public bool isReceiving;
-    
-    public bool isSending => sendingTo.Count > 0;
-    
-    public PlacedDeviceData receivingFrom;
-    
-    public List<PlacedDeviceData> sendingTo;
-    public int maxOutgoingConnections;
-    
-    public DeviceType deviceType;
-
-    public PlacedDeviceData(GameObject obj, DeviceType type)
+    [System.Serializable]
+    public class PlacedDeviceData
     {
-        deviceObject = obj;
-        deviceType = type;
-        isReceiving = false;
-        receivingFrom = null;
-        sendingTo = new  List<PlacedDeviceData>();
+        public GameObject deviceObject;
+        public bool isReceiving;
+    
+        public bool isSending => sendingTo.Count > 0;
+    
+        public PlacedDeviceData receivingFrom;
+    
+        public List<PlacedDeviceData> sendingTo;
+        public int maxOutgoingConnections;
+    
+        public DeviceType deviceType;
 
-        if (deviceType == DeviceType.Splitter)
+        public PlacedDeviceData(GameObject obj, DeviceType type)
         {
-            maxOutgoingConnections = 2;
-        }else if (deviceType == DeviceType.Receiver)
-        {
-            maxOutgoingConnections = 0;
-        }
-        else
-        {
-            maxOutgoingConnections = 1;
+            deviceObject = obj;
+            deviceType = type;
+            isReceiving = false;
+            receivingFrom = null;
+            sendingTo = new  List<PlacedDeviceData>();
+
+            if (deviceType == DeviceType.Splitter)
+            {
+                maxOutgoingConnections = 2;
+            }else if (deviceType == DeviceType.Receiver)
+            {
+                maxOutgoingConnections = 0;
+            }
+            else
+            {
+                maxOutgoingConnections = 1;
+            }
         }
     }
 }

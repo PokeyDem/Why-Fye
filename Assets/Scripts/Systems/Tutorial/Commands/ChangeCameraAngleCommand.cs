@@ -1,4 +1,5 @@
 using System;
+using Camera;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Change Camera Angle Command", menuName = "Tutorial Steps/Change Camera Angle Command")]

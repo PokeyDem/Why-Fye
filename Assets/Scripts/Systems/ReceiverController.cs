@@ -1,27 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
-public class ReceiverController : MonoBehaviour
+namespace Systems
 {
-    [SerializeField] private NPCBehaviour npcBehaviour;
-    private PhoneScreenVisualsController _phoneScreenVisualsController;
-
-    private void Start()
+    public class ReceiverController : MonoBehaviour
     {
-        _phoneScreenVisualsController = GetComponent<PhoneScreenVisualsController>();
-    }
+        [SerializeField] private NPCBehaviour npcBehaviour;
+        private PhoneScreenVisualsController _phoneScreenVisualsController;
 
-    public void DeviceConnected()
-    {
-        _phoneScreenVisualsController.ConnectDevice();
-        npcBehaviour.ConnectDevice();
-    }
+        private void Start()
+        {
+            _phoneScreenVisualsController = GetComponent<PhoneScreenVisualsController>();
+        }
 
-    public void DeviceDisconnected()
-    {
-        _phoneScreenVisualsController.DisconnectDevice();
-        npcBehaviour.DisconnectDevice();
+        public void DeviceConnected()
+        {
+            _phoneScreenVisualsController.ConnectDevice();
+            npcBehaviour.ConnectDevice();
+        }
+
+        public void DeviceDisconnected()
+        {
+            _phoneScreenVisualsController.DisconnectDevice();
+            npcBehaviour.DisconnectDevice();
+        }
     }
 }

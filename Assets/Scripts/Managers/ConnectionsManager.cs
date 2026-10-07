@@ -1,304 +1,307 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using Systems;
 using UnityEngine;
+using DeviceType = ScriptableObjects.DeviceType;
 
-public class ConnectionsManager : MonoBehaviour
+namespace Managers
 {
-    [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
-    [SerializeField] private float sensorHeightOffset;
-    [SerializeField] private string receiverTagName;
-    [SerializeField] private LayerMask connectionMask;
-
-    public static Action OnCompletion;
-    public static Action OnCompletionRevoke;
-    public void LinkNewDevice(GameObject newDevice, DeviceType deviceType, PlacedDeviceData newDeviceData = null)
+    public class ConnectionsManager : MonoBehaviour
     {
-        if (newDeviceData == null)
-        {
-            newDeviceData = new PlacedDeviceData(newDevice, deviceType);
-            newDeviceData.deviceType = deviceType;
+        [SerializeField] private List<PlacedDeviceData> allPlacedDevices = new List<PlacedDeviceData>();
+        [SerializeField] private float sensorHeightOffset;
+        [SerializeField] private string receiverTagName;
+        [SerializeField] private LayerMask connectionMask;
 
-            if (deviceType == DeviceType.Router)
+        public static Action OnCompletion;
+        public static Action OnCompletionRevoke;
+        public void LinkNewDevice(GameObject newDevice, DeviceType deviceType, PlacedDeviceData newDeviceData = null)
+        {
+            if (newDeviceData == null)
             {
-                newDeviceData.isReceiving = true;
-            }
+                newDeviceData = new PlacedDeviceData(newDevice, deviceType);
+                newDeviceData.deviceType = deviceType;
+
+                if (deviceType == DeviceType.Router)
+                {
+                    newDeviceData.isReceiving = true;
+                }
         
-            allPlacedDevices.Add(newDeviceData);
+                allPlacedDevices.Add(newDeviceData);
+            }
+
+            List<PlacedDeviceData> validConnections = FindValidConnections(newDevice.transform);
+
+            validConnections = validConnections.OrderBy(d => Vector3.Distance(newDevice.transform.position, d.deviceObject.transform.position)).ToList();
+
+            PlacedDeviceData closestSender = validConnections.FirstOrDefault(d => 
+                d.isReceiving && d.sendingTo.Count < d.maxOutgoingConnections);
+        
+            if (closestSender != null)
+            {
+                AssignConnection(closestSender, newDeviceData);
+            }
+    
+            if (newDeviceData.isReceiving || newDeviceData.deviceType == DeviceType.Router) 
+            {
+         
+                PlacedDeviceData closestReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
+                if (closestReceiver != null && !newDeviceData.isSending) 
+                {
+                    AssignConnection(newDeviceData, closestReceiver);
+                }
+            
+                PropagateSignal(newDeviceData);
+            }
         }
 
-        List<PlacedDeviceData> validConnections = FindValidConnections(newDevice.transform);
-
-        validConnections = validConnections.OrderBy(d => Vector3.Distance(newDevice.transform.position, d.deviceObject.transform.position)).ToList();
-
-        PlacedDeviceData closestSender = validConnections.FirstOrDefault(d => 
-            d.isReceiving && d.sendingTo.Count < d.maxOutgoingConnections);
-        
-        if (closestSender != null)
+        public void FindNewReceivers()
         {
-            AssignConnection(closestSender, newDeviceData);
+            ClearReceivers();
+
+            foreach (GameObject receiver in ReceiverComponent.ActiveReceivers)
+            {
+                allPlacedDevices.Add(new PlacedDeviceData(receiver, DeviceType.Receiver));
+            }
+        }
+
+        private void ClearReceivers()
+        {
+            foreach (var placedDeviceData in allPlacedDevices.ToList())
+            {
+                if (placedDeviceData.deviceType == DeviceType.Receiver)
+                    allPlacedDevices.Remove(placedDeviceData);
+            }
+        }
+
+        private void PropagateSignal(PlacedDeviceData newDeviceData)
+        {
+            foreach (var receiver in newDeviceData.sendingTo.ToList())
+            {
+                PropagateSignal(receiver);
+            }
+        
+            int availableSlots = newDeviceData.maxOutgoingConnections - newDeviceData.sendingTo.Count;
+            if (availableSlots <= 0) return;
+
+            while (availableSlots > 0)
+            {
+                List<PlacedDeviceData> validConnections = FindValidConnections(newDeviceData.deviceObject.transform);
+                validConnections = validConnections.OrderBy(d => 
+                    Vector3.Distance(newDeviceData.deviceObject.transform.position, d.deviceObject.transform.position)).ToList();
+        
+                PlacedDeviceData nextReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
+
+                if (nextReceiver != null)
+                {
+                    AssignConnection(newDeviceData, nextReceiver);
+                    PropagateSignal(nextReceiver);
+                }
+                availableSlots--;
+            }
+        
+        }
+        private List<PlacedDeviceData> FindValidConnections(Transform originDevice)
+        {
+            List<PlacedDeviceData> validConnections = new  List<PlacedDeviceData>();
+
+            Vector3 originPoint = originDevice.position + (originDevice.up * sensorHeightOffset);
+            foreach (var placedDeviceData in allPlacedDevices)
+            {
+                Transform targetTransform = placedDeviceData.deviceObject.transform;
+
+                if (targetTransform == originDevice) continue;
+            
+                Vector3 targetPoint = targetTransform.position + (targetTransform.up * sensorHeightOffset);
+
+                Vector3 directionToTarget = targetPoint - originPoint;
+                float distanceToTarget = directionToTarget.magnitude;
+
+                RaycastHit[] hits = Physics.RaycastAll(originPoint, directionToTarget, distanceToTarget);
+            
+                Debug.DrawRay(originDevice.position, directionToTarget.normalized * distanceToTarget, Color.red, 200f);
+
+                bool isViewBlocked = false;
+
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.transform.gameObject.CompareTag("Obstacle"))
+                    {
+                        isViewBlocked = true;
+                        break;
+                    }
+                }
+            
+                if (!isViewBlocked)
+                    validConnections.Add(placedDeviceData);
+            }
+        
+            return validConnections;
         }
     
-        if (newDeviceData.isReceiving || newDeviceData.deviceType == DeviceType.Router) 
+        private void AssignConnection(PlacedDeviceData sender, PlacedDeviceData receiver)
         {
-         
-            PlacedDeviceData closestReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
-            if (closestReceiver != null && !newDeviceData.isSending) 
+            if (sender.sendingTo.Count >= sender.maxOutgoingConnections)
             {
-                AssignConnection(newDeviceData, closestReceiver);
+                var oldestConnection = sender.sendingTo[0];
+                oldestConnection.receivingFrom = null;
+                oldestConnection.isReceiving = false;
+                sender.sendingTo.RemoveAt(0);
             }
-            
-            PropagateSignal(newDeviceData);
-        }
-    }
-
-    public void FindNewReceivers()
-    {
-        ClearReceivers();
-
-        foreach (GameObject receiver in ReceiverComponent.ActiveReceivers)
-        {
-            allPlacedDevices.Add(new PlacedDeviceData(receiver, DeviceType.Receiver));
-        }
-    }
-
-    private void ClearReceivers()
-    {
-        foreach (var placedDeviceData in allPlacedDevices.ToList())
-        {
-            if (placedDeviceData.deviceType == DeviceType.Receiver)
-                allPlacedDevices.Remove(placedDeviceData);
-        }
-    }
-
-    private void PropagateSignal(PlacedDeviceData newDeviceData)
-    {
-        foreach (var receiver in newDeviceData.sendingTo.ToList())
-        {
-            PropagateSignal(receiver);
-        }
         
-        int availableSlots = newDeviceData.maxOutgoingConnections - newDeviceData.sendingTo.Count;
-        if (availableSlots <= 0) return;
-
-        while (availableSlots > 0)
-        {
-            List<PlacedDeviceData> validConnections = FindValidConnections(newDeviceData.deviceObject.transform);
-            validConnections = validConnections.OrderBy(d => 
-                Vector3.Distance(newDeviceData.deviceObject.transform.position, d.deviceObject.transform.position)).ToList();
-        
-            PlacedDeviceData nextReceiver = validConnections.FirstOrDefault(d => !d.isReceiving);
-
-            if (nextReceiver != null)
+            if (receiver.receivingFrom != null) 
             {
-                AssignConnection(newDeviceData, nextReceiver);
-                PropagateSignal(nextReceiver);
+                receiver.receivingFrom.sendingTo.Remove(receiver);
             }
-            availableSlots--;
-        }
         
-    }
-    private List<PlacedDeviceData> FindValidConnections(Transform originDevice)
-    {
-        List<PlacedDeviceData> validConnections = new  List<PlacedDeviceData>();
+            sender.sendingTo.Add(receiver);
+            receiver.isReceiving = true;
+            receiver.receivingFrom = sender;
 
-        Vector3 originPoint = originDevice.position + (originDevice.up * sensorHeightOffset);
-        foreach (var placedDeviceData in allPlacedDevices)
-        {
-            Transform targetTransform = placedDeviceData.deviceObject.transform;
-
-            if (targetTransform == originDevice) continue;
-            
-            Vector3 targetPoint = targetTransform.position + (targetTransform.up * sensorHeightOffset);
-
-            Vector3 directionToTarget = targetPoint - originPoint;
-            float distanceToTarget = directionToTarget.magnitude;
-
-            RaycastHit[] hits = Physics.RaycastAll(originPoint, directionToTarget, distanceToTarget);
-            
-            Debug.DrawRay(originDevice.position, directionToTarget.normalized * distanceToTarget, Color.red, 200f);
-
-            bool isViewBlocked = false;
-
-            foreach (RaycastHit hit in hits)
+            if (receiver.deviceType == DeviceType.Receiver)
             {
-                if (hit.transform.gameObject.CompareTag("Obstacle"))
+                receiver.deviceObject.GetComponent<ReceiverController>().DeviceConnected();
+            }
+        
+            ConnectionStream[] streams = sender.deviceObject.GetComponentsInChildren<ConnectionStream>();
+     
+            foreach (var stream in streams)
+            {
+                if (!stream.IsConnected() || sender.deviceType == DeviceType.Router)
                 {
-                    isViewBlocked = true;
+                    stream.ConnectToReceiver(receiver.deviceObject.transform);
                     break;
                 }
             }
-            
-            if (!isViewBlocked)
-                validConnections.Add(placedDeviceData);
-        }
         
-        return validConnections;
-    }
-    
-    private void AssignConnection(PlacedDeviceData sender, PlacedDeviceData receiver)
-    {
-        if (sender.sendingTo.Count >= sender.maxOutgoingConnections)
-        {
-            var oldestConnection = sender.sendingTo[0];
-            oldestConnection.receivingFrom = null;
-            oldestConnection.isReceiving = false;
-            sender.sendingTo.RemoveAt(0);
+            AreAllReceiversConnected();
         }
-        
-        if (receiver.receivingFrom != null) 
-        {
-            receiver.receivingFrom.sendingTo.Remove(receiver);
-        }
-        
-        sender.sendingTo.Add(receiver);
-        receiver.isReceiving = true;
-        receiver.receivingFrom = sender;
 
-        if (receiver.deviceType == DeviceType.Receiver)
+        private void AreAllReceiversConnected()
         {
-            receiver.deviceObject.GetComponent<ReceiverController>().DeviceConnected();
-        }
-        
-        ConnectionStream[] streams = sender.deviceObject.GetComponentsInChildren<ConnectionStream>();
-     
-        foreach (var stream in streams)
-        {
-            if (!stream.IsConnected() || sender.deviceType == DeviceType.Router)
+            Debug.Log("Level completion check started");
+            foreach (var connection in allPlacedDevices)
             {
-                stream.ConnectToReceiver(receiver.deviceObject.transform);
-                break;
-            }
-        }
-        
-        AreAllReceiversConnected();
-    }
-
-    private void AreAllReceiversConnected()
-    {
-        Debug.Log("Level completion check started");
-        foreach (var connection in allPlacedDevices)
-        {
-            if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
-            {
-                OnCompletionRevoke?.Invoke();
-                Debug.Log("Level completion check failed");
-                return;
-            }
-        }
-        OnCompletion?.Invoke();
-        Debug.Log("Level completion check succeeded");
-    }
-
-    public void ResetDevices()
-    {
-        foreach (var placedDeviceData in allPlacedDevices.ToList())
-        {
-            if (placedDeviceData.deviceType == DeviceType.Receiver)
-            {
-                placedDeviceData.isReceiving = false;
-                placedDeviceData.receivingFrom = null;
-                placedDeviceData.deviceObject.GetComponentInChildren<ReceiverController>().DeviceDisconnected();
-            }
-            else
-            {
-                LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
-                foreach (var lr in renderers)
+                if (connection.deviceType == DeviceType.Receiver && !connection.isReceiving)
                 {
-                    lr.enabled = false;
+                    OnCompletionRevoke?.Invoke();
+                    Debug.Log("Level completion check failed");
+                    return;
                 }
+            }
+            OnCompletion?.Invoke();
+            Debug.Log("Level completion check succeeded");
+        }
+
+        public void ResetDevices()
+        {
+            foreach (var placedDeviceData in allPlacedDevices.ToList())
+            {
+                if (placedDeviceData.deviceType == DeviceType.Receiver)
+                {
+                    placedDeviceData.isReceiving = false;
+                    placedDeviceData.receivingFrom = null;
+                    placedDeviceData.deviceObject.GetComponentInChildren<ReceiverController>().DeviceDisconnected();
+                }
+                else
+                {
+                    LineRenderer[] renderers = placedDeviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
+                    foreach (var lr in renderers)
+                    {
+                        lr.enabled = false;
+                    }
                 
-                Destroy(placedDeviceData.deviceObject);
+                    Destroy(placedDeviceData.deviceObject);
+                    allPlacedDevices.Remove(placedDeviceData);
+                }
+            }
+        }
+
+        public void RemoveDevice(GameObject device)
+        {
+            foreach (var placedDeviceData in allPlacedDevices.ToList())
+            {
+                if (placedDeviceData.deviceObject != device)
+                    continue;
+
+                if (placedDeviceData.isReceiving && placedDeviceData.deviceType != DeviceType.Router && placedDeviceData.receivingFrom.sendingTo.Count > 0)
+                {
+                    placedDeviceData.deviceObject.GetComponentInChildren<ConnectionStream>().CloseConnection();
+                    placedDeviceData.receivingFrom.sendingTo.Remove(placedDeviceData);
+                }
+            
+                ConnectionStream[] streams = placedDeviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
+                foreach (var stream in streams)
+                {
+                    stream.CloseConnection();
+                }
+
+                foreach (var receiver in placedDeviceData.sendingTo.ToList())
+                {
+                    DisconnectDevice(receiver);
+                }
+            
                 allPlacedDevices.Remove(placedDeviceData);
             }
         }
-    }
 
-    public void RemoveDevice(GameObject device)
-    {
-        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        public void DisconnectDevice(PlacedDeviceData deviceData)
         {
-            if (placedDeviceData.deviceObject != device)
-                continue;
-
-            if (placedDeviceData.isReceiving && placedDeviceData.deviceType != DeviceType.Router && placedDeviceData.receivingFrom.sendingTo.Count > 0)
-            {
-                placedDeviceData.deviceObject.GetComponentInChildren<ConnectionStream>().CloseConnection();
-                placedDeviceData.receivingFrom.sendingTo.Remove(placedDeviceData);
-            }
-            
-            ConnectionStream[] streams = placedDeviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
+            deviceData.isReceiving = false;
+        
+            ConnectionStream[] streams = deviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
             foreach (var stream in streams)
             {
                 stream.CloseConnection();
             }
-
-            foreach (var receiver in placedDeviceData.sendingTo.ToList())
+        
+            LineRenderer[] renderers = deviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
+            foreach (var lr in renderers)
             {
-                DisconnectDevice(receiver);
+                Vector3[] pos = { lr.GetPosition(0) };
+                lr.SetPositions(pos);
             }
-            
-            allPlacedDevices.Remove(placedDeviceData);
-        }
-    }
 
-    public void DisconnectDevice(PlacedDeviceData deviceData)
-    {
-        deviceData.isReceiving = false;
-        
-        ConnectionStream[] streams = deviceData.deviceObject.GetComponentsInChildren<ConnectionStream>();
-        foreach (var stream in streams)
-        {
-            stream.CloseConnection();
-        }
-        
-        LineRenderer[] renderers = deviceData.deviceObject.GetComponentsInChildren<LineRenderer>();
-        foreach (var lr in renderers)
-        {
-            Vector3[] pos = { lr.GetPosition(0) };
-            lr.SetPositions(pos);
-        }
-
-        if (deviceData.deviceType == DeviceType.Receiver)
-        {
-            deviceData.isReceiving = false;
-            deviceData.deviceObject.GetComponent<ReceiverController>().DeviceDisconnected();
-            AreAllReceiversConnected();
-            return;
-        }
-       
-        foreach (var connection in deviceData.sendingTo)
-        {
-            DisconnectDevice(connection);
-        }
-
-        if (deviceData.sendingTo.Count == 0)
-        {
-            foreach (var connection in allPlacedDevices)
+            if (deviceData.deviceType == DeviceType.Receiver)
             {
-                if (connection.deviceType == DeviceType.Router && !connection.isSending)
+                deviceData.isReceiving = false;
+                deviceData.deviceObject.GetComponent<ReceiverController>().DeviceDisconnected();
+                AreAllReceiversConnected();
+                return;
+            }
+       
+            foreach (var connection in deviceData.sendingTo)
+            {
+                DisconnectDevice(connection);
+            }
+
+            if (deviceData.sendingTo.Count == 0)
+            {
+                foreach (var connection in allPlacedDevices)
                 {
-                    LinkNewDevice(connection.deviceObject, connection.deviceType, connection);
-                    break;
+                    if (connection.deviceType == DeviceType.Router && !connection.isSending)
+                    {
+                        LinkNewDevice(connection.deviceObject, connection.deviceType, connection);
+                        break;
+                    }
                 }
             }
-        }
         
-        deviceData.sendingTo.Clear();
-    }
+            deviceData.sendingTo.Clear();
+        }
     
-    public DeviceType GetDeviceType(GameObject device)
-    {
-        foreach (var placedDeviceData in allPlacedDevices.ToList())
+        public DeviceType GetDeviceType(GameObject device)
         {
-            if (placedDeviceData.deviceObject == device)
+            foreach (var placedDeviceData in allPlacedDevices.ToList())
             {
-                return placedDeviceData.deviceType;
+                if (placedDeviceData.deviceObject == device)
+                {
+                    return placedDeviceData.deviceType;
+                }
             }
-        }
         
-        return DeviceType.Router;
-    } 
+            return DeviceType.Router;
+        } 
+    }
 }

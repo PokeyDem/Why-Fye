@@ -1,37 +1,37 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDManager : MonoBehaviour
+namespace Managers
 {
-   [SerializeField] private Button completeLevelButton;
-   [SerializeField] private HotbarSlotsManager hotbarSlotsManager;
-   [SerializeField] private GameObject removeModeIconFrame;
-
-   private void Start()
+   public class HUDManager : MonoBehaviour
    {
-      completeLevelButton.gameObject.SetActive(false);
-   }
+      [SerializeField] private Button completeLevelButton;
+      [SerializeField] private HotbarSlotsManager hotbarSlotsManager;
+      [SerializeField] private GameObject removeModeIconFrame;
 
-   public void ShowCompleteButton()
-   {
-      completeLevelButton.gameObject.SetActive(true);
-   }
+      private void Start()
+      {
+         completeLevelButton.gameObject.SetActive(false);
+      }
 
-   public void HideCompleteButton()
-   {
-      completeLevelButton.gameObject.SetActive(false);
-   }
+      public void ShowCompleteButton()
+      {
+         completeLevelButton.gameObject.SetActive(true);
+      }
 
-   public void EnableRemoveMode()
-   {
-      hotbarSlotsManager.SelectSlot(hotbarSlotsManager.GetRemoveModeSlotIndex());
-   }
+      public void HideCompleteButton()
+      {
+         completeLevelButton.gameObject.SetActive(false);
+      }
 
-   public void HideRemoveModeIconFrame()
-   {
-      removeModeIconFrame.SetActive(false);
+      public void EnableRemoveMode()
+      {
+         hotbarSlotsManager.SelectSlot(hotbarSlotsManager.GetRemoveModeSlotIndex());
+      }
+
+      public void HideRemoveModeIconFrame()
+      {
+         removeModeIconFrame.SetActive(false);
+      }
    }
 }

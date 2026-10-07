@@ -1,23 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Placeable Item", menuName = "Placement System/Placeable Item")]
-public class PlaceableDeviceData : ScriptableObject
+namespace ScriptableObjects
 {
-    [Header("Prefabs")] 
-    public GameObject devicePrefab;
+    [CreateAssetMenu(fileName = "New Placeable Item", menuName = "Placement System/Placeable Item")]
+    public class PlaceableDeviceData : ScriptableObject
+    {
+        [Header("Prefabs")] 
+        public GameObject devicePrefab;
     
-    public DeviceType deviceType;
+        public DeviceType deviceType;
 
-    [Header("Placement Rules")] 
-    public bool onlyOnWalls;
-}
+        [Header("Placement Rules")] 
+        public bool onlyOnWalls;
+    }
 
-public enum DeviceType
-{
-    Router,
-    Extender,
-    Splitter,
-    Receiver
+    public enum DeviceType
+    {
+        Router,
+        Extender,
+        Splitter,
+        Receiver
+    }
 }
