@@ -25,7 +25,7 @@ namespace UI
     
         [SerializeField] private List<StageButtonBehaviour> stageButtons = new List<StageButtonBehaviour>();
    
-        private List<StageLevelsData> _completedLevels;
+        private List<StageLevelsData> _stagesAndLevelsData;
         private bool _buttonsInitialized = false;
 
         public void ValidateStageButtons(List<StageLevelsData> completedLevels)
@@ -36,10 +36,10 @@ namespace UI
                 _buttonsInitialized = true;
             }
         
-            _completedLevels = completedLevels;
+            _stagesAndLevelsData = completedLevels;
             for (int i = 0; i < completedLevels.Count; i++)
             {
-                if (completedLevels[i].isStageUnlocked)
+                if (completedLevels[i].isStageUnlocked || i == 0)
                 {
                     stageButtons[i].UnlockButton();
                 }
@@ -63,24 +63,22 @@ namespace UI
             for (int i = 0; i < levelButtons.Count; i++)
             {
                 levelButtons[i].gameObject.SetActive(true);
-                bool isUnlocked = (i == 0) || _completedLevels[stageNum].levelsUnlocked[i] || _completedLevels[stageNum].levelsUnlocked[i - 1];
-            
-            
-                if (!isUnlocked)
+
+                if (!_stagesAndLevelsData[stageNum].unlockedLevels[i])
                 {
                     levelButtons[i].LockButton();
                     continue;
                 }
 
-                if (_completedLevels[stageNum].levelsUnlocked[i])
-                {
-                    levelButtons[i].SetCompleted();
-                }
-                else
+                if (_stagesAndLevelsData[stageNum].unlockedLevels[i] || i == 0)
                 {
                     levelButtons[i].UnlockButton();
                 }
-                levelButtons[i].gameObject.SetActive(true);
+
+                if (_stagesAndLevelsData[stageNum].completedLevels[i])
+                {
+                    levelButtons[i].SetCompleted();
+                }
             }
         }
     

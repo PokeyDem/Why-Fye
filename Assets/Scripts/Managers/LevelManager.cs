@@ -48,7 +48,6 @@ namespace Managers
         {
             _hudManager.HideCompleteButton();
             GameManager.Instance.MarkAsCompleted(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel() - 1);
-            GameManager.Instance.IncreaseTargetLevel();
             _sceneLoader.SwitchLevelEnv(GameManager.Instance.GetTargetLevelStage(), GameManager.Instance.GetTargetLevel(), CleanUpLevel, InitializeNewLevel, false);
         }
 

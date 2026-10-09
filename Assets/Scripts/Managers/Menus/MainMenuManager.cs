@@ -116,12 +116,12 @@ namespace Managers.Menus
             mainMenuUIManager.ValidateLevelButtons(GameManager.Instance.GetTargetLevelStage());
         }
     
-        public void OnExitButtonClick(){
-#if UNITY_EDITOR
+        public void OnExitButtonClick(){ 
+        #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
-#else
+        #else
             Application.Quit();
-#endif
+        #endif
         }
     }
 }

@@ -542,7 +542,7 @@ MonoBehaviour:
   - commands:
     - {fileID: 11400000, guid: 906955487119d4d4cae19b79cc29c594, type: 2}
     - {fileID: 11400000, guid: da85b57bde571e64e9695ed6203e2f13, type: 2}
-  skipTutorial: 1
+  skipTutorial: 0
 --- !u!114 &66428633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3891,7 +3891,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6176ce6227d6560498b13d7ee12f5094, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a8ae9962f08e5d5408628c26b7f9943a, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4732,11 +4732,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3877e5bf159b7894c8badf71dddff0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
   rotationSpeed: 7
   minVerticalAngle: -20
   maxVerticalAngle: 40
-  playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
   autoRotationSpeed: 5
+  snapThreshold: 0
 --- !u!114 &1498223411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4751,6 +4752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
   transitionSpeed: 10
+  snapThreshold: 0.0001
 --- !u!114 &1498223412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4766,6 +4768,7 @@ MonoBehaviour:
   zoomSpeed: 0.006
   minZoom: 1.15
   maxZoom: 2.8
+  currentZoom: 0
   playerControls: {fileID: 11400000, guid: 449cedcae971b9a408b8289741af9163, type: 2}
 --- !u!1001 &1611370097
 PrefabInstance:

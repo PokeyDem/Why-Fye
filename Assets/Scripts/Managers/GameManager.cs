@@ -9,7 +9,7 @@ namespace Managers
     {
         [SerializeField] private int amountOfStages;
         [SerializeField] private int amountOfLevels;
-        [SerializeField] private List<StageLevelsData> completedLevels;
+        [SerializeField] private List<StageLevelsData> stagesAndLevelsStateData;
     
         private bool _saveLoaded = false;
     
@@ -23,7 +23,7 @@ namespace Managers
 
         private int _targetLevelToLoad;
 
-        private int _targetLevelStage;
+        private int _targetStage;
     
         private bool _isTutorialActive;
     
@@ -67,20 +67,24 @@ namespace Managers
             {
                 StageLevelsData currentStage = new StageLevelsData();
             
-                currentStage.isStageUnlocked = false;
-            
-                List<bool> currentLevels = new List<bool>();
+                currentStage.isStageUnlocked = i == 0;
+                
+                List<bool> unlockedLevels = new List<bool>();
+                List<bool> completedLevels = new List<bool>();
+
                 for (int j = 0; j < amountOfLevels; j++)
                 {
-                    if (i == 0 && j == 0) 
-                        currentLevels.Add(true);
-                    else
-                        currentLevels.Add(false);
+                    unlockedLevels.Add(i == 0 && j == 0);
+                    completedLevels.Add(false);
                 }
-                currentStage.levelsUnlocked = currentLevels;
+                
+                currentStage.unlockedLevels = unlockedLevels;
+                currentStage.completedLevels = completedLevels;
+                
                 currentStage.stageNumber = i;
                 stagesAndLevels.Add(currentStage);
             }
+            Debug.Log("GameManager initialized");
             return stagesAndLevels;
         }
 
@@ -90,7 +94,7 @@ namespace Managers
             if (_isInitialized)
                 return;
         
-            completedLevels = InitializeStagesAndLevels();
+            stagesAndLevelsStateData = InitializeStagesAndLevels();
         
             _isInitialized = true;
             OnLevelButtonsValidationRequest?.Invoke();
@@ -98,7 +102,17 @@ namespace Managers
 
         public void MarkAsCompleted(int stage, int level)
         {
-            completedLevels[stage].levelsUnlocked[level] = true;
+            stagesAndLevelsStateData[stage].completedLevels[level] = true;
+
+            if (level + 1 < amountOfLevels)
+            {
+                stagesAndLevelsStateData[stage].unlockedLevels[level + 1] = true;
+                _targetLevelToLoad++;
+            }
+            else
+            {
+                MoveToNextStage();
+            }
             SaveManager.Instance.SaveGameToFile();
         }
 
@@ -122,41 +136,37 @@ namespace Managers
             return _targetLevelToLoad;
         }
 
-        public void IncreaseTargetLevel()
+        private void MoveToNextStage()
         {
-            _targetLevelToLoad++;
-            if (_targetLevelToLoad > amountOfLevels)
-            {
-                _targetLevelToLoad = 1;
-
-                if (_targetLevelStage + 1 < amountOfStages)
-                {
-                    _targetLevelStage++;
-                    OnLevelButtonsValidationRequest?.Invoke();
-                }
-                else
-                    _targetLevelToLoad = amountOfLevels - 1;
-            }
+            if (_targetStage + 1 >= amountOfStages)
+                return;
+            
+            _targetLevelToLoad = 1;
+            _targetStage++;
+            
+            stagesAndLevelsStateData[_targetStage].unlockedLevels[0] = true;
+            
+            OnLevelButtonsValidationRequest?.Invoke();
         }
 
         public void SetTargetLevelStage(int stageIndex)
         {
-            _targetLevelStage = stageIndex;
+            _targetStage = stageIndex;
         }
 
         public int GetTargetLevelStage()
         {
-            return _targetLevelStage;
+            return _targetStage;
         }
 
         public List<StageLevelsData> GetUnlockedLevelsData()
         {
-            return completedLevels;
+            return stagesAndLevelsStateData;
         }
 
         private void LoadUnlockedLevelsData(List<StageLevelsData> unlockedLevels)
         {
-            completedLevels = unlockedLevels;
+            stagesAndLevelsStateData = unlockedLevels;
         }
 
         public int GetAmountOfLevels()
@@ -166,7 +176,7 @@ namespace Managers
     
         public void ResetCompletedLevels()
         {
-            completedLevels = InitializeStagesAndLevels();
+            stagesAndLevelsStateData = InitializeStagesAndLevels();
             SaveManager.Instance.SaveGameToFile();
             OnLevelButtonsValidationRequest?.Invoke();
         }
@@ -183,7 +193,7 @@ namespace Managers
 
         public int GetRawLevelIndex()
         {
-            return (_targetLevelToLoad - 1) + (_targetLevelStage) * amountOfLevels;
+            return (_targetLevelToLoad - 1) + (_targetStage) * amountOfLevels;
         }
 
         public void SetTutorialActive(bool active)
@@ -203,6 +213,7 @@ namespace Managers
         public int stageNumber;
         public bool isStageUnlocked;
         public bool isStageCompleted;
-        public List<bool> levelsUnlocked;
+        public List<bool> unlockedLevels;
+        public List<bool> completedLevels;
     }
 }
