@@ -77,8 +77,8 @@ namespace Camera
         {
             Quaternion rotation = Quaternion.Slerp(transform.rotation, _autoRotationTarget, Time.deltaTime * autoRotationSpeed);
             transform.rotation = rotation;
-
-            if (Quaternion.Angle(transform.rotation, _autoRotationTarget) < snapThreshold)
+            
+            if (Quaternion.Angle(transform.rotation, _autoRotationTarget) <= snapThreshold)
             {
                 transform.rotation = _autoRotationTarget;
                 _currentYaw = _autoRotationTarget.eulerAngles.y;

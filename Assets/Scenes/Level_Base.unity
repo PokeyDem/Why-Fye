@@ -537,7 +537,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 968e0bb356940b84bb3c764437aadbd5, type: 2}
     - {fileID: 11400000, guid: 4a17371ce5a8cd24ab0b5ebcfc4d4c13, type: 2}
     - {fileID: 11400000, guid: 4472443c97b36ab4189eb84a1a24e616, type: 2}
-    - {fileID: 11400000, guid: b7b48817c6d93854a8bfa2dc7b4b41b9, type: 2}
     - {fileID: 11400000, guid: 0f0c780ee52508f4fb85532fa86418d5, type: 2}
   - commands:
     - {fileID: 11400000, guid: 906955487119d4d4cae19b79cc29c594, type: 2}
