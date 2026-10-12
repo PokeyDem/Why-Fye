@@ -84,7 +84,6 @@ namespace Managers
                 currentStage.stageNumber = i;
                 stagesAndLevels.Add(currentStage);
             }
-            Debug.Log("GameManager initialized");
             return stagesAndLevels;
         }
 

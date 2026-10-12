@@ -77,7 +77,6 @@ namespace Systems
 
         public void ResetDevicesAmount()
         {
-            Debug.Log("Resetting devices amount");
             _amountOfDevices.Clear();
             foreach (var deviceOnLevel in currentLevelData.devicesData)
             {
@@ -199,14 +198,12 @@ namespace Systems
         {
             placementModeEnabled = false;
             OnSystemStateUpdated?.Invoke();
-            Debug.Log("Placement mode disabled");
         }
 
         public void EnablePlacement()
         {
             placementModeEnabled = true;
             OnSystemStateUpdated?.Invoke();
-            Debug.Log("Placement mode disabled");
         }
 
         public void EnableRemoveMode()
@@ -223,7 +220,6 @@ namespace Systems
 
         private void ActualizeDevicesAmountList(List<int> newAmounts)
         {
-            Debug.Log("ObjectPlacementSystem heard the update call");
             _amountOfDevices = newAmounts;
         }
     }
